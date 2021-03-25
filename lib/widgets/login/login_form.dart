@@ -1,0 +1,102 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../providers/auth.dart';
+
+class LoginForm extends StatefulWidget {
+  @override
+  _LoginFormState createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  final _form = GlobalKey<FormState>();
+
+  String username;
+  String password;
+  bool isLoading = false;
+
+  void tryLogin(BuildContext context) async {
+    bool isValid = _form.currentState.validate();
+
+    if (!isValid) return;
+    setState(() {
+      isLoading = true;
+    });
+    _form.currentState.save();
+    await Provider.of<Auth>(context, listen: false).login(username, password);
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _form,
+      child: Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Kullanıcı Adı",
+              style: TextStyle(fontSize: 30),
+            ),
+            TextFormField(
+              validator: (value) {
+                if (value.isEmpty) {
+                  return "Kullanıcı adınızı girin";
+                }
+
+                return null;
+              },
+              decoration: InputDecoration(
+                hintText: "kanatlıayı1212",
+                hintStyle: TextStyle(fontSize: 15),
+              ),
+              onSaved: (newValue) {
+                print(newValue);
+                username = newValue.trim();
+              },
+            ),
+            SizedBox(height: 20),
+            Text(
+              "Şifre",
+              style: TextStyle(fontSize: 30),
+            ),
+            TextFormField(
+              validator: (value) {
+                if (value.isEmpty) {
+                  return "Şifrenizi girin";
+                }
+
+                return null;
+              },
+              decoration: InputDecoration(
+                hintStyle: TextStyle(fontSize: 15),
+                hintText: "........ ",
+              ),
+              onSaved: (newValue) {
+                password = newValue;
+              },
+            ),
+            SizedBox(height: 30),
+            isLoading
+                ? Center(child: CircularProgressIndicator())
+                : Center(
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          tryLogin(context);
+                        },
+                        child: Text("Giriş"),
+                      ),
+                    ),
+                  )
+          ],
+        ),
+      ),
+    );
+  }
+}

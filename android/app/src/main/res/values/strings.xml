@@ -1,0 +1,9 @@
+<resources>
+    <string name="flutter_downloader_notification_started">İndirme Başladı</string>
+    <string name="flutter_downloader_notification_in_progress">Sürüyor</string>
+    <string name="flutter_downloader_notification_canceled">İptal Edildi</string>
+    <string name="flutter_downloader_notification_failed">Indirirken bişiler oldu</string>
+    <string name="flutter_downloader_notification_complete">Tamamlandı</string>
+    <string name="flutter_downloader_notification_paused">Durdu</string>
+
+</resources>

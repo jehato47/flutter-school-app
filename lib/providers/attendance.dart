@@ -1,0 +1,222 @@
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import '../helpers/envs.dart';
+
+class Attendance extends ChangeNotifier {
+  // -- Functions --
+  // getStudents
+  // sendAttendance
+  // getAll
+
+  dynamic _allClasses;
+  dynamic _classes;
+  Map _oldAttendance;
+
+  DateTime date;
+  String baseUrl = Envs.baseUrl;
+  String currentTime;
+  String currentClass;
+  Map attendance = {
+    "gelenler": [],
+    "gelmeyenler": [],
+    "gecGelenler": [],
+    "izinliler": [],
+  };
+
+  var _studentList;
+  var _attendanceList;
+
+  get students {
+    return [..._studentList];
+  }
+
+  get attendanceList {
+    return _attendanceList;
+  }
+
+  get allClasses {
+    return _allClasses;
+  }
+
+  get classes {
+    return _classes;
+  }
+
+  get oldAttendance {
+    return _oldAttendance;
+  }
+
+  Future<void> sendAttendance(
+      Map<String, dynamic> attendanceMap, String token) async {
+    var headers = {
+      'Authorization': 'Token $token',
+      'Content-Type': 'application/json'
+    };
+
+    try {
+      final response = await http.post(
+        baseUrl + "/manage/addattendance",
+        headers: headers,
+        body: json.encode(attendanceMap),
+      );
+      // print(response.body);
+    } catch (err) {
+      print(err);
+    }
+  }
+
+  Future<void> getNearestAttendanceWithDetails(String token) async {
+    var headers = {
+      "Authorization": "Token $token",
+    };
+
+    final response =
+        await http.get(baseUrl + "/manage/getattdtl", headers: headers);
+    final liste = utf8.decode(response.bodyBytes);
+    final normalJson = json.decode(liste);
+    _studentList = normalJson["öğrenciler"];
+    currentClass = normalJson["sınıf"].split(" ")[0];
+    currentTime = normalJson["sınıf"].split(" ")[1];
+    _classes = normalJson["dp"];
+    date = DateTime.parse(normalJson["date"]);
+
+    // notifyListeners();
+    print(date.day);
+  }
+
+  // Öğretmenin en yakın zamanlı ders programını alıyor
+  Future<void> getCurrentClassAndTime(String token) async {
+    currentClass = "";
+    currentTime = "";
+    http.Response response;
+    var headers = {
+      'Authorization': 'Token $token',
+      'Content-Type': 'application/json; charset=UTF-8'
+    };
+
+    response = await http.get(
+      baseUrl + "/manage/getnrstatlist",
+      headers: headers,
+    );
+
+    final body = utf8.decode(response.bodyBytes);
+    final normalJson = json.decode(body);
+    if (normalJson["sınıf"] != null) {
+      currentClass = normalJson["sınıf"].split(" ").first;
+      currentTime = normalJson["sınıf"].split(" ").last;
+    }
+  }
+
+  Future<List<dynamic>> getStudents(String cls, String token) async {
+    _oldAttendance = {};
+    http.Response response;
+    var headers = {
+      'Authorization': 'Token $token',
+      'Content-Type': 'application/json; charset=UTF-8'
+    };
+    if (cls == "") {
+      response = await http.get(
+        baseUrl + "/manage/getnrstatlist",
+        headers: headers,
+      );
+      final body = utf8.decode(response.bodyBytes);
+      final normalJson = json.decode(body);
+      cls = normalJson["sınıf"].split(" ").first;
+    }
+
+    response = await http.get(
+      baseUrl + "/student/class/$cls",
+      headers: headers,
+    );
+
+    final liste = utf8.decode(response.bodyBytes);
+    final normalJson = json.decode(liste) as List;
+
+    // if (oldAttendance["success"] != false) print(122);
+    _studentList = normalJson;
+
+    return _studentList;
+  }
+
+  Future<dynamic> getOldAttendanceList(
+    String token,
+    String date,
+    String lecture,
+    String time,
+    String clss,
+  ) async {
+    await getCurrentClassAndTime(token);
+    print(currentClass);
+    print(currentTime);
+    var headers = {
+      "Authorization": "Token $token",
+    };
+    print(baseUrl + "/manage/attendance/$date/$lecture/$time/$clss");
+    final response = await http.get(
+      baseUrl + "/manage/attendance/$date/$lecture/$time/$clss",
+      headers: headers,
+    );
+    final normalResponse = utf8.decode(response.bodyBytes);
+    final normalJson = json.decode(normalResponse);
+    _oldAttendance = normalJson;
+    // print(normalJson);
+    return _oldAttendance;
+  }
+
+  Future<void> getAll(String token) async {
+    var headers = {'Authorization': 'Token $token'};
+
+    final response = await http.get(
+      baseUrl + "/manage/attendance",
+      headers: headers,
+    );
+    final normalResponse = utf8.decode(response.bodyBytes);
+    final normalJson = json.decode(normalResponse) as List<dynamic>;
+    _attendanceList = normalJson;
+  }
+
+  Future<List<dynamic>> getAttendanceByClass(
+      String token, String classToGet) async {
+    var headers = {"Authorization": "Token $token"};
+    final response = await http.get(
+      baseUrl + "/manage/attendance/$classToGet",
+      headers: headers,
+    );
+    final normalResponse = utf8.decode(response.bodyBytes);
+    final normalJson = json.decode(normalResponse) as List<dynamic>;
+
+    return normalJson;
+  }
+
+  Future<void> getClassesForAttendaceCheck(String token) async {
+    var headers = {
+      'Authorization': 'Token $token',
+    };
+
+    final response = await http.get(
+      baseUrl + "/teacher/gtclss",
+      headers: headers,
+    );
+
+    final normalResponse = utf8.decode(response.bodyBytes);
+    final normalJson = json.decode(normalResponse);
+
+    _classes = normalJson;
+  }
+
+  Future<void> getAllClassNamesForAttendancePreview(String token) async {
+    var headers = {
+      'Authorization': 'Token $token',
+    };
+
+    final response = await http.get(
+      baseUrl + "/manage/getallclss",
+      headers: headers,
+    );
+
+    final normalResponse = utf8.decode(response.bodyBytes);
+    final normalJson = json.decode(normalResponse);
+    _allClasses = normalJson;
+  }
+}
