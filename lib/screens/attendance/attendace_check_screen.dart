@@ -108,6 +108,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
       builder: (context, snapshot) {
         attendance =
             Provider.of<Attendance>(context, listen: false).oldAttendance;
+
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
             appBar: AppBar(
