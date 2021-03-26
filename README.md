@@ -9,19 +9,19 @@
 <h1 align="center">School2</h1>
 
 <p align="center">
-  <img alt="Github top language" src="https://img.shields.io/github/languages/top/{{YOUR_GITHUB_USERNAME}}/school2?color=56BEB8">
+  <img alt="Github top language" src="https://img.shields.io/github/languages/top/jehato47/school2?color=56BEB8">
 
-  <img alt="Github language count" src="https://img.shields.io/github/languages/count/{{YOUR_GITHUB_USERNAME}}/school2?color=56BEB8">
+  <img alt="Github language count" src="https://img.shields.io/github/languages/count/jehato47/school2?color=56BEB8">
 
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/{{YOUR_GITHUB_USERNAME}}/school2?color=56BEB8">
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/jehato47/school2?color=56BEB8">
 
-  <img alt="License" src="https://img.shields.io/github/license/{{YOUR_GITHUB_USERNAME}}/school2?color=56BEB8">
+  <img alt="License" src="https://img.shields.io/github/license/jehato47/school2?color=56BEB8">
 
-  <!-- <img alt="Github issues" src="https://img.shields.io/github/issues/{{YOUR_GITHUB_USERNAME}}/school2?color=56BEB8" /> -->
+  <!-- <img alt="Github issues" src="https://img.shields.io/github/issues/jehato47/school2?color=56BEB8" /> -->
 
-  <!-- <img alt="Github forks" src="https://img.shields.io/github/forks/{{YOUR_GITHUB_USERNAME}}/school2?color=56BEB8" /> -->
+  <img alt="Github forks" src="https://img.shields.io/github/forks/jehato47/school2?color=56BEB8" />
 
-  <!-- <img alt="Github stars" src="https://img.shields.io/github/stars/{{YOUR_GITHUB_USERNAME}}/school2?color=56BEB8" /> -->
+  <img alt="Github stars" src="https://img.shields.io/github/stars/jehato47/school2?color=56BEB8" />
 </p>
 
 <!-- Status -->
@@ -58,7 +58,7 @@ Describe your project
 
 The following tools were used in this project:
 
-- [Flutter](https://expo.io/)
+- [Flutter](https://flutter.dev/docs/get-started/install)
 <!-- - [Node.js](https://nodejs.org/en/)
 - [React](https://pt-br.reactjs.org/)
 - [React Native](https://reactnative.dev/)
@@ -72,7 +72,7 @@ Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) an
 
 ```bash
 # Clone this project
-$ git clone https://github.com/{{YOUR_GITHUB_USERNAME}}/school2
+$ git clone https://github.com/jehato47/school2
 
 # Access
 $ cd school2
