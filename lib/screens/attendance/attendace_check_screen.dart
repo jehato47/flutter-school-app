@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:school2/screens/timetable/teacher_timetable_screen.dart';
-import 'package:school2/widgets/attendance/attendance_list.dart';
-import '../../widgets/attendance/student_check_item.dart';
-import '../../providers/attendance.dart';
-import '../../providers/auth.dart';
-import '../../providers/StudentCheckBox/student_checkbox.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:intl/intl.dart';
+import 'package:school2/widgets/attendance/attendance_list.dart';
+import '../../providers/attendance.dart';
+import '../../providers/auth.dart';
 import '../../widgets/attendance/empty_info.dart';
 
 class AttendanceCheckScreen extends StatefulWidget {
@@ -18,7 +15,6 @@ class AttendanceCheckScreen extends StatefulWidget {
 
 class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
   // TODO : Bu sayfaya gelinen tarihte mevcut yoklama varsa onu koy
-  Map oldAttendance;
   DateTime cdate;
   String titleDate;
   dynamic info;
@@ -26,7 +22,6 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
   String currentClass = "";
   String currentTime;
   Map<String, dynamic> attendance;
-  int checkedNumber = 20;
   String date;
 
   // Başta herkes gelmeyen olarak işaretleniyor daha sonra listelere dağılıyor
@@ -43,16 +38,6 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
       }
     });
     print(ourattendance);
-  }
-
-  void sendAttendance() async {
-    attendance["ders"] = info["ders"];
-    attendance["date"] = date;
-    attendance["derssaati"] = currentTime;
-    attendance["sınıf"] = currentClass;
-
-    await Provider.of<Attendance>(context).sendAttendance(attendance, token);
-    Navigator.of(context).pop();
   }
 
   showPickerModal(BuildContext context) async {
@@ -75,14 +60,6 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
         }).showModal(this.context);
   }
 
-  void clearAttendance(Map oldAttendance) {
-    attendance["gelenler"] = oldAttendance["gelenler"];
-    attendance["gelmeyenler"] = oldAttendance["gelmeyenler"];
-    attendance["izinliler"] = oldAttendance["izinliler"];
-    attendance["geç_gelenler"] = oldAttendance["geç_gelenler"];
-    print(attendance);
-  }
-
   Widget buildElevatedButton() {
     return SizedBox(
       width: double.infinity,
@@ -95,15 +72,18 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
     );
   }
 
+  Future<void> sendAttendance() async {
+    attendance["ders"] = info["ders"];
+    attendance["date"] = date;
+    attendance["derssaati"] = currentTime;
+    attendance["sınıf"] = currentClass;
+
+    await Provider.of<Attendance>(context).sendAttendance(attendance, token);
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
-    attendance = {
-      "gelenler": [],
-      "gelmeyenler": [],
-      "geç_gelenler": [],
-      "izinliler": [],
-    };
-
     token = Provider.of<Auth>(context).token;
     info = Provider.of<Auth>(context).userInform;
 
@@ -112,10 +92,8 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
 
     if (args != null) {
       // Eğer ders programından gelmişse bu koşul çalışıyor
-
       cdate = args["date"];
       currentClass = args["class"];
-
       currentTime = DateFormat("HH-mm").format(cdate).toString();
       date = DateFormat("y-MM-dd").format(args["date"]).toString();
     } else {
@@ -124,9 +102,12 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
     }
 
     return FutureBuilder(
-      future: Provider.of<Attendance>(context)
-          .getNearestAttendanceWithDetails(token),
+      future: Provider.of<Attendance>(context, listen: false)
+          .getNearestAttendanceWithDetails(
+              token, date, currentTime, currentClass),
       builder: (context, snapshot) {
+        attendance =
+            Provider.of<Attendance>(context, listen: false).oldAttendance;
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
             appBar: AppBar(
@@ -142,13 +123,15 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
         currentClass = Provider.of<Attendance>(context).currentClass;
         currentTime = Provider.of<Attendance>(context).currentTime;
         cdate = Provider.of<Attendance>(context).date;
-        titleDate = DateFormat("dd MMMM").format(cdate);
+        if (cdate != null) titleDate = DateFormat("dd MMMM").format(cdate);
+        String appBarTitle = currentClass == ""
+            ? "Yoklama al"
+            : "${currentClass.toUpperCase()} $titleDate $currentTime";
 
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title:
-                Text("${currentClass.toUpperCase()} $titleDate $currentTime"),
+            title: Text(appBarTitle),
             actions: [
               IconButton(
                 icon: Icon(Icons.done),
@@ -159,9 +142,12 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
           body: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 buildElevatedButton(),
-                Expanded(child: AttendanceList(attendance, changeValues)),
+                currentClass == ""
+                    ? Expanded(child: EmptyInfo())
+                    : Expanded(child: AttendanceList(attendance, changeValues)),
               ],
             ),
           ),

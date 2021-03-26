@@ -13,9 +13,7 @@ class AttendanceList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     dynamic students = Provider.of<Attendance>(context).students;
-    students.forEach((student) {
-      attendance["gelmeyenler"].add(student["no"]);
-    });
+
     return ListView.builder(
       itemCount: students.length,
       itemBuilder: (context, index) {

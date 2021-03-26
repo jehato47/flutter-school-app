@@ -66,23 +66,41 @@ class Attendance extends ChangeNotifier {
     }
   }
 
-  Future<void> getNearestAttendanceWithDetails(String token) async {
+  Future<void> getNearestAttendanceWithDetails(
+    String token,
+    String datee,
+    String time,
+    String clss,
+  ) async {
+    if (clss == "") {
+      datee = "0";
+      time = "0";
+      clss = "0";
+    }
     var headers = {
       "Authorization": "Token $token",
     };
+    _studentList = null;
+    currentClass = "";
+    currentTime = null;
+    _classes = null;
+    date = null;
+    _oldAttendance = null;
 
-    final response =
-        await http.get(baseUrl + "/manage/getattdtl", headers: headers);
+    final response = await http.get(
+        baseUrl + "/manage/getattdtl/$datee/$time/$clss",
+        headers: headers);
     final liste = utf8.decode(response.bodyBytes);
     final normalJson = json.decode(liste);
-    _studentList = normalJson["öğrenciler"];
-    currentClass = normalJson["sınıf"].split(" ")[0];
-    currentTime = normalJson["sınıf"].split(" ")[1];
-    _classes = normalJson["dp"];
-    date = DateTime.parse(normalJson["date"]);
 
-    // notifyListeners();
-    print(date.day);
+    if (normalJson["success"] != false) {
+      _studentList = normalJson["öğrenciler"];
+      currentClass = normalJson["sınıf"].split(" ")[0];
+      currentTime = normalJson["sınıf"].split(" ")[1];
+      _classes = normalJson["dp"];
+      date = DateTime.parse(normalJson["date"]);
+      _oldAttendance = normalJson["yoklama"];
+    }
   }
 
   // Öğretmenin en yakın zamanlı ders programını alıyor
