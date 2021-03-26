@@ -1,5 +1,5 @@
 <div align="center" id="top"> 
-  <img src="https://flutter.dev/assets/dash/early-dash-sketches2-a38190f3c27f9309101e711143e4a67af04757d7b9f29b00e9ae8cb2cb841d1a.jpg" alt="School2" />
+  <!-- <img src="https://flutter.dev/assets/dash/early-dash-sketches2-a38190f3c27f9309101e711143e4a67af04757d7b9f29b00e9ae8cb2cb841d1a.jpg" alt="School2" /> -->
 
   &#xa0;
 
