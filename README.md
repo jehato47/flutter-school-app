@@ -66,7 +66,7 @@ The following tools were used in this project:
 
 ## :white_check_mark: Requirements ##
 
-Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) and [Node](https://nodejs.org/en/) installed.
+Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) and [flutter](https://flutter.dev/docs/get-started/install) installed.
 
 ## :checkered_flag: Starting ##
 
@@ -78,10 +78,10 @@ $ git clone https://github.com/{{YOUR_GITHUB_USERNAME}}/school2
 $ cd school2
 
 # Install dependencies
-$ yarn
+$ flutter pub get
 
 # Run the project
-$ yarn start
+$ flutter run
 
 # The server will initialize in the <http://localhost:3000>
 ```
