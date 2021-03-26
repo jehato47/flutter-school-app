@@ -11,7 +11,6 @@ class AttendanceDetailScreen extends StatelessWidget {
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
 
     bool isEmpty = attendance["gelmeyenler"].isEmpty;
-
     return Scaffold(
       appBar: AppBar(),
       body: isEmpty
