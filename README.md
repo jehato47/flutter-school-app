@@ -18,10 +18,10 @@
   <img alt="License" src="https://img.shields.io/github/license/jehato47/school2?color=56BEB8">
 
   <!-- <img alt="Github issues" src="https://img.shields.io/github/issues/jehato47/school2?color=56BEB8" /> -->
-
+<!-- 
   <img alt="Github forks" src="https://img.shields.io/github/forks/jehato47/school2?color=56BEB8" />
 
-  <img alt="Github stars" src="https://img.shields.io/github/stars/jehato47/school2?color=56BEB8" />
+  <img alt="Github stars" src="https://img.shields.io/github/stars/jehato47/school2?color=56BEB8" /> -->
 </p>
 
 <!-- Status -->
@@ -50,9 +50,9 @@ Describe your project
 
 ## :sparkles: Features ##
 
-:heavy_check_mark: Feature 1;\
-:heavy_check_mark: Feature 2;\
-:heavy_check_mark: Feature 3;
+:heavy_check_mark: Feature 1;\ Student Management
+:heavy_check_mark: Feature 2;\ Teacher Management
+:heavy_check_mark: Feature 3;\ And many other features
 
 ## :rocket: Technologies ##
 
