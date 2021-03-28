@@ -94,10 +94,10 @@ class Attendance extends ChangeNotifier {
     final normalJson = json.decode(liste);
 
     if (normalJson["success"] != false) {
+      _classes = normalJson["dp"];
       _studentList = normalJson["öğrenciler"];
       currentClass = normalJson["sınıf"].split(" ")[0];
       currentTime = normalJson["sınıf"].split(" ")[1];
-      _classes = normalJson["dp"];
       date = DateTime.parse(normalJson["date"]);
       _oldAttendance = normalJson["yoklama"];
     }

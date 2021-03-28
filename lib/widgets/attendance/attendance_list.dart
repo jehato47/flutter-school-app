@@ -9,7 +9,7 @@ class AttendanceList extends StatelessWidget {
   final Map attendance;
   final Function changeValues;
   AttendanceList(this.attendance, this.changeValues);
-
+  // TODO : Eğer öğrencilerden bazıları hiçbir listede yoksa gelmeyenlere ekle
   @override
   Widget build(BuildContext context) {
     dynamic students = Provider.of<Attendance>(context).students;

@@ -93,6 +93,7 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextFormField(
                   validator: (value) {
@@ -115,6 +116,8 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
                   decoration: InputDecoration(labelText: "içerik"),
                 ),
                 TextFormField(
+                  minLines: 2,
+                  maxLines: 5,
                   validator: (value) {
                     if (value.isEmpty) return "açıklama girmediniz";
                     return null;
@@ -122,7 +125,10 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
                   onSaved: (newValue) {
                     hw["açıklama"] = newValue;
                   },
-                  decoration: InputDecoration(labelText: "açıklama"),
+                  decoration: InputDecoration(
+                    labelText: "açıklama",
+                    alignLabelWithHint: true,
+                  ),
                 ),
                 SizedBox(height: 20),
                 Row(
@@ -135,10 +141,6 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
                         file != null ? file.path.split("/").last : "Dosya ekle",
                       ),
                     ),
-                  ],
-                ),
-                Row(
-                  children: [
                     TextButton(
                       onPressed: () {
                         showDatePickerFunc();
@@ -150,7 +152,7 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
                       ),
                     )
                   ],
-                ),
+                )
               ],
             ),
           ),

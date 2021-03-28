@@ -12,7 +12,7 @@ class PageGridItem extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
-      elevation: 4,
+      elevation: 3,
       child: InkWell(
         borderRadius: BorderRadius.circular(15),
         onTap: () {
