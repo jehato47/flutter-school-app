@@ -23,16 +23,16 @@ class PagesGrid extends StatelessWidget {
           mainAxisSpacing: 10,
         ),
         children: [
-          // PageGridItem(
-          //   AttendanceCheckScreen.url,
-          //   "Yoklama",
-          //   "subtitle",
-          // ),
-          // PageGridItem(
-          //   AttendancePreviewScreen.url,
-          //   "Yoklamalar",
-          //   "subtitle",
-          // ),
+          PageGridItem(
+            AttendanceCheckScreen.url,
+            "Yoklama",
+            "subtitle",
+          ),
+          PageGridItem(
+            AttendancePreviewScreen.url,
+            "Yoklamalar",
+            "subtitle",
+          ),
           PageGridItem(
             GiveHomeworkScreen.url,
             "Ödev Ver",

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // import 'package:permission_handler/permission_handler.dart';
 // import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:provider/provider.dart';
+import 'package:school2/helpers/envs.dart';
 import '../../helpers/download/download_helper_provider.dart';
 
 class HomeWorkDetailScreen extends StatefulWidget {
@@ -44,6 +45,7 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final baseUrl = Envs.baseUrl;
     final hw = ModalRoute.of(context).settings.arguments as dynamic;
     return Scaffold(
       appBar: AppBar(
@@ -90,12 +92,12 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
               InkWell(
                 onTap: () async {
                   Provider.of<Download>(context).downloadFile(
-                    "https://schoolapi.pythonanywhere.com" + hw["dosya"],
+                    baseUrl + hw["dosya"],
                   );
                 },
                 child: Text(
                   hw["dosya"] != null
-                      ? "https://schoolapi.pythonanywhere.com" + hw["dosya"]
+                      ? hw["dosya"].split("/").last
                       : "Dosya yok",
                 ),
               ),

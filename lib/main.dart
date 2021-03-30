@@ -3,12 +3,14 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 import 'package:provider/provider.dart';
+import 'providers/notification.dart';
 import 'providers/timetable.dart';
 import 'providers/attendance.dart';
 import 'providers/auth.dart';
 import 'providers/homework.dart';
 import 'providers/exam.dart';
 import 'providers/etude.dart';
+import 'screens/notifications/notification_screen.dart';
 import 'screens/exam/student_exam_screen.dart';
 import 'screens/homework/homework_detail_screen.dart';
 import 'screens/homework/homework_preview_screen.dart';
@@ -63,6 +65,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => Etude(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => NotificationP(),
+        ),
       ],
       child: MaterialApp(
         // theme: ThemeData.light(),
@@ -95,7 +100,7 @@ class MyApp extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.indigo,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: Scaffold(
@@ -133,6 +138,7 @@ class MyApp extends StatelessWidget {
           AddExamResultScreen.url: (ctx) => AddExamResultScreen(),
           StudentExamScreen.url: (ctx) => StudentExamScreen(),
           GiveEtudeScreen.url: (ctx) => GiveEtudeScreen(),
+          NotificationScreen.url: (ctx) => NotificationScreen(),
         },
       ),
     );

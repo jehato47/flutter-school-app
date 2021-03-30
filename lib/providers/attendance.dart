@@ -103,29 +103,6 @@ class Attendance extends ChangeNotifier {
     }
   }
 
-  // Öğretmenin en yakın zamanlı ders programını alıyor
-  Future<void> getCurrentClassAndTime(String token) async {
-    currentClass = "";
-    currentTime = "";
-    http.Response response;
-    var headers = {
-      'Authorization': 'Token $token',
-      'Content-Type': 'application/json; charset=UTF-8'
-    };
-
-    response = await http.get(
-      baseUrl + "/manage/getnrstatlist",
-      headers: headers,
-    );
-
-    final body = utf8.decode(response.bodyBytes);
-    final normalJson = json.decode(body);
-    if (normalJson["sınıf"] != null) {
-      currentClass = normalJson["sınıf"].split(" ").first;
-      currentTime = normalJson["sınıf"].split(" ").last;
-    }
-  }
-
   Future<List<dynamic>> getStudents(String cls, String token) async {
     _oldAttendance = {};
     http.Response response;
@@ -157,31 +134,6 @@ class Attendance extends ChangeNotifier {
     return _studentList;
   }
 
-  Future<dynamic> getOldAttendanceList(
-    String token,
-    String date,
-    String lecture,
-    String time,
-    String clss,
-  ) async {
-    await getCurrentClassAndTime(token);
-    print(currentClass);
-    print(currentTime);
-    var headers = {
-      "Authorization": "Token $token",
-    };
-    print(baseUrl + "/manage/attendance/$date/$lecture/$time/$clss");
-    final response = await http.get(
-      baseUrl + "/manage/attendance/$date/$lecture/$time/$clss",
-      headers: headers,
-    );
-    final normalResponse = utf8.decode(response.bodyBytes);
-    final normalJson = json.decode(normalResponse);
-    _oldAttendance = normalJson;
-    // print(normalJson);
-    return _oldAttendance;
-  }
-
   Future<void> getAll(String token) async {
     var headers = {'Authorization': 'Token $token'};
 
@@ -207,22 +159,6 @@ class Attendance extends ChangeNotifier {
     return normalJson;
   }
 
-  Future<void> getClassesForAttendaceCheck(String token) async {
-    var headers = {
-      'Authorization': 'Token $token',
-    };
-
-    final response = await http.get(
-      baseUrl + "/teacher/gtclss",
-      headers: headers,
-    );
-
-    final normalResponse = utf8.decode(response.bodyBytes);
-    final normalJson = json.decode(normalResponse);
-
-    _classes = normalJson;
-  }
-
   Future<void> getAllClassNamesForAttendancePreview(String token) async {
     var headers = {
       'Authorization': 'Token $token',
@@ -237,4 +173,68 @@ class Attendance extends ChangeNotifier {
     final normalJson = json.decode(normalResponse);
     _allClasses = normalJson;
   }
+
+  // // Öğretmenin en yakın zamanlı ders programını alıyor
+  // Future<void> getCurrentClassAndTime(String token) async {
+  //   currentClass = "";
+  //   currentTime = "";
+  //   http.Response response;
+  //   var headers = {
+  //     'Authorization': 'Token $token',
+  //     'Content-Type': 'application/json; charset=UTF-8'
+  //   };
+
+  //   response = await http.get(
+  //     baseUrl + "/manage/getnrstatlist",
+  //     headers: headers,
+  //   );
+
+  //   final body = utf8.decode(response.bodyBytes);
+  //   final normalJson = json.decode(body);
+  //   if (normalJson["sınıf"] != null) {
+  //     currentClass = normalJson["sınıf"].split(" ").first;
+  //     currentTime = normalJson["sınıf"].split(" ").last;
+  //   }
+  // }
+
+  // Future<dynamic> getOldAttendanceList(
+  //   String token,
+  //   String date,
+  //   String lecture,
+  //   String time,
+  //   String clss,
+  // ) async {
+  //   await getCurrentClassAndTime(token);
+  //   print(currentClass);
+  //   print(currentTime);
+  //   var headers = {
+  //     "Authorization": "Token $token",
+  //   };
+  //   print(baseUrl + "/manage/attendance/$date/$lecture/$time/$clss");
+  //   final response = await http.get(
+  //     baseUrl + "/manage/attendance/$date/$lecture/$time/$clss",
+  //     headers: headers,
+  //   );
+  //   final normalResponse = utf8.decode(response.bodyBytes);
+  //   final normalJson = json.decode(normalResponse);
+  //   _oldAttendance = normalJson;
+  //   // print(normalJson);
+  //   return _oldAttendance;
+  // }
+
+  // Future<void> getClassesForAttendaceCheck(String token) async {
+  //   var headers = {
+  //     'Authorization': 'Token $token',
+  //   };
+
+  //   final response = await http.get(
+  //     baseUrl + "/teacher/gtclss",
+  //     headers: headers,
+  //   );
+
+  //   final normalResponse = utf8.decode(response.bodyBytes);
+  //   final normalJson = json.decode(normalResponse);
+
+  //   _classes = normalJson;
+  // }
 }
