@@ -34,6 +34,7 @@ void main() async {
       debug: true // optional: set false to disable printing logs to console
       );
   Intl.defaultLocale = 'tr_TR';
+
   runApp(MyApp());
 }
 
@@ -104,25 +105,26 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: Scaffold(
-          body: Builder(
-            builder: (context) => Consumer<Auth>(
-              builder: (context, value, child) {
-                return value.isAuth
-                    ? FutureBuilder(
-                        future: Firebase.initializeApp(),
-                        builder: (context, snapshot) {
-                          return HomeScreen();
-                        })
-                    : FutureBuilder(
-                        future: Provider.of<Auth>(context).login(
-                          "öğretmen",
-                          "12345",
-                        ),
-                        builder: (context, snapshot) {
-                          return LoginScreen();
-                        });
-              },
-            ),
+          body: FutureBuilder(
+            future: Firebase.initializeApp(),
+            builder: (context, snapshot) {
+              return Builder(
+                builder: (context) => Consumer<Auth>(
+                  builder: (context, value, child) {
+                    return value.isAuth
+                        ? HomeScreen()
+                        : FutureBuilder(
+                            future: Provider.of<Auth>(context).login(
+                              "öğretmen",
+                              "12345",
+                            ),
+                            builder: (context, snapshot) {
+                              return LoginScreen();
+                            });
+                  },
+                ),
+              );
+            },
           ),
         ),
         routes: {

@@ -4,42 +4,57 @@ import 'package:school2/screens/homework/give_homework_screen.dart';
 import '../providers/auth.dart';
 import '../widgets/home/pages_grid.dart';
 import '../screens/notifications/notification_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeScreen extends StatelessWidget {
   static const url = "home";
 
-  Widget buildRingBell(BuildContext context, int number) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        IconButton(
-          icon: Icon(Icons.notifications),
-          onPressed: () {
-            Navigator.of(context).pushNamed(NotificationScreen.url);
-          },
-        ),
-        Positioned(
-          right: 8,
-          top: 10,
-          child: Container(
+  Widget buildRingBell(BuildContext context) {
+    int number;
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection("notification")
+            .where("isSeen", isEqualTo: true)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting)
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          final docs = snapshot.data.documents;
+          number = docs.length;
+          return Stack(
             alignment: Alignment.center,
-            width: number >= 10 ? 20 : 15,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: Colors.red,
-            ),
-            child: Text(
-              number.toString(),
-              style: TextStyle(
-                // color: Colors.red,
-                // fontSize: 15,
-                fontWeight: FontWeight.bold,
+            children: [
+              IconButton(
+                icon: Icon(Icons.notifications),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(NotificationScreen.url);
+                },
               ),
-            ),
-          ),
-        )
-      ],
-    );
+              Positioned(
+                right: 8,
+                top: 10,
+                child: Container(
+                  alignment: Alignment.center,
+                  width: number >= 10 ? 20 : 15,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.red,
+                  ),
+                  child: Text(
+                    number.toString(),
+                    style: TextStyle(
+                      // color: Colors.red,
+                      // fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          );
+        });
   }
 
   Widget buildHomeworkButton(BuildContext context) {
@@ -114,7 +129,7 @@ class HomeScreen extends StatelessWidget {
       drawer: buildDrawer(user),
       appBar: AppBar(
         actions: [
-          buildRingBell(context, 2),
+          buildRingBell(context),
           buildHomeworkButton(context),
         ],
         title: Text(user["isim"] + " " + user["soyisim"]),
