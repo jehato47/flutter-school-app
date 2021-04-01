@@ -5,5 +5,6 @@
     <string name="flutter_downloader_notification_failed">Indirirken bişiler oldu</string>
     <string name="flutter_downloader_notification_complete">Tamamlandı</string>
     <string name="flutter_downloader_notification_paused">Durdu</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 
 </resources>

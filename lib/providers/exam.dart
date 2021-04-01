@@ -14,7 +14,7 @@ class Exam extends ChangeNotifier {
   Future<void> setExams(String token) async {
     var headers = {'Authorization': 'Token $token'};
     final response = await http.get(
-      baseUrl + "/exam/set",
+      Uri.parse(baseUrl + "/exam/set"),
       headers: headers,
     );
     print(json.decode(response.body));
@@ -23,7 +23,7 @@ class Exam extends ChangeNotifier {
   Future<Map<String, dynamic>> getExcel(String token, String classes) async {
     var headers = {'Authorization': 'Token $token'};
     final response = await http.get(
-      baseUrl + "/exam/cxl/" + classes,
+      Uri.parse(baseUrl + "/exam/cxl/" + classes),
       headers: headers,
     );
 
@@ -53,7 +53,11 @@ class Exam extends ChangeNotifier {
   Future<List<Sinav>> getStudentResults(String token) async {
     List<Sinav> _sinavlar = [];
     var headers = {'Authorization': 'Token $token'};
-    final response = await http.get(baseUrl + "/exam/res/21", headers: headers);
+    final response = await http.get(
+      Uri.parse(baseUrl + "/exam/res/21"),
+      headers: headers,
+    );
+
     final normalResponse = utf8.decode(response.bodyBytes);
     final normalJson = json.decode(normalResponse) as Map;
     final dersler = [

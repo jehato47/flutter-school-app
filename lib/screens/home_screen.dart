@@ -10,18 +10,19 @@ class HomeScreen extends StatelessWidget {
   static const url = "home";
 
   Widget buildRingBell(BuildContext context) {
+    final user = Provider.of<Auth>(context).userInform;
     int number;
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("notification")
-            .where("isSeen", isEqualTo: true)
+            .where("isSeen", arrayContains: user["user"])
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting)
             return Center(
               child: CircularProgressIndicator(),
             );
-          final docs = snapshot.data.documents;
+          final docs = snapshot.data.docs;
           number = docs.length;
           return Stack(
             alignment: Alignment.center,

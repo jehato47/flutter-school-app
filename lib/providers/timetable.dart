@@ -53,7 +53,7 @@ class Timetable extends ChangeNotifier {
       'Authorization': 'Token $token',
     };
     final response = await http.get(
-      baseUrl + "/teacher/getsyl/$teacher",
+      Uri.parse(baseUrl + "/teacher/getsyl/$teacher"),
       headers: headers,
     );
     final normalResponse = utf8.decode(response.bodyBytes);
@@ -67,7 +67,7 @@ class Timetable extends ChangeNotifier {
       "Authorization": "Token $token",
     };
     final response = await http.get(
-      baseUrl + "/student/getsyl/11-a",
+      Uri.parse(baseUrl + "/student/getsyl/11-a"),
       headers: headers,
     );
     final normalResponse = utf8.decode(response.bodyBytes);

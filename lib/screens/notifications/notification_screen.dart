@@ -1,3 +1,6 @@
+// import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:open_file/open_file.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/notification.dart';
@@ -5,6 +8,7 @@ import '../../providers/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class NotificationScreen extends StatefulWidget {
   static const url = "/notification";
@@ -26,6 +30,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
     });
 
     // User canceled the picker
+  }
+
+  @override
+  void initState() {
+    final fbm = FirebaseMessaging.instance;
+    fbm.requestPermission();
+    fbm.subscribeToTopic("11-a");
+    super.initState();
   }
 
   void addNotification() {
@@ -55,6 +67,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   TextButton(
                     onPressed: () {
                       pickFile();
+                      if (file != null) {
+                        print(file.path);
+                      }
                     },
                     child: Text("dosya ekle"),
                   ),
@@ -72,8 +87,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   onPressed: () {
                     Provider.of<NotificationP>(context).addNotification(
                       user["isim"] + " " + user["soyisim"],
-                      mesaj.text,
+                      mesaj.text.trim(),
+                      file,
                     );
+
                     Navigator.of(context).pop();
                   },
                   child: Text("Gönder"),
@@ -84,6 +101,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ),
       ),
     );
+  }
+
+  void addToSeen(CollectionReference ref, DocumentSnapshot notification) {
+    List list2 = notification["isSeen"];
+    if (!list2.contains(user["user"])) {
+      list2.add(user["user"]);
+    }
+    ref.doc(notification.id).update({"isSeen": list2});
   }
 
   @override
@@ -116,39 +141,54 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 );
               CollectionReference ref =
                   FirebaseFirestore.instance.collection("notification");
-              List docs = snapshot.data.documents;
+              List docs = snapshot.data.docs;
               docs = List.from(docs.reversed);
 
               return ListView.builder(
                 itemCount: docs.length,
-                itemBuilder: (context, index) => Column(
-                  children: [
-                    ListTile(
-                      onLongPress: () {
-                        ref.doc(docs[index].id).delete();
-                      },
-                      selected: docs[index]["isSeen"],
-                      leading: !docs[index]["isSeen"]
-                          ? Icon(Icons.assignment)
-                          : Icon(Icons.notification_important),
-                      title: Text(
-                        docs[index]["text"],
-                      ),
-                      subtitle: Text(docs[index]["oluşturan"]),
-                      trailing: IconButton(
-                        icon: Icon(
-                          Icons.file_present,
-                        ),
-                        onPressed: () {
-                          ref.doc(docs[index].id).update({"isSeen": false});
+                itemBuilder: (context, index) {
+                  DocumentSnapshot notification = docs[index];
+
+                  return Column(
+                    children: [
+                      ListTile(
+                        onLongPress: () {
+                          ref.doc(notification.id).delete();
                         },
+                        selected:
+                            !notification["isSeen"].contains(user["user"]),
+                        leading: notification["isSeen"].contains(user["user"])
+                            ? Icon(Icons.assignment)
+                            : Icon(Icons.notification_important),
+                        title: Text(
+                          notification["text"],
+                        ),
+                        subtitle: Text(notification["creator"]),
+                        onTap: () {
+                          // Görenlere ekliyor
+                          addToSeen(ref, notification);
+                        },
+                        trailing: IconButton(
+                          icon: Icon(
+                            Icons.file_present,
+                          ),
+                          onPressed: notification["fileName"] == null
+                              ? null
+                              : () async {
+                                  await Provider.of<NotificationP>(context)
+                                      .downloadFileExample(
+                                    notification.id,
+                                    notification["fileName"],
+                                  );
+                                },
+                        ),
                       ),
-                    ),
-                    Divider(
-                      thickness: 1.2,
-                    ),
-                  ],
-                ),
+                      Divider(
+                        thickness: 1.2,
+                      ),
+                    ],
+                  );
+                },
               );
             }),
       ),

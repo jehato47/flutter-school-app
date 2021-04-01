@@ -33,7 +33,7 @@ class Auth extends ChangeNotifier {
   Future<void> login(String username, String password) async {
     try {
       final response = await http.post(
-        _baseUrl + "/user/loginuser",
+        Uri.parse(_baseUrl + "/user/loginuser"),
         body: json.encode(
           {
             "username": username,
@@ -55,7 +55,9 @@ class Auth extends ChangeNotifier {
   }
 
   Future<void> logout() async {
-    await http.get(_baseUrl + "/user/logoutuser");
+    await http.get(
+      Uri.parse(_baseUrl + "/user/logoutuser"),
+    );
     _userToken = null;
     notifyListeners();
   }
@@ -65,7 +67,7 @@ class Auth extends ChangeNotifier {
     var headers = {'Authorization': 'Token $_userToken'};
 
     final response = await http.get(
-      _baseUrl + "/user/getuserinfo",
+      Uri.parse(_baseUrl + "/user/getuserinfo"),
       headers: headers,
     );
     final liste = utf8.decode(response.bodyBytes);
@@ -76,7 +78,7 @@ class Auth extends ChangeNotifier {
   Future<dynamic> getStudentByNumber(int number) async {
     var headers = {'Authorization': 'Token $token'};
     final response = await http.get(
-      _baseUrl + "/student/student/$number",
+      Uri.parse(_baseUrl + "/student/student/$number"),
       headers: headers,
     );
     final normalResponse = utf8.decode(response.bodyBytes);

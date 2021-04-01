@@ -56,7 +56,7 @@ class Attendance extends ChangeNotifier {
 
     try {
       final response = await http.post(
-        baseUrl + "/manage/addattendance",
+        Uri.parse(baseUrl + "/manage/addattendance"),
         headers: headers,
         body: json.encode(attendanceMap),
       );
@@ -88,7 +88,7 @@ class Attendance extends ChangeNotifier {
     _oldAttendance = null;
 
     final response = await http.get(
-        baseUrl + "/manage/getattdtl/$datee/$time/$clss",
+        Uri.parse(baseUrl + "/manage/getattdtl/$datee/$time/$clss"),
         headers: headers);
     final liste = utf8.decode(response.bodyBytes);
     final normalJson = json.decode(liste);
@@ -112,7 +112,7 @@ class Attendance extends ChangeNotifier {
     };
     if (cls == "") {
       response = await http.get(
-        baseUrl + "/manage/getnrstatlist",
+        Uri.parse(baseUrl + "/manage/getnrstatlist"),
         headers: headers,
       );
       final body = utf8.decode(response.bodyBytes);
@@ -121,7 +121,9 @@ class Attendance extends ChangeNotifier {
     }
 
     response = await http.get(
-      baseUrl + "/student/class/$cls",
+      Uri.parse(
+        baseUrl + "/student/class/$cls",
+      ),
       headers: headers,
     );
 
@@ -138,7 +140,7 @@ class Attendance extends ChangeNotifier {
     var headers = {'Authorization': 'Token $token'};
 
     final response = await http.get(
-      baseUrl + "/manage/attendance",
+      Uri.parse(baseUrl + "/manage/attendance"),
       headers: headers,
     );
     final normalResponse = utf8.decode(response.bodyBytes);
@@ -150,7 +152,7 @@ class Attendance extends ChangeNotifier {
       String token, String classToGet) async {
     var headers = {"Authorization": "Token $token"};
     final response = await http.get(
-      baseUrl + "/manage/attendance/$classToGet",
+      Uri.parse(baseUrl + "/manage/attendance/$classToGet"),
       headers: headers,
     );
     final normalResponse = utf8.decode(response.bodyBytes);
@@ -165,7 +167,7 @@ class Attendance extends ChangeNotifier {
     };
 
     final response = await http.get(
-      baseUrl + "/manage/getallclss",
+      Uri.parse(baseUrl + "/manage/getallclss"),
       headers: headers,
     );
 

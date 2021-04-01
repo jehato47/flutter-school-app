@@ -57,7 +57,7 @@ class Etude extends ChangeNotifier {
     _calendarResources = [];
     var headers = {"Authorization": "Token $token"};
     final response = await http.get(
-      baseUrl + "/teacher/gettbylec/matematik",
+      Uri.parse(baseUrl + "/teacher/gettbylec/matematik"),
       headers: headers,
     );
 
@@ -154,7 +154,7 @@ class Etude extends ChangeNotifier {
     });
 
     await http.put(
-      baseUrl + "/manage/updet",
+      Uri.parse(baseUrl + "/manage/updet"),
       headers: headers,
       body: body,
     );

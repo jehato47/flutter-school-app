@@ -43,7 +43,7 @@ class HomeWork extends ChangeNotifier {
   Future<List<dynamic>> getHwByClass(String token) async {
     var headers = {'Authorization': 'Token $token'};
     final response = await http.get(
-      baseUrl + "/manage/gethw/11-a",
+      Uri.parse(baseUrl + "/manage/gethw/11-a"),
       headers: headers,
     );
     final normalResponse = utf8.decode(response.bodyBytes);
@@ -55,7 +55,7 @@ class HomeWork extends ChangeNotifier {
   Future<void> deleteHw(int id, String token) async {
     var headers = {'Authorization': 'Token $token'};
     final response = await http.delete(
-      baseUrl + "/manage/delhw/$id",
+      Uri.parse(baseUrl + "/manage/delhw/$id"),
       headers: headers,
     );
     // notifyListeners();
