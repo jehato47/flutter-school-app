@@ -77,7 +77,7 @@ class Timetable extends ChangeNotifier {
 
   List<Appointment> createAppointments(bool isTeacher) {
     _appointments = [];
-    // TODO : Buraya bak
+
     DateTime date = DateTime.now();
     addAppointment(
       date,

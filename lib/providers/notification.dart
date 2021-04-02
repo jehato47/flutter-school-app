@@ -3,10 +3,8 @@ import '../helpers/envs.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class NotificationP extends ChangeNotifier {
   final baseUrl = Envs.baseUrl;
@@ -43,7 +41,7 @@ class NotificationP extends ChangeNotifier {
     }).then((value) async {
       print("${value.id} 123123123");
       if (file != null) {
-        await firebase_storage.FirebaseStorage.instance
+        await FirebaseStorage.instance
             .ref()
             .child(value.id)
             .child(file.path.split("/").last)
@@ -53,24 +51,47 @@ class NotificationP extends ChangeNotifier {
     });
   }
 
+  Future<void> deleteNotification(
+    CollectionReference ref,
+    DocumentSnapshot notification,
+  ) async {
+    ref.doc(notification.id).delete().then((value) async {
+      if (notification["fileName"] != null) {
+        await FirebaseStorage.instance
+            .ref()
+            .child(notification.id)
+            .child(notification["fileName"])
+            .delete();
+      }
+    });
+  }
+
   Future<void> uploadFile(File file) async {
-    await firebase_storage.FirebaseStorage.instance
+    await FirebaseStorage.instance
         .ref()
         .child(file.path.split("/").last)
         .putFile(file);
     // e.g, e.code == 'canceled'
   }
 
-  Future<void> downloadFileExample(String id, String name) async {
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    final status = await Permission.storage.request();
-    if (!status.isGranted) return;
-    File downloadToFile = File("/storage/emulated/0/Download/$name");
-    print(name);
-    if (name != null)
-      await firebase_storage.FirebaseStorage.instance
-          .ref('$id/$name')
-          .writeToFile(downloadToFile);
-    // e.g, e.code == 'canceled'
+  Future<String> getDownloadUrl(
+    DocumentSnapshot notification,
+  ) async {
+    return FirebaseStorage.instance
+        .ref()
+        .child(notification.id)
+        .child(notification["fileName"])
+        .getDownloadURL();
+
+    //   Directory appDocDir = await getApplicationDocumentsDirectory();
+    //   final status = await Permission.storage.request();
+    //   if (!status.isGranted) return;
+    //   File downloadToFile = File("/storage/emulated/0/Download/$name");
+    //   print(name);
+    //   if (name != null)
+    //     await FirebaseStorage.instance
+    //         .ref('$id/$name')
+    //         .writeToFile(downloadToFile);
+    //   // e.g, e.code == 'canceled'
   }
 }

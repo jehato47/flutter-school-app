@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:school2/providers/auth.dart';
-import 'package:school2/providers/etude.dart';
 import '../../helpers/envs.dart';
 import 'package:school2/providers/exam.dart';
 import 'package:school2/providers/studentCheckBox/student_checkbox.dart';

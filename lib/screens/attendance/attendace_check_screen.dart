@@ -50,7 +50,9 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
         hideHeader: false,
         confirmText: "Seç",
         cancelText: "Iptal",
-        title: Text(DateFormat('d MMMM').format(DateTime.now()).toString()),
+        title: Text(
+          DateFormat('d MMMM EEEE').format(DateTime.now()).toString(),
+        ),
         magnification: 1.2,
         onConfirm: (Picker picker, List value) {
           setState(() {
@@ -123,7 +125,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
         currentClass = Provider.of<Attendance>(context).currentClass;
         currentTime = Provider.of<Attendance>(context).currentTime;
         cdate = Provider.of<Attendance>(context).date;
-        if (cdate != null) titleDate = DateFormat("dd MMMM").format(cdate);
+        if (cdate != null) titleDate = DateFormat("d MMMM").format(cdate);
         String appBarTitle = currentClass == ""
             ? "Yoklama al"
             : "${currentClass.toUpperCase()} $titleDate $currentTime";

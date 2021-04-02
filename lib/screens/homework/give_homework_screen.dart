@@ -83,7 +83,7 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
             onPressed: sendHomework,
           )
         ],
-        title: Text("Give Homework Screen"),
+        title: Text("Ödev Ver"),
       ),
       body: SingleChildScrollView(
         child: Padding(

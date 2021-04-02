@@ -4,23 +4,20 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 
 class Download extends ChangeNotifier {
-  Future<void> downloadFile(String url) async {
+  Future<void> downloadFile(String url, [String fileName = null]) async {
     final externalDir = await getExternalStorageDirectory();
     final x = await getExternalStorageDirectories();
-    // final q = await get
-    print(x[1].path);
 
-    // x.forEach((element) {
-    //   print(element);
-    // });
     final status = await Permission.storage.request();
     if (!status.isGranted) return;
 
     print(externalDir.path);
+    if (fileName == null) fileName = url.split("/").last;
+
     final id = await FlutterDownloader.enqueue(
       url: url,
       savedDir: "/storage/emulated/0/Download",
-      fileName: url.split("/").last,
+      fileName: fileName,
       showNotification: true,
       openFileFromNotification: true,
     );

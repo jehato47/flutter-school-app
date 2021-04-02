@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class AttendanceDetailItem extends StatefulWidget {
   final dynamic student;

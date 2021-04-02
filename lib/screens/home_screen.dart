@@ -11,19 +11,21 @@ class HomeScreen extends StatelessWidget {
 
   Widget buildRingBell(BuildContext context) {
     final user = Provider.of<Auth>(context).userInform;
-    int number;
+
     return StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection("notification")
-            .where("isSeen", arrayContains: user["user"])
-            .snapshots(),
+        stream:
+            FirebaseFirestore.instance.collection("notification").snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting)
             return Center(
               child: CircularProgressIndicator(),
             );
           final docs = snapshot.data.docs;
-          number = docs.length;
+          int length = 0;
+          docs.forEach((element) {
+            if (!element["isSeen"].contains(user["user"])) length += 1;
+          });
+
           return Stack(
             alignment: Alignment.center,
             children: [
@@ -38,13 +40,13 @@ class HomeScreen extends StatelessWidget {
                 top: 10,
                 child: Container(
                   alignment: Alignment.center,
-                  width: number >= 10 ? 20 : 15,
+                  width: length >= 10 ? 20 : 15,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     color: Colors.red,
                   ),
                   child: Text(
-                    number.toString(),
+                    length.toString(),
                     style: TextStyle(
                       // color: Colors.red,
                       // fontSize: 15,
@@ -80,7 +82,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget buildDrawer(dynamic user) {
+  Widget buildDrawer(BuildContext context, dynamic user) {
     return SafeArea(
       child: Drawer(
         // semanticLabel: "Drawer",
@@ -101,6 +103,7 @@ class HomeScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(50),
                 child: Image(
                   fit: BoxFit.cover,
+                  // TODO : bazen url tam olarak gelmiyor
                   image: NetworkImage(user["profil_foto"]),
                 ),
               ),
@@ -117,6 +120,13 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text("Çıkış Yap"),
+              onTap: () {
+                Provider.of<Auth>(context).logout();
+              },
+            )
           ],
         ),
       ),
@@ -127,7 +137,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<Auth>(context).userInform;
     return Scaffold(
-      drawer: buildDrawer(user),
+      drawer: buildDrawer(context, user),
       appBar: AppBar(
         actions: [
           buildRingBell(context),
