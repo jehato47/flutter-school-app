@@ -109,7 +109,6 @@ class Timetable extends ChangeNotifier {
   }
 
   void createStudentTimeTable() {
-    // print(teacherData);
     var today = DateTime.now();
 
     days.forEach((day, weekday) {

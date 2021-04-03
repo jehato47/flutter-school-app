@@ -20,12 +20,12 @@ class _NotificationItemState extends State<NotificationItem> {
   dynamic user;
 
   void addToSeen(CollectionReference ref, DocumentSnapshot notification) {
-    List list2 = notification["isSeen"];
+    List peopleWhoSee = notification["isSeen"];
 
-    if (!list2.contains(user["user"])) {
-      list2.add(user["user"]);
+    if (!peopleWhoSee.contains(user["user"])) {
+      peopleWhoSee.add(user["user"]);
     }
-    ref.doc(notification.id).update({"isSeen": list2});
+    ref.doc(notification.id).update({"isSeen": peopleWhoSee});
   }
 
   @override

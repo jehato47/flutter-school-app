@@ -8,7 +8,7 @@ class HomeworkPreviewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Homework Preview"),
+        title: Text("Ödevler"),
       ),
       body: HomeworkPreviewList(),
     );

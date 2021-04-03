@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school2/helpers/envs.dart';
 import '../../helpers/download/download_helper_provider.dart';
+import '../../providers/homework.dart';
 
 class HomeWorkDetailScreen extends StatefulWidget {
   static const url = "/hw-detail";
@@ -15,29 +16,6 @@ class HomeWorkDetailScreen extends StatefulWidget {
 }
 
 class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
-  // static void downloadingCallback(id, status, progress) async {
-  //   SendPort sendPort = IsolateNameServer.lookupPortByName("downloading");
-  //   sendPort.send([id, status, progress]);
-  // }
-
-  // ReceivePort _receivePort = ReceivePort();
-
-  // int progress = 0;
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   IsolateNameServer.registerPortWithName(
-  //     _receivePort.sendPort,
-  //     "downloading",
-  //   );
-  //   _receivePort.listen((message) {
-  //     // setState(() {
-  //     //   progress = message[2];
-  //     // });
-  //   });
-  //   FlutterDownloader.registerCallback(downloadingCallback);
-  // }
-
   @override
   void dispose() {
     super.dispose();
@@ -49,7 +27,7 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
     final hw = ModalRoute.of(context).settings.arguments as dynamic;
     return Scaffold(
       appBar: AppBar(
-        title: Text(hw["baslik"]),
+        title: Text(hw["başlık"]),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -66,7 +44,7 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
                 thickness: 2,
               ),
               Text(
-                hw["icerik"],
+                hw["ödev"],
                 style: TextStyle(fontSize: 15),
               ),
               SizedBox(height: 40),
@@ -78,7 +56,7 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
                 thickness: 2,
               ),
               Text(
-                hw["aciklama"],
+                hw["açıklama"],
                 style: TextStyle(fontSize: 15),
               ),
               SizedBox(height: 40),
@@ -90,19 +68,23 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
                 thickness: 2,
               ),
               InkWell(
-                onTap: () async {
-                  Provider.of<Download>(context).downloadFile(
-                    baseUrl + hw["dosya"],
-                  );
-                },
+                onTap: hw["fileName"] == null
+                    ? null
+                    : () async {
+                        final url = await Provider.of<HomeWork>(context)
+                            .getDownloadUrl(hw);
+                        Provider.of<Download>(context).downloadFile(
+                          url,
+                          hw["fileName"],
+                        );
+                      },
                 child: Text(
-                  hw["dosya"] != null
-                      ? hw["dosya"].split("/").last
-                      : "Dosya yok",
+                  hw["fileName"] != null
+                      ? hw["fileName"]
+                      : "İliştirilmiş dosya yok",
                 ),
               ),
               SizedBox(height: 20),
-              // Text(progress.toString()),
             ],
           ),
         ),

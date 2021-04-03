@@ -57,12 +57,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
         child: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection("notification")
-                .orderBy('added')
+                .orderBy('added', descending: true)
                 .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 print(snapshot.error);
-                return Text("Birşeyler Ters Gitti");
+                return Center(child: Text("Birşeyler Ters Gitti..."));
               }
               if (snapshot.connectionState == ConnectionState.waiting)
                 return Center(
@@ -72,15 +72,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
               CollectionReference ref =
                   FirebaseFirestore.instance.collection("notification");
 
-              List docs = snapshot.data.docs;
-              docs = List.from(docs.reversed);
+              List _docs = snapshot.data.docs;
 
-              return docs.length == 0
+              return _docs.length == 0
                   ? NotificationEmpty()
                   : ListView.builder(
-                      itemCount: docs.length,
+                      itemCount: _docs.length,
                       itemBuilder: (context, index) {
-                        DocumentSnapshot notification = docs[index];
+                        DocumentSnapshot notification = _docs[index];
 
                         return Column(
                           children: [

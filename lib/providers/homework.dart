@@ -1,70 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import '../helpers/envs.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class HomeWork extends ChangeNotifier {
-  // -- Functions --
-  // sendHomeWork
-  // getHwByClass
-  // deleteHw
-  String baseUrl = Envs.baseUrl;
+  Future<void> addHomeWork(dynamic homework, File file) async {
+    print(homework);
+    homework["baslangic_tarihi"] = DateTime.now();
+    homework["isSeen"] = [];
 
-  Future<void> sendHomeWork(Map<String, dynamic> homework, String token) async {
-    var headers = {'Authorization': 'Token $token'};
-    var request =
-        http.MultipartRequest('POST', Uri.parse(baseUrl + '/manage/addhw'));
+    CollectionReference homeworks =
+        FirebaseFirestore.instance.collection('homework');
 
-    request.fields.addAll({
-      'icerik': homework["içerik"],
-      'baslik': homework["başlık"],
-      'bitis_tarihi': homework["bitiş_tarihi"],
-      'sinif': '11',
-      'sube': 'a',
-      'aciklama': homework["açıklama"]
+    await homeworks.add(homework).then((value) async {
+      if (file != null) {
+        await FirebaseStorage.instance
+            .ref()
+            .child("homework")
+            .child(value.id)
+            .child(file.path.split("/").last)
+            .putFile(file);
+      }
     });
-    request.files.add(
-      await http.MultipartFile.fromPath(
-        'dosya',
-        homework["file_path"],
-      ),
-    );
-    request.headers.addAll(headers);
-
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
-    } else {
-      print(response.reasonPhrase);
-    }
   }
 
-  Future<List<dynamic>> getHwByClass(String token) async {
-    var headers = {'Authorization': 'Token $token'};
-    final response = await http.get(
-      Uri.parse(baseUrl + "/manage/gethw/11-a"),
-      headers: headers,
-    );
-    final normalResponse = utf8.decode(response.bodyBytes);
-    final normalJson = json.decode(normalResponse) as List<dynamic>;
-
-    return normalJson;
+  Future<String> getDownloadUrl(
+    DocumentSnapshot homework,
+  ) async {
+    return FirebaseStorage.instance
+        .ref()
+        .child("homework")
+        .child(homework.id)
+        .child(homework["fileName"])
+        .getDownloadURL();
   }
 
-  Future<void> deleteHw(int id, String token) async {
-    var headers = {'Authorization': 'Token $token'};
-    final response = await http.delete(
-      Uri.parse(baseUrl + "/manage/delhw/$id"),
-      headers: headers,
-    );
-    // notifyListeners();
-
-    if (response.statusCode != 204) {
-      final normalResponse = utf8.decode(response.bodyBytes);
-      final normalJson = json.decode(normalResponse);
-
-      print(normalJson);
-    }
+  Future<void> deleteHomework(
+    CollectionReference ref,
+    DocumentSnapshot homework,
+  ) async {
+    ref.doc(homework.id).delete().then((value) async {
+      if (homework["fileName"] != null) {
+        try {
+          await FirebaseStorage.instance
+              .ref()
+              .child("homework")
+              .child(homework.id)
+              .child(homework["fileName"])
+              .delete();
+        } catch (err) {
+          print(err);
+        }
+      }
+    });
   }
 }

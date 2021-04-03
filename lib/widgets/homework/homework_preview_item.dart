@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../providers/auth.dart';
 import '../../providers/homework.dart';
 import '../../screens/homework/homework_detail_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeworkPreviewItem extends StatelessWidget {
   final dynamic hw;
@@ -10,15 +10,13 @@ class HomeworkPreviewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final token = Provider.of<Auth>(context).token;
+    CollectionReference ref = FirebaseFirestore.instance.collection("homework");
+
     return Card(
       elevation: 4,
       child: InkWell(
         onLongPress: () async {
-          await Provider.of<HomeWork>(context).deleteHw(
-            hw["id"],
-            token,
-          );
+          await Provider.of<HomeWork>(context).deleteHomework(ref, hw);
         },
         borderRadius: BorderRadius.circular(4),
         onTap: () {
@@ -30,23 +28,20 @@ class HomeworkPreviewItem extends StatelessWidget {
         child: ListTile(
           leading: CircleAvatar(
             backgroundImage: NetworkImage(
-              "https://schoolapi.pythonanywhere.com" + hw["teacher_image"],
+              hw["teacher_image"],
             ),
           ),
-          title: Text(hw["baslik"]),
-          subtitle: Text(hw["icerik"]),
-          trailing: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                hw["baslangic_tarihi"],
-                style: TextStyle(color: Colors.green),
-              ),
-              Text(
-                hw["bitis_tarihi"],
-                style: TextStyle(color: Colors.red),
-              ),
-            ],
+          title: Text(hw["başlık"]),
+          subtitle: Text(hw["ödev"]),
+          trailing: Text(
+            hw["bitiş_tarihi"].toDate().difference(DateTime.now()).inDays <= 0
+                ? "Bitti"
+                : hw["bitiş_tarihi"]
+                        .toDate()
+                        .difference(DateTime.now())
+                        .inDays
+                        .toString() +
+                    " gün",
           ),
         ),
       ),
