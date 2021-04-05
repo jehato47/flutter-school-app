@@ -28,6 +28,7 @@ import 'firebase/firebase.dart';
 import 'helpers/download/download_helper_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -112,7 +113,19 @@ class MyApp extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               }
-              return FireBaseTryScreen();
+              return StreamBuilder(
+                // TODO: login, logout, signup yapıldıgında bu stream değişecek
+                // TODO: onAuthstateChanged -> authStateChanges
+                stream: FirebaseAuth.instance.authStateChanges(),
+                builder: (ctx, snapshot) {
+                  // FirebaseAuth.instance.signOut();
+                  if (snapshot.hasData) {
+                    return FireBaseTryScreen();
+                  }
+                  return LoginScreen();
+                },
+              );
+              // FireBaseTryScreen();
               // return Builder(
               //   builder: (context) => Consumer<Auth>(
               //     builder: (context, value, child) {

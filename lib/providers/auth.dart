@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../helpers/envs.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Auth extends ChangeNotifier {
   // -- Functions --
@@ -30,28 +31,37 @@ class Auth extends ChangeNotifier {
     return null;
   }
 
+  Future<void> signUp(String username, String password) async {}
+
   Future<void> login(String username, String password) async {
-    try {
-      final response = await http.post(
-        Uri.parse(_baseUrl + "/user/loginuser"),
-        body: json.encode(
-          {
-            "username": username,
-            "password": password,
-          },
-        ),
-        headers: {'Content-Type': 'application/json'},
-      );
-      _userToken = json.decode(response.body)["token"];
-      if (_userToken == null) return;
+    FirebaseAuth auth = FirebaseAuth.instance;
+    auth.signOut();
+    final response = await auth.signInWithEmailAndPassword(
+      email: username,
+      password: password,
+    );
 
-      await getInfoByToken();
-      // ******
+    // try {
+    //   final response = await http.post(
+    //     Uri.parse(_baseUrl + "/user/loginuser"),
+    //     body: json.encode(
+    //       {
+    //         "username": username,
+    //         "password": password,
+    //       },
+    //     ),
+    //     headers: {'Content-Type': 'application/json'},
+    //   );
+    //   _userToken = json.decode(response.body)["token"];
+    //   if (_userToken == null) return;
 
-      // ******
+    //   await getInfoByToken();
+    //   // ******
 
-      if (response.statusCode == 200) notifyListeners();
-    } catch (err) {}
+    //   // ******
+
+    //   if (response.statusCode == 200) notifyListeners();
+    // } catch (err) {}
   }
 
   Future<void> logout() async {
