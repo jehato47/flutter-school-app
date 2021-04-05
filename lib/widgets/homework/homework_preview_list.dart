@@ -15,9 +15,9 @@ class _HomeworkPreviewListState extends State<HomeworkPreviewList> {
       // future: Provider.of<HomeWork>(context, listen: false).getHwByClass(token),
       stream: FirebaseFirestore.instance
           .collection("homework")
-          .where("sınıf", isEqualTo: "11")
-          .where("şube", isEqualTo: "a")
-          .orderBy('baslangic_tarihi')
+          .where("classFirst", isEqualTo: "11")
+          .where("classLast", isEqualTo: "a")
+          .orderBy('startDate')
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
