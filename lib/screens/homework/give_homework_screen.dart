@@ -24,12 +24,12 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
   DateTime date;
 
   Map<String, dynamic> hw = {
-    "sınıf": null,
-    "şube": null,
-    "ödev": null,
-    "başlık": null,
-    "bitiş_tarihi": null,
-    "açıklama": null,
+    "classFirst": null,
+    "classLast": null,
+    "homework": null,
+    "title": null,
+    "dueDate": null,
+    "explanation": null,
     "fileName": null,
   };
 
@@ -45,7 +45,7 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
 
         setState(() {
           date = value;
-          hw["bitiş_tarihi"] = date;
+          hw["dueDate"] = date;
         });
       },
     );
@@ -68,8 +68,8 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
 
     _form.currentState.save();
     hw["teacher"] = user["isim"] + " " + user["soyisim"];
-    hw["teacher_image"] = user["profil_foto"];
-    hw["başlık"] = user["ders"];
+    hw["teacherImage"] = user["profil_foto"];
+    hw["title"] = user["ders"];
     setState(() {
       isLoading = true;
     });
@@ -98,8 +98,9 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
         magnification: 1.2,
         onConfirm: (Picker picker, List value) {
           setState(() {
-            hw["sınıf"] = picker.getSelectedValues().first.split("-").first;
-            hw["şube"] = picker.getSelectedValues().first.split("-").last;
+            hw["classFirst"] =
+                picker.getSelectedValues().first.split("-").first;
+            hw["classLast"] = picker.getSelectedValues().first.split("-").last;
           });
         }).showModal(this.context);
   }
@@ -125,14 +126,14 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
               children: [
                 TextFormField(
                   validator: (value) {
-                    if (value.isEmpty) return "ödev girmediniz";
+                    if (value.isEmpty) return "Ödev girmediniz";
                     return null;
                   },
                   onSaved: (newValue) {
-                    hw["ödev"] = newValue;
+                    hw["homework"] = newValue;
                   },
                   decoration: InputDecoration(
-                    labelText: "ödev",
+                    labelText: "Ödev",
                     // border: OutlineInputBorder(),
                   ),
                 ),
@@ -140,14 +141,14 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
                   minLines: 2,
                   maxLines: 5,
                   validator: (value) {
-                    if (value.isEmpty) return "açıklama girmediniz";
+                    if (value.isEmpty) return "Açıklama girmediniz";
                     return null;
                   },
                   onSaved: (newValue) {
-                    hw["açıklama"] = newValue;
+                    hw["explanation"] = newValue;
                   },
                   decoration: InputDecoration(
-                    labelText: "açıklama",
+                    labelText: "Açıklama",
                     alignLabelWithHint: true,
                     // border: OutlineInputBorder(),
                   ),
@@ -186,8 +187,8 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
                           showPickerModal(context);
                         },
                         child: Text(
-                          hw["sınıf"] != null && hw["şube"] != null
-                              ? hw["sınıf"] + "-" + hw["şube"]
+                          hw["classFirst"] != null && hw["classLast"] != null
+                              ? hw["classFirst"] + "-" + hw["classLast"]
                               : "Sınıf Seç",
                         ),
                       ),

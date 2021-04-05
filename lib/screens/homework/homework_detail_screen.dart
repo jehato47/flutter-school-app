@@ -18,11 +18,11 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
   }
 
   @override
-  Widget build(BuildContext context     ) {
+  Widget build(BuildContext context) {
     final hw = ModalRoute.of(context).settings.arguments as dynamic;
     return Scaffold(
       appBar: AppBar(
-        title: Text('${hw["başlık"]} ${hw["sınıf"]} - ${hw["şube"]}'),
+        title: Text('${hw["title"]} ${hw["classFirst"]} - ${hw["classLast"]}'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -39,7 +39,7 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
                 thickness: 2,
               ),
               Text(
-                hw["ödev"],
+                hw["homework"],
                 style: TextStyle(fontSize: 15),
               ),
               SizedBox(height: 40),
@@ -51,7 +51,7 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
                 thickness: 2,
               ),
               Text(
-                hw["açıklama"],
+                hw["explanation"],
                 style: TextStyle(fontSize: 15),
               ),
               SizedBox(height: 40),

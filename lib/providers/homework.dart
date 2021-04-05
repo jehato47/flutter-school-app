@@ -6,7 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 class HomeWork extends ChangeNotifier {
   Future<void> addHomeWork(dynamic homework, File file) async {
     print(homework);
-    homework["baslangic_tarihi"] = DateTime.now();
+    homework["startDate"] = DateTime.now();
     homework["isSeen"] = [];
 
     CollectionReference homeworks =

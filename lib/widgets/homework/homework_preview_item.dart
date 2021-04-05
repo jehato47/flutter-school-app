@@ -28,15 +28,15 @@ class HomeworkPreviewItem extends StatelessWidget {
           child: ListTile(
             leading: CircleAvatar(
               backgroundImage: NetworkImage(
-                hw["teacher_image"],
+                hw["teacherImage"],
               ),
             ),
-            title: Text(hw["başlık"]),
-            subtitle: Text(hw["ödev"]),
+            title: Text(hw["title"]),
+            subtitle: Text(hw["title"]),
             trailing: Text(
-              hw["bitiş_tarihi"].toDate().difference(DateTime.now()).inDays <= 0
+              hw["dueDate"].toDate().difference(DateTime.now()).inDays <= 0
                   ? "Bitti"
-                  : hw["bitiş_tarihi"]
+                  : hw["dueDate"]
                           .toDate()
                           .difference(DateTime.now())
                           .inDays
