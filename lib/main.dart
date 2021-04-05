@@ -24,6 +24,7 @@ import 'screens/homework/give_homework_screen.dart';
 import 'screens/timetable/student_timetable_screen.dart';
 import 'screens/exam/add_exam_result_screen.dart';
 import 'screens/etude/give_etude_screen.dart';
+import 'screens/firebase.dart';
 import 'helpers/download/download_helper_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:intl/intl.dart';
@@ -108,22 +109,23 @@ class MyApp extends StatelessWidget {
           body: FutureBuilder(
             future: Firebase.initializeApp(),
             builder: (context, snapshot) {
-              return Builder(
-                builder: (context) => Consumer<Auth>(
-                  builder: (context, value, child) {
-                    return value.isAuth
-                        ? HomeScreen()
-                        : FutureBuilder(
-                            future: Provider.of<Auth>(context).login(
-                              "öğretmen",
-                              "12345",
-                            ),
-                            builder: (context, snapshot) {
-                              return LoginScreen();
-                            });
-                  },
-                ),
-              );
+              return FireBaseTryScreen();
+              // return Builder(
+              //   builder: (context) => Consumer<Auth>(
+              //     builder: (context, value, child) {
+              //       return value.isAuth
+              //           ? HomeScreen()
+              //           : FutureBuilder(
+              //               future: Provider.of<Auth>(context).login(
+              //                 "öğretmen",
+              //                 "12345",
+              //               ),
+              //               builder: (context, snapshot) {
+              //                 return LoginScreen();
+              //               });
+              //     },
+              //   ),
+              // );
             },
           ),
         ),
