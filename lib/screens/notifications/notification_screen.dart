@@ -13,6 +13,7 @@ import 'package:flutter_picker/Picker.dart';
 import '../../providers/attendance.dart';
 import '../../widgets/notification/notification_item.dart';
 import '../../widgets/notification/notification_empty.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class NotificationScreen extends StatefulWidget {
   static const url = "/notification";
@@ -21,6 +22,7 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+  FirebaseAuth auth = FirebaseAuth.instance;
   NotificationP notificationP;
   File file;
   dynamic user;
@@ -147,7 +149,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               child: ElevatedButton(
                 onPressed: () {
                   notificationP.addNotification(
-                    user["isim"] + " " + user["soyisim"],
+                    auth.currentUser.displayName,
                     mesaj.text.trim(),
                     file,
                   );

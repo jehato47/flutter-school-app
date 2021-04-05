@@ -5,13 +5,13 @@ import '../providers/auth.dart';
 import '../widgets/home/pages_grid.dart';
 import '../screens/notifications/notification_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomeScreen extends StatelessWidget {
   static const url = "home";
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   Widget buildRingBell(BuildContext context) {
-    final user = Provider.of<Auth>(context).userInform;
-
     return StreamBuilder(
         stream:
             FirebaseFirestore.instance.collection("notification").snapshots(),
@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
           final docs = snapshot.data.docs;
           int length = 0;
           docs.forEach((element) {
-            if (!element["isSeen"].contains(user["user"])) length += 1;
+            if (!element["isSeen"].contains(auth.currentUser.uid)) length += 1;
           });
 
           return Stack(
@@ -136,14 +136,17 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<Auth>(context).userInform;
+
+    print(auth.currentUser.uid);
+    // auth.currentUser.displayName;
     return Scaffold(
-      drawer: buildDrawer(context, user),
+      // drawer: buildDrawer(context, user),
       appBar: AppBar(
         actions: [
           buildRingBell(context),
           buildHomeworkButton(context),
         ],
-        title: Text(user["isim"] + " " + user["soyisim"]),
+        title: Text(auth.currentUser.displayName),
       ),
       body: PagesGrid(),
     );

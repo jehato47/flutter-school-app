@@ -4,6 +4,7 @@ import '../../providers/notification.dart';
 import '../../helpers/download/download_helper_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class NotificationItem extends StatefulWidget {
   final ref;
@@ -15,6 +16,7 @@ class NotificationItem extends StatefulWidget {
 }
 
 class _NotificationItemState extends State<NotificationItem> {
+  FirebaseAuth auth = FirebaseAuth.instance;
   CollectionReference ref;
   DocumentSnapshot notification;
   dynamic user;
@@ -22,8 +24,8 @@ class _NotificationItemState extends State<NotificationItem> {
   void addToSeen(CollectionReference ref, DocumentSnapshot notification) {
     List peopleWhoSee = notification["isSeen"];
 
-    if (!peopleWhoSee.contains(user["user"])) {
-      peopleWhoSee.add(user["user"]);
+    if (!peopleWhoSee.contains(auth.currentUser.uid)) {
+      peopleWhoSee.add(auth.currentUser.uid);
     }
     ref.doc(notification.id).update({"isSeen": peopleWhoSee});
   }
@@ -45,8 +47,8 @@ class _NotificationItemState extends State<NotificationItem> {
           notification,
         );
       },
-      selected: !notification["isSeen"].contains(user["user"]),
-      leading: notification["isSeen"].contains(user["user"])
+      selected: !notification["isSeen"].contains(auth.currentUser.uid),
+      leading: notification["isSeen"].contains(auth.currentUser.uid)
           ? Icon(Icons.assignment)
           : Icon(Icons.notification_important),
       title: Text(

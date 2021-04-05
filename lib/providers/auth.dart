@@ -36,10 +36,14 @@ class Auth extends ChangeNotifier {
   Future<void> login(String username, String password) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     // auth.signOut();
-    final response = await auth.signInWithEmailAndPassword(
-      email: username,
-      password: password,
-    );
+    try {
+      final response = await auth.signInWithEmailAndPassword(
+        email: username,
+        password: password,
+      );
+    } catch (err) {
+      print(err);
+    }
 
     // try {
     //   final response = await http.post(

@@ -120,7 +120,7 @@ class MyApp extends StatelessWidget {
                 builder: (ctx, snapshot) {
                   // FirebaseAuth.instance.signOut();
                   if (snapshot.hasData) {
-                    return FireBaseTryScreen();
+                    return HomeScreen();
                   }
                   return LoginScreen();
                 },
