@@ -24,7 +24,7 @@ import 'screens/homework/give_homework_screen.dart';
 import 'screens/timetable/student_timetable_screen.dart';
 import 'screens/exam/add_exam_result_screen.dart';
 import 'screens/etude/give_etude_screen.dart';
-import 'screens/firebase.dart';
+import 'firebase/firebase.dart';
 import 'helpers/download/download_helper_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:intl/intl.dart';
@@ -109,6 +109,9 @@ class MyApp extends StatelessWidget {
           body: FutureBuilder(
             future: Firebase.initializeApp(),
             builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
               return FireBaseTryScreen();
               // return Builder(
               //   builder: (context) => Consumer<Auth>(
