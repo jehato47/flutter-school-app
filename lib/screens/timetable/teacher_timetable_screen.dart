@@ -13,7 +13,7 @@ class TeacherTimetableScreen extends StatelessWidget {
     final token = Provider.of<Auth>(context).token;
     final info = Provider.of<Auth>(context).userInform;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text("Ders Programı"),),
       body: info["ders"] == null
           ? Center(child: Text("Öğretmen olarak giriş yapın"))
           : FutureBuilder(

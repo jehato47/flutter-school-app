@@ -46,6 +46,40 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
     super.didChangeDependencies();
   }
 
+  Future<Widget> showStudentDetailDialog(BuildContext context) async {
+    return await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("ok"))
+        ],
+        content: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image(
+              height: 200,
+              fit: BoxFit.cover,
+              image: NetworkImage(
+                "https://schoolapi.pythonanywhere.com" + student["profil_foto"],
+              ),
+            ),
+            SizedBox(height: 10),
+            Text("Ad Soyad : ${student["isim"]} ${student["soyisim"]}"),
+            Text("Sınıf : ${student["sınıf"]} ${student["şube"]}"),
+            Text("No : ${student["no"]}"),
+            Text("Ad Soyad : Jehat Armanç Deniz"),
+            Text("Ad Soyad : Jehat Armanç Deniz"),
+          ],
+        ),
+      ),
+    );
+  }
+
   // TODO : Öğrenciye uzun basıldığında bazı detayları göstermeye bak
   Map<String, dynamic> attendance;
   dynamic student;
@@ -59,76 +93,80 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
     return ChangeNotifierProvider.value(
       value: StudentCheckBox(),
       child: Card(
-        elevation: 4,
-        child: Slidable(
-          // actionExtentRatio: 0.75 / 2,
+        elevation: 2,
+        child: InkWell(
+          onLongPress: () {
+            showStudentDetailDialog(context);
+          },
+          child: Slidable(
+            // actionExtentRatio: 0.75 / 2,
+            actionPane: SlidableDrawerActionPane(),
+            secondaryActions: [
+              IconSlideAction(
+                caption: "İzinli",
+                icon: Icons.how_to_reg,
+                color: Colors.blue,
+                onTap: () {
+                  setState(() {
+                    color = Colors.blue;
+                  });
+                  changeValues(
+                    student["no"],
+                    attendance,
+                    attendance["izinliler"],
+                  );
 
-          actionPane: SlidableDrawerActionPane(),
-          secondaryActions: [
-            IconSlideAction(
-              caption: "İzinli",
-              icon: Icons.how_to_reg,
-              color: Colors.blue,
-              onTap: () {
-                setState(() {
-                  color = Colors.blue;
-                });
-                changeValues(
-                  student["no"],
-                  attendance,
-                  attendance["izinliler"],
-                );
+                  if (!checkbox.isChecked) {
+                    checkbox.change();
+                  }
+                },
+              ),
+              IconSlideAction(
+                caption: "Geç geldi",
+                icon: Icons.alarm,
+                color: Colors.red,
+                onTap: () {
+                  setState(() {
+                    color = Colors.red;
+                  });
+                  changeValues(
+                    student["no"],
+                    attendance,
+                    attendance["geç_gelenler"],
+                  );
 
-                if (!checkbox.isChecked) {
-                  checkbox.change();
+                  if (!checkbox.isChecked) checkbox.change();
+                },
+              ),
+            ],
+            child: CheckboxListTile(
+              activeColor: color,
+              title: Text(student["isim"] + " " + student["soyisim"]),
+              subtitle: Text(student["no"].toString()),
+              value: checkbox.isChecked,
+              onChanged: (v) {
+                if (checkbox.isChecked == false) {
+                  print(12);
+                  setState(() {
+                    color = Colors.green;
+                  });
+                }
+                checkbox.change();
+                if (checkbox.isChecked)
+                  changeValues(
+                    student["no"],
+                    attendance,
+                    attendance["gelenler"],
+                  );
+                else {
+                  changeValues(
+                    student["no"],
+                    attendance,
+                    attendance["gelmeyenler"],
+                  );
                 }
               },
             ),
-            IconSlideAction(
-              caption: "Geç geldi",
-              icon: Icons.alarm,
-              color: Colors.red,
-              onTap: () {
-                setState(() {
-                  color = Colors.red;
-                });
-                changeValues(
-                  student["no"],
-                  attendance,
-                  attendance["geç_gelenler"],
-                );
-
-                if (!checkbox.isChecked) checkbox.change();
-              },
-            ),
-          ],
-          child: CheckboxListTile(
-            activeColor: color,
-            title: Text(student["isim"] + " " + student["soyisim"]),
-            subtitle: Text(student["no"].toString()),
-            value: checkbox.isChecked,
-            onChanged: (v) {
-              if (checkbox.isChecked == false) {
-                print(12);
-                setState(() {
-                  color = Colors.green;
-                });
-              }
-              checkbox.change();
-              if (checkbox.isChecked)
-                changeValues(
-                  student["no"],
-                  attendance,
-                  attendance["gelenler"],
-                );
-              else {
-                changeValues(
-                  student["no"],
-                  attendance,
-                  attendance["gelmeyenler"],
-                );
-              }
-            },
           ),
         ),
       ),

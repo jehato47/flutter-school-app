@@ -17,7 +17,7 @@ class Exam extends ChangeNotifier {
       Uri.parse(baseUrl + "/exam/set"),
       headers: headers,
     );
-    print(json.decode(response.body));
+    // print(json.decode(response.body));
   }
 
   Future<Map<String, dynamic>> getExcel(String token, String classes) async {
@@ -54,7 +54,7 @@ class Exam extends ChangeNotifier {
     List<Sinav> _sinavlar = [];
     var headers = {'Authorization': 'Token $token'};
     final response = await http.get(
-      Uri.parse(baseUrl + "/exam/res/21"),
+      Uri.parse(baseUrl + "/exam/res/24"),
       headers: headers,
     );
 

@@ -14,7 +14,6 @@ class AttendanceCheckScreen extends StatefulWidget {
 }
 
 class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
-  // TODO : Bu sayfaya gelinen tarihte mevcut yoklama varsa onu koy
   DateTime cdate;
   String titleDate;
   dynamic info;
@@ -142,7 +141,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
             ],
           ),
           body: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(10),
             child: Column(
               // mainAxisAlignment: MainAxisAlignment.center,
               children: [

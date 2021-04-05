@@ -9,7 +9,7 @@ class SinavDataGridSource extends DataGridSource<Sinav> {
   Object getValue(Sinav _sinav, String columnName) {
     switch (columnName) {
       case "sınav":
-        print(_sinav.name);
+        // print(_sinav.name);
         if (_sinav.name == "türk_dili") return "türk dili";
         if (_sinav.name == "cografya") return "coğrafya";
         return _sinav.name;

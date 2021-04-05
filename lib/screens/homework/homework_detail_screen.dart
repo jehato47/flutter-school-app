@@ -1,10 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-// import 'package:path_provider/path_provider.dart';
-// import 'package:permission_handler/permission_handler.dart';
-// import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:provider/provider.dart';
-import 'package:school2/helpers/envs.dart';
 import '../../helpers/download/download_helper_provider.dart';
 import '../../providers/homework.dart';
 
@@ -22,18 +18,17 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final baseUrl = Envs.baseUrl;
+  Widget build(BuildContext context     ) {
     final hw = ModalRoute.of(context).settings.arguments as dynamic;
     return Scaffold(
       appBar: AppBar(
-        title: Text(hw["başlık"]),
+        title: Text('${hw["başlık"]} ${hw["sınıf"]} - ${hw["şube"]}'),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(20),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            // mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(

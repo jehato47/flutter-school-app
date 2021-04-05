@@ -46,7 +46,7 @@ class _AttendancePreviewScreenState extends State<AttendancePreviewScreen> {
         title: Text("Yoklama listesi"),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: [
             SizedBox(
@@ -80,33 +80,35 @@ class _AttendancePreviewScreenState extends State<AttendancePreviewScreen> {
                   return ListView.builder(
                     itemCount: liste.length,
                     itemBuilder: (context, index) {
-                      return Card(
-                        elevation: 4,
-                        child: InkWell(
-                          onTap: () async {
-                            Navigator.of(context).pushNamed(
-                              AttendanceDetailScreen.url,
-                              arguments: liste[index],
-                            );
-                          },
-                          child: ListTile(
-                            title: Text(
-                              "${liste[index]["ders"]} ${liste[index]["sınıf"].toUpperCase()}",
-                            ),
-                            subtitle: Text(
-                                "${liste[index]["date"]} : ${liste[index]["derssaati"]}"),
-                            trailing: Text(
-                              "V-"
-                              "${liste[index]["gelenler"].length} /"
-                              "Y-"
-                              "${liste[index]["gelmeyenler"].length} /"
-                              "I-"
-                              "${liste[index]["izinliler"].length} /"
-                              "G-"
-                              "${liste[index]["geç_gelenler"].length}",
+                      return Column(
+                        children: [
+                          InkWell(
+                            onTap: () async {
+                              Navigator.of(context).pushNamed(
+                                AttendanceDetailScreen.url,
+                                arguments: liste[index],
+                              );
+                            },
+                            child: ListTile(
+                              title: Text(
+                                "${liste[index]["ders"]} ${liste[index]["sınıf"].toUpperCase()}",
+                              ),
+                              subtitle: Text(
+                                  "${liste[index]["date"]} : ${liste[index]["derssaati"]}"),
+                              trailing: Text(
+                                "V-"
+                                "${liste[index]["gelenler"].length} /"
+                                "Y-"
+                                "${liste[index]["gelmeyenler"].length} /"
+                                "I-"
+                                "${liste[index]["izinliler"].length} /"
+                                "G-"
+                                "${liste[index]["geç_gelenler"].length}",
+                              ),
                             ),
                           ),
-                        ),
+                          Divider(thickness: 1),
+                        ],
                       );
                     },
                   );

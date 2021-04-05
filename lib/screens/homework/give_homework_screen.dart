@@ -82,6 +82,7 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
   }
 
   showPickerModal(BuildContext context) async {
+    FocusScope.of(context).requestFocus(new FocusNode());
     final token = Provider.of<Auth>(context).token;
     await Provider.of<Attendance>(context)
         .getAllClassNamesForAttendancePreview(token);
@@ -157,9 +158,7 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
                   children: [
                     Expanded(
                       child: OutlinedButton(
-                        onPressed: () {
-                          pickFile();
-                        },
+                        onPressed: pickFile,
                         child: Text(
                           file != null
                               ? file.path.split("/").last
@@ -168,27 +167,29 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
                       ),
                     ),
                     SizedBox(width: 5),
-                    OutlinedButton(
-                      onPressed: () {
-                        showDatePickerFunc();
-                      },
-                      child: Text(
-                        date != null
-                            ? DateFormat('d MMMM').format(date)
-                            : "Tarih Seç",
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: showDatePickerFunc,
+                        child: Text(
+                          date != null
+                              ? DateFormat('d MMMM').format(date)
+                              : "Tarih Seç",
+                        ),
                       ),
                     ),
                     SizedBox(width: 5),
-                    OutlinedButton(
-                      onPressed: () {
-                        // FocusScope.of(context).requestFocus(new FocusNode());
-                        // TODO : Sınıf seçimini sayfa açıldığında yaptır
-                        showPickerModal(context);
-                      },
-                      child: Text(
-                        hw["sınıf"] != null && hw["şube"] != null
-                            ? hw["sınıf"] + "-" + hw["şube"]
-                            : "Sınıf Seç",
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          // TODO : Sınıf seçimini sayfa açıldığında yaptır
+                          // TODO : Sadece Öğretmenin Girdiği Sınıfları Göster
+                          showPickerModal(context);
+                        },
+                        child: Text(
+                          hw["sınıf"] != null && hw["şube"] != null
+                              ? hw["sınıf"] + "-" + hw["şube"]
+                              : "Sınıf Seç",
+                        ),
                       ),
                     ),
                   ],

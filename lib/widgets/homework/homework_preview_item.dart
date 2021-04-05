@@ -12,39 +12,41 @@ class HomeworkPreviewItem extends StatelessWidget {
   Widget build(BuildContext context) {
     CollectionReference ref = FirebaseFirestore.instance.collection("homework");
 
-    return Card(
-      elevation: 4,
-      child: InkWell(
-        onLongPress: () async {
-          await Provider.of<HomeWork>(context).deleteHomework(ref, hw);
-        },
-        borderRadius: BorderRadius.circular(4),
-        onTap: () {
-          Navigator.of(context).pushNamed(
-            HomeWorkDetailScreen.url,
-            arguments: hw,
-          );
-        },
-        child: ListTile(
-          leading: CircleAvatar(
-            backgroundImage: NetworkImage(
-              hw["teacher_image"],
+    return Column(
+      children: [
+        InkWell(
+          onLongPress: () async {
+            await Provider.of<HomeWork>(context).deleteHomework(ref, hw);
+          },
+          borderRadius: BorderRadius.circular(4),
+          onTap: () {
+            Navigator.of(context).pushNamed(
+              HomeWorkDetailScreen.url,
+              arguments: hw,
+            );
+          },
+          child: ListTile(
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(
+                hw["teacher_image"],
+              ),
+            ),
+            title: Text(hw["başlık"]),
+            subtitle: Text(hw["ödev"]),
+            trailing: Text(
+              hw["bitiş_tarihi"].toDate().difference(DateTime.now()).inDays <= 0
+                  ? "Bitti"
+                  : hw["bitiş_tarihi"]
+                          .toDate()
+                          .difference(DateTime.now())
+                          .inDays
+                          .toString() +
+                      " gün",
             ),
           ),
-          title: Text(hw["başlık"]),
-          subtitle: Text(hw["ödev"]),
-          trailing: Text(
-            hw["bitiş_tarihi"].toDate().difference(DateTime.now()).inDays <= 0
-                ? "Bitti"
-                : hw["bitiş_tarihi"]
-                        .toDate()
-                        .difference(DateTime.now())
-                        .inDays
-                        .toString() +
-                    " gün",
-          ),
         ),
-      ),
+        Divider(thickness: 1)
+      ],
     );
   }
 }

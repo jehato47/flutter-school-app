@@ -13,7 +13,7 @@ class StudentTimetableScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Student Timetable"),
+        title: Text("Ders Programı"),
       ),
       body: FutureBuilder(
         future: Provider.of<Timetable>(context, listen: false)
