@@ -126,14 +126,14 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
               children: [
                 TextFormField(
                   validator: (value) {
-                    if (value.isEmpty) return "homework girmediniz";
+                    if (value.isEmpty) return "Ödev girmediniz";
                     return null;
                   },
                   onSaved: (newValue) {
                     hw["homework"] = newValue;
                   },
                   decoration: InputDecoration(
-                    labelText: "homework",
+                    labelText: "Ödev",
                     // border: OutlineInputBorder(),
                   ),
                 ),
@@ -141,14 +141,14 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
                   minLines: 2,
                   maxLines: 5,
                   validator: (value) {
-                    if (value.isEmpty) return "Explanation girmediniz";
+                    if (value.isEmpty) return "Açıklama girmediniz";
                     return null;
                   },
                   onSaved: (newValue) {
                     hw["explanation"] = newValue;
                   },
                   decoration: InputDecoration(
-                    labelText: "explanation",
+                    labelText: "Açıklama",
                     alignLabelWithHint: true,
                     // border: OutlineInputBorder(),
                   ),
