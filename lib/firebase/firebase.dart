@@ -27,23 +27,33 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
             child: Text("send"),
             onPressed: () async {
               // FirebaseAuth auth = FirebaseAuth.instance;
-              // CollectionReference syllabus =
-              //     FirebaseFirestore.instance.collection('syllabus');
-              // QuerySnapshot response = await syllabus.get();
-              // QueryDocumentSnapshot syl = response.docs[0];
-              // Map<Duration, String> map = {};
-              // List<Duration> liste = [];
-              // syl["monday"].forEach((key, value) {
-              //   // print(key);
-              //   DateTime date = DateTime.now();
-              //   map[value.toDate().difference(date)] = key;
-              //   liste.add(value.toDate().difference(date));
-              // });
-              // liste.sort();
+              CollectionReference syllabus =
+                  FirebaseFirestore.instance.collection('syllabus');
+              QuerySnapshot response = await syllabus.get();
+              QueryDocumentSnapshot syl = response.docs[0];
+              Map<Duration, String> map = {};
+              List<Duration> liste = [];
+              syl["monday"].forEach((key, value) {
+                // print(key);
+                DateTime date = DateTime.now().add(Duration(hours: 3));
+                DateTime sylDate = value.toDate();
+                DateTime configuredDate = DateTime(
+                  date.year,
+                  date.month,
+                  date.day,
+                  sylDate.hour,
+                  sylDate.minute,
+                ).add(Duration(hours: 3));
+                print(configuredDate);
+                map[configuredDate.difference(date).abs()] = key;
+                liste.add(configuredDate.difference(date).abs());
+              });
+              liste.sort();
 
-              // String classFirst = map[liste.first].split("-").first;
-              // String classLast = map[liste.first].split("-").last;
-              // print(classLast);
+              String classFirst = map[liste.first].split("-").first;
+              String classLast = map[liste.first].split("-").last;
+              print(classLast);
+              // print(DateTime.now().add(Duration(hours: 3)));
               // QuerySnapshot ref = await FirebaseFirestore.instance
               //     .collection("students")
               //     .where('classFirst', isEqualTo: classFirst)

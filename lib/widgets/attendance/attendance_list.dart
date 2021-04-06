@@ -17,6 +17,7 @@ class AttendanceList extends StatelessWidget {
     return ListView.builder(
       itemCount: students.length,
       itemBuilder: (context, index) {
+        attendance["notExists"].add(students[index].reference);
         return ChangeNotifierProvider.value(
           value: StudentCheckBox(),
           child: StudentCheckItem(

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_picker/Picker.dart';
@@ -6,6 +7,7 @@ import 'package:school2/widgets/attendance/attendance_list.dart';
 import '../../providers/attendance.dart';
 import '../../providers/auth.dart';
 import '../../widgets/attendance/empty_info.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AttendanceCheckScreen extends StatefulWidget {
   static const url = "/attendance";
@@ -20,20 +22,25 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
   String token;
   String currentClass = "";
   String currentTime;
-  Map<String, dynamic> attendance;
+  Map<String, dynamic> attendance = {
+    "arrivals": [],
+    "lates": [],
+    "permitted": [],
+    "notExists": [],
+  };
   String date;
 
   // Başta herkes gelmeyen olarak işaretleniyor daha sonra listelere dağılıyor
   // Öğrenci numarasını diğer tüm listelerden çıkartıp istenen listeye koyar
-  void changeValues(int number, Map ourattendance, List second) {
+  void changeValues(DocumentReference ref, Map ourattendance, List second) {
     ourattendance.forEach((key, value) {
       // key : gelenler, gelmeyenler ...
       // value : [168, 169, ...]
       // print(attendance);
-      if (value.contains(number)) {
-        value.removeWhere((element) => element == number);
+      if (value.contains(ref)) {
+        value.removeWhere((element) => element == ref);
 
-        if (!second.contains(number)) second.add(number);
+        if (!second.contains(ref)) second.add(ref);
       }
     });
     print(ourattendance);
@@ -74,13 +81,17 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
   }
 
   Future<void> sendAttendance() async {
-    attendance["ders"] = info["ders"];
-    attendance["date"] = date;
-    attendance["derssaati"] = currentTime;
-    attendance["sınıf"] = currentClass;
-
-    await Provider.of<Attendance>(context).sendAttendance(attendance, token);
-    Navigator.of(context).pop();
+    FirebaseAuth auth = FirebaseAuth.instance;
+    CollectionReference syllabus =
+        FirebaseFirestore.instance.collection('attendance');
+    // attendance["classFirst"] = "11";
+    // attendance["classLast"] = "a";
+    await syllabus.doc(auth.currentUser.uid).set({
+      "info": attendance,
+      "date": DateTime.now(),
+      "classFirst": "11",
+      "classLast": "a",
+    });
   }
 
   @override
@@ -91,69 +102,41 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
     var args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
 
-    if (args != null) {
-      // Eğer ders programından gelmişse bu koşul çalışıyor
-      cdate = args["date"];
-      currentClass = args["class"];
-      currentTime = DateFormat("HH-mm").format(cdate).toString();
-      date = DateFormat("y-MM-dd").format(args["date"]).toString();
-    } else {
-      date = DateFormat("y-MM-dd").format(DateTime.now()).toString();
-      cdate = DateTime.now();
-    }
-
     return FutureBuilder(
-      future: Provider.of<Attendance>(context, listen: false)
-          .getNearestAttendanceWithDetails(
-              token, date, currentTime, currentClass),
-      builder: (context, snapshot) {
-        attendance =
-            Provider.of<Attendance>(context, listen: false).oldAttendance;
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        future: Provider.of<Attendance>(context).getAttendance(),
+        builder: (context, snapshot) {
+          String currentClass = Provider.of<Attendance>(context).currentClass;
+          DateTime currentTime = Provider.of<Attendance>(context).currentTime;
+
           return Scaffold(
             appBar: AppBar(
               centerTitle: true,
-              title: Text("Yoklama al"),
-            ),
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-
-        currentClass = Provider.of<Attendance>(context).currentClass;
-        currentTime = Provider.of<Attendance>(context).currentTime;
-        cdate = Provider.of<Attendance>(context).date;
-        if (cdate != null) titleDate = DateFormat("d MMMM").format(cdate);
-        String appBarTitle = currentClass == ""
-            ? "Yoklama al"
-            : "${currentClass.toUpperCase()} $titleDate $currentTime";
-
-        return Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: Text(appBarTitle),
-            actions: [
-              IconButton(
-                icon: Icon(Icons.done),
-                onPressed: sendAttendance,
-              )
-            ],
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                buildElevatedButton(),
-                currentClass == ""
-                    ? Expanded(child: EmptyInfo())
-                    : Expanded(child: AttendanceList(attendance, changeValues)),
+              title: Text(
+                DateFormat("d MMMM EEEE H:m").format(currentTime) +
+                    " " +
+                    currentClass.toUpperCase(),
+              ),
+              actions: [
+                IconButton(
+                  icon: Icon(Icons.done),
+                  onPressed: sendAttendance,
+                )
               ],
             ),
-          ),
-        );
-      },
-    );
+            body: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  buildElevatedButton(),
+                  currentClass == ""
+                      ? Expanded(child: EmptyInfo())
+                      : Expanded(
+                          child: AttendanceList(attendance, changeValues)),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

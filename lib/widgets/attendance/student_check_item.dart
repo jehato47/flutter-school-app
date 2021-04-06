@@ -15,18 +15,18 @@ class StudentCheckItem extends StatefulWidget {
 
 class _StudentCheckItemState extends State<StudentCheckItem> {
   void setItem() {
-    if (attendance["gelenler"].contains(student["no"])) {
+    if (attendance["arrivals"].contains(student.reference)) {
       checkbox.setIsChecked(true);
       color = Colors.green;
     }
-    if (attendance["gelmeyenler"].contains(student["no"])) {
+    if (attendance["notExists"].contains(student.reference)) {
       color = Colors.green;
     }
-    if (attendance["izinliler"].contains(student["no"])) {
+    if (attendance["permitted"].contains(student.reference)) {
       checkbox.setIsChecked(true);
       color = Colors.blue;
     }
-    if (attendance["geç_gelenler"].contains(student["no"])) {
+    if (attendance["lates"].contains(student.reference)) {
       checkbox.setIsChecked(true);
       color = Colors.red;
     }
@@ -61,17 +61,17 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image(
-              height: 200,
-              fit: BoxFit.cover,
-              image: NetworkImage(
-                "https://schoolapi.pythonanywhere.com" + student["profil_foto"],
-              ),
-            ),
+            // Image(
+            //   height: 200,
+            //   fit: BoxFit.cover,
+            //   image: NetworkImage(
+            //     "https://schoolapi.pythonanywhere.com" + student["profil_foto"],
+            //   ),
+            // ),
             SizedBox(height: 10),
-            Text("Ad Soyad : ${student["isim"]} ${student["soyisim"]}"),
-            Text("Sınıf : ${student["sınıf"]} ${student["şube"]}"),
-            Text("No : ${student["no"]}"),
+            Text("Ad Soyad : ${student["name"]} ${student["surname"]}"),
+            Text("Sınıf : ${student["classFirst"]} ${student["classLast"]}"),
+            Text("number : ${student["number"]}"),
             Text("Ad Soyad : Jehat Armanç Deniz"),
             Text("Ad Soyad : Jehat Armanç Deniz"),
           ],
@@ -111,9 +111,9 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
                     color = Colors.blue;
                   });
                   changeValues(
-                    student["no"],
+                    student.reference,
                     attendance,
-                    attendance["izinliler"],
+                    attendance["permitted"],
                   );
 
                   if (!checkbox.isChecked) {
@@ -130,9 +130,9 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
                     color = Colors.red;
                   });
                   changeValues(
-                    student["no"],
+                    student.reference,
                     attendance,
-                    attendance["geç_gelenler"],
+                    attendance["lates"],
                   );
 
                   if (!checkbox.isChecked) checkbox.change();
@@ -141,8 +141,8 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
             ],
             child: CheckboxListTile(
               activeColor: color,
-              title: Text(student["isim"] + " " + student["soyisim"]),
-              subtitle: Text(student["no"].toString()),
+              title: Text(student["name"] + " " + student["surname"]),
+              subtitle: Text(student["number"].toString()),
               value: checkbox.isChecked,
               onChanged: (v) {
                 if (checkbox.isChecked == false) {
@@ -154,15 +154,15 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
                 checkbox.change();
                 if (checkbox.isChecked)
                   changeValues(
-                    student["no"],
+                    student.reference,
                     attendance,
-                    attendance["gelenler"],
+                    attendance["arrivals"],
                   );
                 else {
                   changeValues(
-                    student["no"],
+                    student.reference,
                     attendance,
-                    attendance["gelmeyenler"],
+                    attendance["notExists"],
                   );
                 }
               },

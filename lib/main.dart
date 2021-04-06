@@ -25,6 +25,7 @@ import 'screens/timetable/student_timetable_screen.dart';
 import 'screens/exam/add_exam_result_screen.dart';
 import 'screens/etude/give_etude_screen.dart';
 import 'firebase/firebase.dart';
+import 'firebase/attendance_check_screen_try.dart';
 import 'helpers/download/download_helper_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:intl/intl.dart';
@@ -125,23 +126,6 @@ class MyApp extends StatelessWidget {
                   return FireBaseTryScreen();
                 },
               );
-              // FireBaseTryScreen();
-              // return Builder(
-              //   builder: (context) => Consumer<Auth>(
-              //     builder: (context, value, child) {
-              //       return value.isAuth
-              //           ? HomeScreen()
-              //           : FutureBuilder(
-              //               future: Provider.of<Auth>(context).login(
-              //                 "öğretmen",
-              //                 "12345",
-              //               ),
-              //               builder: (context, snapshot) {
-              //                 return LoginScreen();
-              //               });
-              //     },
-              //   ),
-              // );
             },
           ),
         ),
@@ -159,6 +143,7 @@ class MyApp extends StatelessWidget {
           StudentExamScreen.url: (ctx) => StudentExamScreen(),
           GiveEtudeScreen.url: (ctx) => GiveEtudeScreen(),
           NotificationScreen.url: (ctx) => NotificationScreen(),
+          AttendanceScreen.url: (ctx) => AttendanceScreen(),
         },
       ),
     );
