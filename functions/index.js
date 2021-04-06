@@ -23,7 +23,7 @@ exports.myFunction2 = functions.firestore
       return admin.messaging().sendToTopic("11-a", {
         notification: {
           title: "Ödev",
-          body: snapshot.data().ödev,
+          body: snapshot.data().homework,
           clickAction: "FLUTTER_NOTIFICATION_CLICK",
           image: "https://34co0u35pfyt37c0y0457xcu-wpengine.netdna-ssl.com/wp-content/uploads/2017/12/education_inequity_and_homework.jpg",
         },

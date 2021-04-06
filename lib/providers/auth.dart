@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../helpers/envs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Auth extends ChangeNotifier {
   // -- Functions --
@@ -10,7 +11,7 @@ class Auth extends ChangeNotifier {
   // logout
   // getInfoByToken
   // getStudentByNumber
-
+  FirebaseAuth auth = FirebaseAuth.instance;
   String _baseUrl = Envs.baseUrl;
   String _userToken;
   Map<String, dynamic> _userInfo;
@@ -31,73 +32,87 @@ class Auth extends ChangeNotifier {
     return null;
   }
 
-  Future<void> signUp(String username, String password) async {}
+  Future<void> signStudentUp(
+    String email,
+    String password,
+    String name,
+    String surname,
+    String studentNumber,
+    String classFirst,
+    String classLast,
+    String parentNumber,
+  ) async {
+    UserCredential userCredential = await auth
+        .createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    )
+        .then((value) async {
+      CollectionReference students =
+          FirebaseFirestore.instance.collection('students');
+      students.doc(value.user.uid).set({
+        "no": studentNumber,
+        "classFirst": classFirst,
+        "classLast": classLast,
+        "parentNumber": parentNumber,
+      });
+      await value.user.updateProfile(
+        displayName: name + " " + surname,
+        photoURL: "https://schoolapi.pythonanywhere.com/media/default.jpg",
+      );
+      return value;
+    });
+    print(userCredential.user.displayName);
+  }
+
+  Future<void> signTeacherUp(
+    String email,
+    String password,
+    String name,
+    String surname,
+    String phoneNumber,
+    String lecture,
+  ) async {
+    UserCredential userCredential = await auth
+        .createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    )
+        .then((value) async {
+      CollectionReference students =
+          FirebaseFirestore.instance.collection('students');
+      students.doc(value.user.uid).set({
+        "lecture": lecture,
+        "phoneNumber": phoneNumber,
+        "signUpDate": DateTime.now(),
+      });
+      await value.user.updateProfile(
+        displayName: name + " " + surname,
+        photoURL: "https://schoolapi.pythonanywhere.com/media/default.jpg",
+      );
+      return value;
+    });
+    print(userCredential.user.displayName);
+  }
 
   Future<void> login(String username, String password) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    // auth.signOut();
     try {
       final response = await auth.signInWithEmailAndPassword(
         email: username,
         password: password,
       );
+      print(response.additionalUserInfo.username);
+      response.user.updateProfile(
+        photoURL: "https://schoolapi.pythonanywhere.com/media/default.jpg",
+      );
     } catch (err) {
       print(err);
     }
-
-    // try {
-    //   final response = await http.post(
-    //     Uri.parse(_baseUrl + "/user/loginuser"),
-    //     body: json.encode(
-    //       {
-    //         "username": username,
-    //         "password": password,
-    //       },
-    //     ),
-    //     headers: {'Content-Type': 'application/json'},
-    //   );
-    //   _userToken = json.decode(response.body)["token"];
-    //   if (_userToken == null) return;
-
-    //   await getInfoByToken();
-    //   // ******
-
-    //   // ******
-
-    //   if (response.statusCode == 200) notifyListeners();
-    // } catch (err) {}
   }
 
-  Future<void> logout() async {
-    await http.get(
-      Uri.parse(_baseUrl + "/user/logoutuser"),
-    );
-    _userToken = null;
-    notifyListeners();
-  }
+  Future<void> logout() async {}
 
-  Future<void> getInfoByToken() async {
-    // Bu fonksiyonun loginin içinde kullandım
-    var headers = {'Authorization': 'Token $_userToken'};
+  Future<void> getInfoByToken() async {}
 
-    final response = await http.get(
-      Uri.parse(_baseUrl + "/user/getuserinfo"),
-      headers: headers,
-    );
-    final liste = utf8.decode(response.bodyBytes);
-    final normalJson = json.decode(liste);
-    _userInfo = normalJson;
-  }
-
-  Future<dynamic> getStudentByNumber(int number) async {
-    var headers = {'Authorization': 'Token $token'};
-    final response = await http.get(
-      Uri.parse(_baseUrl + "/student/student/$number"),
-      headers: headers,
-    );
-    final normalResponse = utf8.decode(response.bodyBytes);
-    final normalJson = json.decode(normalResponse);
-
-    return normalJson;
-  }
+  Future<dynamic> getStudentByNumber(int number) async {}
 }

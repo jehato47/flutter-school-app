@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../helpers/envs.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class Attendance extends ChangeNotifier {
   // -- Functions --
@@ -64,6 +66,34 @@ class Attendance extends ChangeNotifier {
     } catch (err) {
       print(err);
     }
+  }
+
+  Future<dynamic> getAttendance() async {
+    CollectionReference syllabus =
+        FirebaseFirestore.instance.collection('syllabus');
+    QuerySnapshot response = await syllabus.get();
+    QueryDocumentSnapshot syl = response.docs[0];
+    Map<Duration, String> map = {};
+    List<Duration> liste = [];
+    Intl.defaultLocale = 'en_EN';
+    final day = DateFormat("EEEE").format(DateTime.now()).toLowerCase();
+
+    syl[day].forEach((classFirst, timestamp) {
+      DateTime date = DateTime.now();
+      map[timestamp.toDate().difference(date)] = classFirst;
+      liste.add(timestamp.toDate().difference(date));
+    });
+    liste.sort();
+
+    String classFirst = map[liste.first].split("-").first;
+    String classLast = map[liste.first].split("-").last;
+
+    QuerySnapshot students = await FirebaseFirestore.instance
+        .collection("students")
+        .where('classFirst', isEqualTo: classFirst)
+        .where("classLast", isEqualTo: classLast)
+        .get();
+    return students.docs;
   }
 
   Future<void> getNearestAttendanceWithDetails(

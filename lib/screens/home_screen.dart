@@ -146,7 +146,7 @@ class HomeScreen extends StatelessWidget {
           buildRingBell(context),
           buildHomeworkButton(context),
         ],
-        title: Text(auth.currentUser.displayName),
+        title: Text(auth.currentUser.email),
       ),
       body: PagesGrid(),
     );

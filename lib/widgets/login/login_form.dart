@@ -10,7 +10,7 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final _form = GlobalKey<FormState>();
 
-  String username;
+  String email;
   String password;
   bool isLoading = false;
 
@@ -22,7 +22,7 @@ class _LoginFormState extends State<LoginForm> {
       isLoading = true;
     });
     _form.currentState.save();
-    await Provider.of<Auth>(context, listen: false).login(username, password);
+    await Provider.of<Auth>(context).login(email, password);
     setState(() {
       isLoading = false;
     });
@@ -43,6 +43,7 @@ class _LoginFormState extends State<LoginForm> {
               style: TextStyle(fontSize: 30),
             ),
             TextFormField(
+              keyboardType: TextInputType.emailAddress,
               validator: (value) {
                 if (value.isEmpty) {
                   return "Kullanıcı adınızı girin";
@@ -56,7 +57,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
               onSaved: (newValue) {
                 print(newValue);
-                username = newValue.trim();
+                email = newValue.trim();
               },
             ),
             SizedBox(height: 20),

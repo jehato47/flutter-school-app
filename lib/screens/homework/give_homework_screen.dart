@@ -7,6 +7,7 @@ import '../../providers/homework.dart';
 import '../../providers/auth.dart';
 import 'package:flutter_picker/Picker.dart';
 import '../../providers/attendance.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class GiveHomeworkScreen extends StatefulWidget {
   static const url = "/give-homework";
@@ -16,6 +17,7 @@ class GiveHomeworkScreen extends StatefulWidget {
 }
 
 class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
+  FirebaseAuth auth = FirebaseAuth.instance;
   bool isLoading = false;
   dynamic user;
   final _form = GlobalKey<FormState>();
@@ -24,8 +26,8 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
   DateTime date;
 
   Map<String, dynamic> hw = {
-    "classFirst": null,
-    "classLast": null,
+    "classFirst": "11",
+    "classLast": "a",
     "homework": null,
     "title": null,
     "dueDate": null,
@@ -67,9 +69,9 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
     if (!isValid || date == null) return;
 
     _form.currentState.save();
-    hw["teacher"] = user["isim"] + " " + user["soyisim"];
-    hw["teacherImage"] = user["profil_foto"];
-    hw["title"] = user["ders"];
+    hw["teacher"] = auth.currentUser.displayName;
+    hw["teacherImage"] = auth.currentUser.photoURL;
+    hw["title"] = "title";
     setState(() {
       isLoading = true;
     });
