@@ -6,6 +6,8 @@ import 'package:school2/providers/attendance.dart';
 import '../providers/auth.dart';
 import './item.dart';
 import 'dart:math';
+import '../screens/attendance/attendance_detail_screen.dart';
+import 'package:intl/intl.dart';
 
 class FireBaseTryScreen extends StatefulWidget {
   @override
@@ -15,6 +17,8 @@ class FireBaseTryScreen extends StatefulWidget {
 class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
   String classFirst;
   String classLast;
+  CollectionReference attendance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,42 +31,9 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
             child: Text("send"),
             onPressed: () async {
               // FirebaseAuth auth = FirebaseAuth.instance;
-              CollectionReference syllabus =
-                  FirebaseFirestore.instance.collection('syllabus');
-              QuerySnapshot response = await syllabus.get();
-              QueryDocumentSnapshot syl = response.docs[0];
-              Map<Duration, String> map = {};
-              List<Duration> liste = [];
-              syl["monday"].forEach((key, value) {
-                // print(key);
-                DateTime date = DateTime.now().add(Duration(hours: 3));
-                DateTime sylDate = value.toDate();
-                DateTime configuredDate = DateTime(
-                  date.year,
-                  date.month,
-                  date.day,
-                  sylDate.hour,
-                  sylDate.minute,
-                ).add(Duration(hours: 3));
-                print(configuredDate);
-                map[configuredDate.difference(date).abs()] = key;
-                liste.add(configuredDate.difference(date).abs());
-              });
-              liste.sort();
-
-              String classFirst = map[liste.first].split("-").first;
-              String classLast = map[liste.first].split("-").last;
-              print(classLast);
-              // print(DateTime.now().add(Duration(hours: 3)));
-              // QuerySnapshot ref = await FirebaseFirestore.instance
-              //     .collection("students")
-              //     .where('classFirst', isEqualTo: classFirst)
-              //     .where("classLast", isEqualTo: classLast)
-              //     .get();
-
-              // ref.docs.forEach((element) {
-              //   print(element["parentNumber"]);
-              // });
+              attendance = FirebaseFirestore.instance.collection('attendance');
+              QuerySnapshot response = await attendance.get();
+              print(response.docs[0]);
             },
           ),
           SizedBox(
@@ -70,19 +41,47 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
             child: Container(),
           ),
           FutureBuilder(
-            future: Provider.of<Attendance>(context).getAttendance(),
+            future: FirebaseFirestore.instance.collection('attendance').get(),
             builder: (context, attendance) {
               if (attendance.connectionState == ConnectionState.waiting)
                 return Center(child: CircularProgressIndicator());
-              final data = attendance.data;
+              final data = attendance.data.docs;
               // print(data);
 
               return Expanded(
                 child: ListView.builder(
                   itemBuilder: (context, index) {
                     // print(data);
+                    final attendance = data[index];
                     return ListTile(
-                      title: Text(data[index]["displayName"]),
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                          AttendanceDetailScreen.url,
+                          arguments: attendance,
+                        );
+                      },
+                      title: Text(
+                        attendance["lecture"] +
+                            " " +
+                            attendance["classFirst"] +
+                            "-" +
+                            attendance["classLast"].toUpperCase(),
+                      ),
+                      subtitle: Text(
+                        DateFormat("y-MM-dd : HH:mm").format(
+                          attendance["date"].toDate(),
+                        ),
+                      ),
+                      trailing: Text(
+                        "V-"
+                        "${attendance["info"]["arrivals"].length} /"
+                        "Y-"
+                        "${attendance["info"]["notExists"].length} /"
+                        "I-"
+                        "${attendance["info"]["permitted"].length} /"
+                        "G-"
+                        "${attendance["info"]["lates"].length}",
+                      ),
                     );
                   },
                   itemCount: data.length,

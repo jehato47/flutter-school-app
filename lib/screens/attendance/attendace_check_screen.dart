@@ -86,11 +86,12 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
         FirebaseFirestore.instance.collection('attendance');
     // attendance["classFirst"] = "11";
     // attendance["classLast"] = "a";
-    await syllabus.doc(auth.currentUser.uid).set({
+    await syllabus.add({
       "info": attendance,
       "date": DateTime.now(),
       "classFirst": "11",
       "classLast": "a",
+      "lecture": "matematik",
     });
   }
 
@@ -105,6 +106,16 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
     return FutureBuilder(
         future: Provider.of<Attendance>(context).getAttendance(),
         builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting)
+            return Scaffold(
+              appBar: AppBar(
+                centerTitle: true,
+                title: Text("Alınıyor"),
+              ),
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
           String currentClass = Provider.of<Attendance>(context).currentClass;
           DateTime currentTime = Provider.of<Attendance>(context).currentTime;
 
@@ -118,6 +129,12 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
               ),
               actions: [
                 IconButton(
+                  icon: Icon(Icons.info),
+                  onPressed: () {
+                    showPickerModal(context);
+                  },
+                ),
+                IconButton(
                   icon: Icon(Icons.done),
                   onPressed: sendAttendance,
                 )
@@ -128,7 +145,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  buildElevatedButton(),
+                  // buildElevatedButton(),
                   currentClass == ""
                       ? Expanded(child: EmptyInfo())
                       : Expanded(

@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth.dart';
 import '../../widgets/attendance/attendance_detail_item.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AttendanceDetailScreen extends StatelessWidget {
   static const url = "/attendance-detail";
   @override
   Widget build(BuildContext context) {
     final attendance =
-        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+        ModalRoute.of(context).settings.arguments as QueryDocumentSnapshot;
 
-    bool isEmpty = attendance["gelmeyenler"].isEmpty;
+    bool isEmpty = attendance["info"]["notExists"].isEmpty;
     return Scaffold(
       appBar: AppBar(),
       body: isEmpty
@@ -23,11 +24,9 @@ class AttendanceDetailScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ListView.builder(
-                      itemCount: attendance["gelmeyenler"].length,
+                      itemCount: attendance["info"]["notExists"].length,
                       itemBuilder: (ctx, i) => FutureBuilder(
-                        future: Provider.of<Auth>(context).getStudentByNumber(
-                          attendance["gelmeyenler"][i],
-                        ),
+                        future: attendance["info"]["notExists"][i].get(),
                         builder: (context, snapshot2) {
                           if (snapshot2.connectionState ==
                               ConnectionState.waiting)
@@ -38,6 +37,9 @@ class AttendanceDetailScreen extends StatelessWidget {
                                 "https://media.giphy.com/media/3ov9k0Ziq50EoOuWRi/giphy.gif",
                               ),
                             );
+                          // return ListTile(
+                          //   title: Text(snapshot2.data["name"]),
+                          // );
                           return AttendanceDetailItem(
                             snapshot2.data,
                           );

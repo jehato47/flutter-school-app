@@ -5,6 +5,7 @@ import '../../providers/auth.dart';
 import '../../screens/attendance/attendance_detail_screen.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AttendancePreviewScreen extends StatefulWidget {
   static const url = "/attendance-preview";
@@ -43,74 +44,79 @@ class _AttendancePreviewScreenState extends State<AttendancePreviewScreen> {
     token = Provider.of<Auth>(context).token;
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(Icons.info),
+            onPressed: () {},
+          )
+        ],
+        centerTitle: true,
         title: Text("Yoklama listesi"),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: [
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                child: Text("sınıfı seç"),
-                // style: ButtonStyle(
-                //   backgroundColor: MaterialStateProperty.all<Color>(
-                //     Colors.pink,
-                //   ),
-                // ),
-                onPressed: () {
-                  showPickerModal(context);
-                },
-              ),
-            ),
+            // SizedBox(
+            //   width: double.infinity,
+            //   child: ElevatedButton(
+            //     child: Text("sınıfı seç"),
+            //     // style: ButtonStyle(
+            //     //   backgroundColor: MaterialStateProperty.all<Color>(
+            //     //     Colors.pink,
+            //     //   ),
+            //     // ),
+            //     onPressed: () {
+            //       showPickerModal(context);
+            //     },
+            //   ),
+            // ),
             Expanded(
               child: FutureBuilder(
-                future: Provider.of<Attendance>(context)
-                    .getAttendanceByClass(token, currentClass),
-                builder: (context, snapshot) {
-                  Provider.of<Attendance>(context)
-                      .getAllClassNamesForAttendancePreview(token);
-
-                  if (snapshot.connectionState == ConnectionState.waiting)
+                future:
+                    FirebaseFirestore.instance.collection('attendance').get(),
+                builder: (context, attendance) {
+                  if (attendance.connectionState == ConnectionState.waiting)
                     return Center(child: CircularProgressIndicator());
-                  // if (snapshot.data == null) return Container();
-                  List liste = snapshot.data;
-                  liste = liste.reversed.toList();
+                  final data = attendance.data.docs;
+                  // print(data);
 
                   return ListView.builder(
-                    itemCount: liste.length,
                     itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          InkWell(
-                            onTap: () async {
-                              Navigator.of(context).pushNamed(
-                                AttendanceDetailScreen.url,
-                                arguments: liste[index],
-                              );
-                            },
-                            child: ListTile(
-                              title: Text(
-                                "${liste[index]["ders"]} ${liste[index]["sınıf"].toUpperCase()}",
-                              ),
-                              subtitle: Text(
-                                  "${liste[index]["date"]} : ${liste[index]["derssaati"]}"),
-                              trailing: Text(
-                                "V-"
-                                "${liste[index]["gelenler"].length} /"
-                                "Y-"
-                                "${liste[index]["gelmeyenler"].length} /"
-                                "I-"
-                                "${liste[index]["izinliler"].length} /"
-                                "G-"
-                                "${liste[index]["geç_gelenler"].length}",
-                              ),
-                            ),
+                      // print(data);
+                      final attendance = data[index];
+                      return ListTile(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(
+                            AttendanceDetailScreen.url,
+                            arguments: attendance,
+                          );
+                        },
+                        title: Text(
+                          attendance["lecture"] +
+                              " " +
+                              attendance["classFirst"] +
+                              "-" +
+                              attendance["classLast"].toUpperCase(),
+                        ),
+                        subtitle: Text(
+                          DateFormat("y-MM-dd : HH:mm").format(
+                            attendance["date"].toDate(),
                           ),
-                          Divider(thickness: 1),
-                        ],
+                        ),
+                        trailing: Text(
+                          "V-"
+                          "${attendance["info"]["arrivals"].length} /"
+                          "Y-"
+                          "${attendance["info"]["notExists"].length} /"
+                          "I-"
+                          "${attendance["info"]["permitted"].length} /"
+                          "G-"
+                          "${attendance["info"]["lates"].length}",
+                        ),
                       );
                     },
+                    itemCount: data.length,
                   );
                 },
               ),

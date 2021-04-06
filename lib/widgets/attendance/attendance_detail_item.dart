@@ -16,20 +16,21 @@ class _AttendanceDetailItemState extends State<AttendanceDetailItem> {
   Widget build(BuildContext context) {
     final student = widget.student;
     // Eğer öğrenci daha sonra silinmiş olsa bile bilgileri gösterilecek
-    bool isStudentDeleted = widget.student["username"] == "deleted";
+    // bool isStudentDeleted = widget.student["name"] == "deleted";
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListTile(
-          leading: CircleAvatar(
-            backgroundImage: NetworkImage(
-              "https://schoolapi.pythonanywhere.com" + student["profil_foto"],
-            ),
-          ),
+          // leading: CircleAvatar(
+          //   backgroundImage: NetworkImage(
+          //     "https://schoolapi.pythonanywhere.com" + student["profil_foto"],
+          //   ),
+          // ),
           title: Text(
-            student["isim"] + " " + student["soyisim"],
+            student["name"] + " " + student["surname"],
           ),
-          subtitle: Text(student["sınıf"].toString() + "-" + student["şube"]),
+          subtitle: Text(
+              student["classFirst"].toString() + "-" + student["classLast"]),
           trailing: IconButton(
             icon: Icon(isExpanded ? Icons.expand_less : Icons.expand_more),
             onPressed: () {
@@ -51,31 +52,31 @@ class _AttendanceDetailItemState extends State<AttendanceDetailItem> {
               children: [
                 Expanded(
                   child: Text(
-                    "veli telefon numarası : " + student["veli_tel"],
+                    "veli telefon numarası : " + student["parentNumber"],
                   ),
                 ),
                 // Expanded(child: SizedBox(height: 5)),
                 Expanded(
                   child: Text(
-                    "öğrenci telefon numarası : " + student["tel"],
+                    "öğrenci telefon numarası : " + student["parentNumber"],
                   ),
                 ),
-                Expanded(
-                  child: Text(
-                    "Email : " + student["email"],
-                  ),
-                ),
-                if (isStudentDeleted)
-                  Expanded(
-                    child: Text(
-                      "Öğrenci kaydı silinmiş",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.amber,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+                // Expanded(
+                //   child: Text(
+                //     "Email : " + student["email"],
+                //   ),
+                // ),
+                // if (isStudentDeleted)
+                //   Expanded(
+                //     child: Text(
+                //       "Öğrenci kaydı silinmiş",
+                //       textAlign: TextAlign.center,
+                //       style: TextStyle(
+                //         color: Colors.amber,
+                //         fontWeight: FontWeight.bold,
+                //       ),
+                //     ),
+                //   ),
               ],
             ),
           ),
