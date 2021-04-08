@@ -16,12 +16,11 @@ class AttendancePreviewScreen extends StatefulWidget {
 }
 
 class _AttendancePreviewScreenState extends State<AttendancePreviewScreen> {
+  List<String> classes = [];
   String token;
-  String currentClass = "11-a";
+  String currentClass = "11-c";
 
   showPickerModal(BuildContext context) async {
-    List classes = await Provider.of<Attendance>(context).allClasses;
-
     new Picker(
         adapter: PickerDataAdapter<String>(pickerdata: classes),
         changeToFirst: true,
@@ -57,30 +56,16 @@ class _AttendancePreviewScreenState extends State<AttendancePreviewScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: [
-            // SizedBox(
-            //   width: double.infinity,
-            //   child: ElevatedButton(
-            //     child: Text("sınıfı seç"),
-            //     // style: ButtonStyle(
-            //     //   backgroundColor: MaterialStateProperty.all<Color>(
-            //     //     Colors.pink,
-            //     //   ),
-            //     // ),
-            //     onPressed: () {
-            //       showPickerModal(context);
-            //     },
-            //   ),
-            // ),
             Expanded(
               child: FutureBuilder(
-                future:
-                    FirebaseFirestore.instance.collection('attendance').get(),
+                future: FirebaseFirestore.instance
+                    .collection('attendance/classes/11-c')
+                    .get(),
                 builder: (context, attendance) {
                   if (attendance.connectionState == ConnectionState.waiting)
                     return Center(child: CircularProgressIndicator());
                   final data = attendance.data.docs;
                   // print(data);
-
                   return ListView.builder(
                     itemBuilder: (context, index) {
                       // print(data);

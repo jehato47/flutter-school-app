@@ -100,10 +100,9 @@ class Attendance extends ChangeNotifier {
 
     // / ?TODO : Bunu baska bir fonksiyonda yap ve işlevsel hale getir
     // / ?TODO : Kendisi otomatik almasın
-    CollectionReference att =
-        FirebaseFirestore.instance.collection('attendance');
-    final att2 =
-        await att.doc(_currentTime.toString() + map[liste.first]).get();
+    CollectionReference att = FirebaseFirestore.instance
+        .collection('attendance/pieces/$_currentClass');
+    final att2 = await att.doc(_currentTime.toString()).get();
     if (att2.exists)
       attendance = att2["info"];
     else {

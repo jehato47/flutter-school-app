@@ -18,6 +18,15 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
   String classFirst;
   String classLast;
   CollectionReference attendance;
+  List<String> days = [
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -31,15 +40,14 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
             child: Text("send"),
             onPressed: () async {
               // FirebaseAuth auth = FirebaseAuth.instance;
-              await FirebaseFirestore.instance
-                  .collection("attendance")
-                  .doc("11-a")
-                  .set({});
-              CollectionReference ref = FirebaseFirestore.instance
-                  .collection("attendance/11-c/pieces");
+              CollectionReference syllabus =
+                  FirebaseFirestore.instance.collection("syllabus");
 
-              // QuerySnapshot snapshot = await ref.;
-              // print(snapshot.docs);
+              QuerySnapshot snapshot = await syllabus.get();
+              // snapshot.docs[0].data().forEach((key, value) {
+              //   print(value);
+              // });
+              print(snapshot.docs[0].data());
             },
           ),
           SizedBox(

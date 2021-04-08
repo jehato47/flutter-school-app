@@ -69,15 +69,15 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
   }
 
   Future<void> sendAttendance() async {
-    await FirebaseFirestore.instance
-        .collection("attendance")
-        .doc(currentClass)
-        .set({});
-
+    // await FirebaseFirestore.instance
+    //     .collection('attendance')
+    //     .doc(currentClass)
+    //     .set({});
     CollectionReference att = FirebaseFirestore.instance
-        .collection('attendance')
-        .doc(currentClass)
-        .collection('pieces');
+        .collection('attendance/classes/$currentClass');
+    // Todo : Kurumlara göre ayırdığın zaman bunları düzlenle
+    // Todo : referans beskalem/attendance/currentClass olsun
+
     await att.doc(currentTime.toString()).set({
       "info": attendance,
       "date": currentTime,

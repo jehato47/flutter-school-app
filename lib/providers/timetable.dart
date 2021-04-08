@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'dart:math';
 import '../helpers/envs.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Timetable extends ChangeNotifier {
   // -- Functions --
@@ -16,14 +17,15 @@ class Timetable extends ChangeNotifier {
   // createAppointments
   final baseUrl = Envs.baseUrl;
   Map<String, dynamic> days = {
-    "pazartesi": WeekDays.monday,
-    "salı": WeekDays.tuesday,
-    "çarşamba": WeekDays.wednesday,
-    "perşembe": WeekDays.thursday,
-    "cuma": WeekDays.friday,
-    "cumartesi": WeekDays.saturday,
-    "pazar": WeekDays.sunday,
+    "monday": WeekDays.monday,
+    "tuesday": WeekDays.tuesday,
+    "wednesday": WeekDays.wednesday,
+    "thursday": WeekDays.thursday,
+    "friday": WeekDays.friday,
+    "saturday": WeekDays.saturday,
+    "sunday": WeekDays.sunday,
   };
+
   List<Color> colorCollection = [
     const Color(0xFF0F8644),
     const Color(0xFF8B1FA9),
@@ -42,38 +44,21 @@ class Timetable extends ChangeNotifier {
   Map<String, dynamic> teacherData;
   Map<String, dynamic> studentData;
 
+  Future<void> teacherTimeTable() async {}
+
   Future<void> setTeacherTimetables(
     // TODO : Tek bir kez çalışmasını sağla
     String token,
     dynamic userInfo,
   ) async {
-    var teacher = userInfo["user"];
+    CollectionReference syllabus =
+        FirebaseFirestore.instance.collection("syllabus");
 
-    var headers = {
-      'Authorization': 'Token $token',
-    };
-    final response = await http.get(
-      Uri.parse(baseUrl + "/teacher/getsyl/$teacher"),
-      headers: headers,
-    );
-    final normalResponse = utf8.decode(response.bodyBytes);
-    final normalJson = json.decode(normalResponse) as Map<String, dynamic>;
-
-    teacherData = normalJson;
+    QuerySnapshot snapshot = await syllabus.get();
+    teacherData = snapshot.docs[0].data();
   }
 
-  Future<void> setStudentTimetables(String token, dynamic userInfo) async {
-    var headers = {
-      "Authorization": "Token $token",
-    };
-    final response = await http.get(
-      Uri.parse(baseUrl + "/student/getsyl/11-a"),
-      headers: headers,
-    );
-    final normalResponse = utf8.decode(response.bodyBytes);
-    final normalJson = json.decode(normalResponse) as Map<String, dynamic>;
-    studentData = normalJson;
-  }
+  Future<void> setStudentTimetables(String token, dynamic userInfo) async {}
 
   List<Appointment> createAppointments(bool isTeacher) {
     _appointments = [];
@@ -129,26 +114,11 @@ class Timetable extends ChangeNotifier {
     });
   }
 
-  void createTeacherTimeTable() {
-    var today = DateTime.now();
-
-    days.forEach((dayName, weekday) {
-      teacherData[dayName].forEach((key, value) {
-        var k = key.split("-");
-        DateTime startTime = DateTime(
-          today.year,
-          today.month,
-          today.day,
-          int.parse(k[0]),
-          int.parse(k[1]),
-        ).subtract(Duration(days: 180));
-        DateTime endTime = startTime.add(Duration(minutes: 40));
-        addRecursiveAppointment(
-          startTime,
-          endTime,
-          value.toString(),
-          weekday,
-        );
+  Future<void> createTeacherTimeTable() async {
+    teacherData.forEach((day, value) {
+      value.forEach((clss, timestamp) {
+        addRecursiveAppointment(timestamp.toDate(),
+            timestamp.toDate().add(Duration(minutes: 40)), clss, days[day]);
       });
     });
   }
