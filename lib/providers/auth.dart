@@ -35,9 +35,10 @@ class Auth extends ChangeNotifier {
   Future<void> signStudentUp(
     String email,
     String password,
+    String username,
     String name,
     String surname,
-    String studentNumber,
+    int studentNumber,
     String classFirst,
     String classLast,
     String parentNumber,
@@ -51,7 +52,11 @@ class Auth extends ChangeNotifier {
       CollectionReference students =
           FirebaseFirestore.instance.collection('students');
       students.doc(value.user.uid).set({
-        "no": studentNumber,
+        "username": username,
+        "name": name,
+        "surname": surname,
+        "number": studentNumber,
+        "displayName": name + " " + surname,
         "classFirst": classFirst,
         "classLast": classLast,
         "parentNumber": parentNumber,

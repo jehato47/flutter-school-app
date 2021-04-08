@@ -22,10 +22,10 @@ class Attendance extends ChangeNotifier {
   DateTime _currentTime;
   // String currentClass;
   Map attendance = {
-    "gelenler": [],
-    "gelmeyenler": [],
-    "gecGelenler": [],
-    "izinliler": [],
+    "arrivals": [],
+    "notExists": [],
+    "lates": [],
+    "permitted": [],
   };
 
   var _studentList;
@@ -59,24 +59,7 @@ class Attendance extends ChangeNotifier {
     return _oldAttendance;
   }
 
-  Future<void> sendAttendance(
-      Map<String, dynamic> attendanceMap, String token) async {
-    var headers = {
-      'Authorization': 'Token $token',
-      'Content-Type': 'application/json'
-    };
-
-    try {
-      final response = await http.post(
-        Uri.parse(baseUrl + "/manage/addattendance"),
-        headers: headers,
-        body: json.encode(attendanceMap),
-      );
-      // print(response.body);
-    } catch (err) {
-      print(err);
-    }
-  }
+  Future<void> sendAttendance() async {}
 
   Future<dynamic> getAttendance() async {
     CollectionReference syllabus =
@@ -85,8 +68,8 @@ class Attendance extends ChangeNotifier {
     QueryDocumentSnapshot syl = response.docs[0];
     Map<Duration, String> map = {};
     List<Duration> liste = [];
-    DateTime date = DateTime.now().add(Duration(hours: 3));
-    print(syl.data());
+    DateTime date = DateTime.now();
+
     syl["monday"].forEach((key, value) {
       DateTime sylDate = value.toDate();
       DateTime configuredDate = DateTime(
@@ -95,7 +78,7 @@ class Attendance extends ChangeNotifier {
         date.day,
         sylDate.hour,
         sylDate.minute,
-      ).add(Duration(hours: 3));
+      );
 
       map[configuredDate.difference(date).abs()] = key;
       liste.add(configuredDate.difference(date).abs());
@@ -113,7 +96,19 @@ class Attendance extends ChangeNotifier {
       date.day,
       dateInSyllabus.hour,
       dateInSyllabus.minute,
-    ).add(Duration(hours: 3));
+    );
+
+    // / ?TODO : Bunu baska bir fonksiyonda yap ve işlevsel hale getir
+    // / ?TODO : Kendisi otomatik almasın
+    CollectionReference att =
+        FirebaseFirestore.instance.collection('attendance');
+    final att2 =
+        await att.doc(_currentTime.toString() + map[liste.first]).get();
+    if (att2.exists)
+      attendance = att2["info"];
+    else {
+      attendance = null;
+    }
 
     QuerySnapshot students = await FirebaseFirestore.instance
         .collection("students")
@@ -125,107 +120,18 @@ class Attendance extends ChangeNotifier {
     return students.docs;
   }
 
-  Future<void> getAll(String token) async {
-    var headers = {'Authorization': 'Token $token'};
+  Future<void> getAll() async {}
 
-    final response = await http.get(
-      Uri.parse(baseUrl + "/manage/attendance"),
-      headers: headers,
-    );
-    final normalResponse = utf8.decode(response.bodyBytes);
-    final normalJson = json.decode(normalResponse) as List<dynamic>;
-    _attendanceList = normalJson;
+  Future<void> getAttendanceByClass() async {}
+
+  Future<dynamic> getOldAttendanceList(String currentClass) async {
+    CollectionReference att =
+        FirebaseFirestore.instance.collection('attendance');
+    final att2 = await att.doc(_currentTime.toString() + currentClass).get();
+    if (att2.exists) {
+      _oldAttendance = att2["info"];
+      return true;
+    } else
+      return false;
   }
-
-  Future<List<dynamic>> getAttendanceByClass(
-      String token, String classToGet) async {
-    var headers = {"Authorization": "Token $token"};
-    final response = await http.get(
-      Uri.parse(baseUrl + "/manage/attendance/$classToGet"),
-      headers: headers,
-    );
-    final normalResponse = utf8.decode(response.bodyBytes);
-    final normalJson = json.decode(normalResponse) as List<dynamic>;
-
-    return normalJson;
-  }
-
-  Future<void> getAllClassNamesForAttendancePreview(String token) async {
-    var headers = {
-      'Authorization': 'Token $token',
-    };
-
-    final response = await http.get(
-      Uri.parse(baseUrl + "/manage/getallclss"),
-      headers: headers,
-    );
-
-    final normalResponse = utf8.decode(response.bodyBytes);
-    final normalJson = json.decode(normalResponse);
-    _allClasses = normalJson;
-  }
-
-  // // Öğretmenin en yakın zamanlı ders programını alıyor
-  // Future<void> getCurrentClassAndTime(String token) async {
-  //   currentClass = "";
-  //   currentTime = "";
-  //   http.Response response;
-  //   var headers = {
-  //     'Authorization': 'Token $token',
-  //     'Content-Type': 'application/json; charset=UTF-8'
-  //   };
-
-  //   response = await http.get(
-  //     baseUrl + "/manage/getnrstatlist",
-  //     headers: headers,
-  //   );
-
-  //   final body = utf8.decode(response.bodyBytes);
-  //   final normalJson = json.decode(body);
-  //   if (normalJson["sınıf"] != null) {
-  //     currentClass = normalJson["sınıf"].split(" ").first;
-  //     currentTime = normalJson["sınıf"].split(" ").last;
-  //   }
-  // }
-
-  // Future<dynamic> getOldAttendanceList(
-  //   String token,
-  //   String date,
-  //   String lecture,
-  //   String time,
-  //   String clss,
-  // ) async {
-  //   await getCurrentClassAndTime(token);
-  //   print(currentClass);
-  //   print(currentTime);
-  //   var headers = {
-  //     "Authorization": "Token $token",
-  //   };
-  //   print(baseUrl + "/manage/attendance/$date/$lecture/$time/$clss");
-  //   final response = await http.get(
-  //     baseUrl + "/manage/attendance/$date/$lecture/$time/$clss",
-  //     headers: headers,
-  //   );
-  //   final normalResponse = utf8.decode(response.bodyBytes);
-  //   final normalJson = json.decode(normalResponse);
-  //   _oldAttendance = normalJson;
-  //   // print(normalJson);
-  //   return _oldAttendance;
-  // }
-
-  // Future<void> getClassesForAttendaceCheck(String token) async {
-  //   var headers = {
-  //     'Authorization': 'Token $token',
-  //   };
-
-  //   final response = await http.get(
-  //     baseUrl + "/teacher/gtclss",
-  //     headers: headers,
-  //   );
-
-  //   final normalResponse = utf8.decode(response.bodyBytes);
-  //   final normalJson = json.decode(normalResponse);
-
-  //   _classes = normalJson;
-  // }
 }

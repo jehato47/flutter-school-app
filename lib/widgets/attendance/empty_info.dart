@@ -8,8 +8,7 @@ class EmptyInfo extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Yakın zamanda dersiniz bulunmamaktadır yukarıdan" +
-              " bugünkü diğer listeleri seçebilir",
+          "Bu sınıfa henüz öğrenci kayıt edilmemiş olabilir",
           textAlign: TextAlign.center,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
@@ -19,7 +18,7 @@ class EmptyInfo extends StatelessWidget {
               TeacherTimetableScreen.url,
             );
           },
-          child: Text("veya programa gidebilirsiniz"),
+          child: Text("isterseniz programa gidebilirsiniz"),
         ),
       ],
     );

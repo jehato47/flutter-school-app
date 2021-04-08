@@ -13,7 +13,10 @@ class AttendanceDetailScreen extends StatelessWidget {
 
     bool isEmpty = attendance["info"]["notExists"].isEmpty;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("Gelmeyenler Listesi"),
+      ),
       body: isEmpty
           ? Center(
               child: Text("Gelmeyen öğrenci yokmuş"),

@@ -1,11 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:intl/intl.dart';
 import 'package:school2/widgets/attendance/attendance_list.dart';
 import '../../providers/attendance.dart';
-import '../../providers/auth.dart';
 import '../../widgets/attendance/empty_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -16,26 +14,16 @@ class AttendanceCheckScreen extends StatefulWidget {
 }
 
 class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
-  DateTime cdate;
-  String titleDate;
-  dynamic info;
-  String token;
   String currentClass = "";
-  String currentTime;
-  Map<String, dynamic> attendance = {
-    "arrivals": [],
-    "lates": [],
-    "permitted": [],
-    "notExists": [],
-  };
-  String date;
+  DateTime currentTime;
+  Map<String, dynamic> attendance;
 
   // Başta herkes gelmeyen olarak işaretleniyor daha sonra listelere dağılıyor
   // Öğrenci numarasını diğer tüm listelerden çıkartıp istenen listeye koyar
   void changeValues(DocumentReference ref, Map ourattendance, List second) {
     ourattendance.forEach((key, value) {
-      // key : gelenler, gelmeyenler ...
-      // value : [168, 169, ...]
+      // key : arrivals, notExists ...
+      // value : [docRef, docRef, ...]
       // print(attendance);
       if (value.contains(ref)) {
         value.removeWhere((element) => element == ref);
@@ -81,31 +69,45 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
   }
 
   Future<void> sendAttendance() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    CollectionReference syllabus =
-        FirebaseFirestore.instance.collection('attendance');
-    // attendance["classFirst"] = "11";
-    // attendance["classLast"] = "a";
-    await syllabus.add({
+    await FirebaseFirestore.instance
+        .collection("attendance")
+        .doc(currentClass)
+        .set({});
+
+    CollectionReference att = FirebaseFirestore.instance
+        .collection('attendance')
+        .doc(currentClass)
+        .collection('pieces');
+    await att.doc(currentTime.toString()).set({
       "info": attendance,
-      "date": DateTime.now(),
-      "classFirst": "11",
-      "classLast": "a",
+      "date": currentTime,
+      "classFirst": currentClass.split("-").first,
+      "classLast": currentClass.split("-").last,
       "lecture": "matematik",
     });
+    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
-    token = Provider.of<Auth>(context).token;
-    info = Provider.of<Auth>(context).userInform;
-
     var args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
 
     return FutureBuilder(
         future: Provider.of<Attendance>(context).getAttendance(),
         builder: (context, snapshot) {
+          try {
+            attendance = Provider.of<Attendance>(context).attendance;
+            if (attendance == null) throw Error();
+          } catch (err) {
+            attendance = {
+              "arrivals": [],
+              "lates": [],
+              "permitted": [],
+              "notExists": [],
+            };
+          }
+
           if (snapshot.connectionState == ConnectionState.waiting)
             return Scaffold(
               appBar: AppBar(
@@ -116,14 +118,14 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
                 child: CircularProgressIndicator(),
               ),
             );
-          String currentClass = Provider.of<Attendance>(context).currentClass;
-          DateTime currentTime = Provider.of<Attendance>(context).currentTime;
+          currentClass = Provider.of<Attendance>(context).currentClass;
+          currentTime = Provider.of<Attendance>(context).currentTime;
 
           return Scaffold(
             appBar: AppBar(
               centerTitle: true,
               title: Text(
-                DateFormat("d MMMM EEEE H:m").format(currentTime) +
+                DateFormat("E HH:mm").format(currentTime) +
                     " " +
                     currentClass.toUpperCase(),
               ),
@@ -142,16 +144,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
             ),
             body: Padding(
               padding: const EdgeInsets.all(10),
-              child: Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // buildElevatedButton(),
-                  currentClass == ""
-                      ? Expanded(child: EmptyInfo())
-                      : Expanded(
-                          child: AttendanceList(attendance, changeValues)),
-                ],
-              ),
+              child: AttendanceList(attendance, changeValues),
             ),
           );
         });

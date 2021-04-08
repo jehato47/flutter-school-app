@@ -123,7 +123,7 @@ class MyApp extends StatelessWidget {
                   if (snapshot.hasData) {
                     return HomeScreen();
                   }
-                  return FireBaseTryScreen();
+                  return LoginScreen();
                 },
               );
             },

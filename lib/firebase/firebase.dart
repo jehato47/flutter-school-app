@@ -31,63 +31,20 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
             child: Text("send"),
             onPressed: () async {
               // FirebaseAuth auth = FirebaseAuth.instance;
-              attendance = FirebaseFirestore.instance.collection('attendance');
-              QuerySnapshot response = await attendance.get();
-              print(response.docs[0]);
+              await FirebaseFirestore.instance
+                  .collection("attendance")
+                  .doc("11-a")
+                  .set({});
+              CollectionReference ref = FirebaseFirestore.instance
+                  .collection("attendance/11-c/pieces");
+
+              // QuerySnapshot snapshot = await ref.;
+              // print(snapshot.docs);
             },
           ),
           SizedBox(
             width: double.infinity,
             child: Container(),
-          ),
-          FutureBuilder(
-            future: FirebaseFirestore.instance.collection('attendance').get(),
-            builder: (context, attendance) {
-              if (attendance.connectionState == ConnectionState.waiting)
-                return Center(child: CircularProgressIndicator());
-              final data = attendance.data.docs;
-              // print(data);
-
-              return Expanded(
-                child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    // print(data);
-                    final attendance = data[index];
-                    return ListTile(
-                      onTap: () {
-                        Navigator.of(context).pushNamed(
-                          AttendanceDetailScreen.url,
-                          arguments: attendance,
-                        );
-                      },
-                      title: Text(
-                        attendance["lecture"] +
-                            " " +
-                            attendance["classFirst"] +
-                            "-" +
-                            attendance["classLast"].toUpperCase(),
-                      ),
-                      subtitle: Text(
-                        DateFormat("y-MM-dd : HH:mm").format(
-                          attendance["date"].toDate(),
-                        ),
-                      ),
-                      trailing: Text(
-                        "V-"
-                        "${attendance["info"]["arrivals"].length} /"
-                        "Y-"
-                        "${attendance["info"]["notExists"].length} /"
-                        "I-"
-                        "${attendance["info"]["permitted"].length} /"
-                        "G-"
-                        "${attendance["info"]["lates"].length}",
-                      ),
-                    );
-                  },
-                  itemCount: data.length,
-                ),
-              );
-            },
           ),
         ],
       ),

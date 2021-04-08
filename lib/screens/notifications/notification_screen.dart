@@ -138,7 +138,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 TextButton(
                   onPressed: () {
                     focusNode.unfocus();
-                    showPickerModal(context);
+                    // showPickerModal(context);
                   },
                   child: Text("sınıf seç"),
                 ),
@@ -165,22 +165,23 @@ class _NotificationScreenState extends State<NotificationScreen> {
     );
   }
 
-  showPickerModal(BuildContext context) async {
-    final token = Provider.of<Auth>(context).token;
-    await Provider.of<Attendance>(context)
-        .getAllClassNamesForAttendancePreview(token);
-    final allClasses = Provider.of<Attendance>(context).allClasses;
+  // TODO : todo
+  // showPickerModal(BuildContext context) async {
+  //   final token = Provider.of<Auth>(context).token;
+  //   await Provider.of<Attendance>(context)
+  //       .getAllClassNamesForAttendancePreview(token);
+  //   final allClasses = Provider.of<Attendance>(context).allClasses;
 
-    new Picker(
-        adapter: PickerDataAdapter<String>(pickerdata: allClasses),
-        changeToFirst: true,
-        hideHeader: false,
-        confirmText: "Seç",
-        cancelText: "Iptal",
-        title: Text("Sınıf seç"),
-        magnification: 1.2,
-        onConfirm: (Picker picker, List value) {
-          setState(() {});
-        }).showModal(this.context);
-  }
+  //   new Picker(
+  //       adapter: PickerDataAdapter<String>(pickerdata: allClasses),
+  //       changeToFirst: true,
+  //       hideHeader: false,
+  //       confirmText: "Seç",
+  //       cancelText: "Iptal",
+  //       title: Text("Sınıf seç"),
+  //       magnification: 1.2,
+  //       onConfirm: (Picker picker, List value) {
+  //         setState(() {});
+  //       }).showModal(this.context);
+  // }
 }

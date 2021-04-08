@@ -14,27 +14,6 @@ class _SendButtonState extends State<SendButton> {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    return isLoading
-        ? CircularProgressIndicator()
-        : ElevatedButton(
-            onPressed: () async {
-              print(widget.token);
-              setState(() {
-                isLoading = true;
-              });
-              await Provider.of<Attendance>(context)
-                  .sendAttendance(widget.attendance, widget.token);
-              setState(() {
-                isLoading = false;
-              });
-
-              await Future.delayed(Duration(seconds: 2)).then(
-                (value) {
-                  Navigator.of(context).pop();
-                },
-              );
-            },
-            child: Text("gönder"),
-          );
+    return Container();
   }
 }
