@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import '../../providers/auth.dart';
 import '../../providers/timetable.dart';
 import '../../widgets/timetable/timetable_calendar.dart';
 
@@ -10,15 +9,12 @@ class TeacherTimetableScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final token = Provider.of<Auth>(context).token;
-    final info = Provider.of<Auth>(context).userInform;
     return Scaffold(
       appBar: AppBar(
         title: Text("Ders Programı"),
       ),
       body: FutureBuilder(
-        future:
-            Provider.of<Timetable>(context).setTeacherTimetables(token, info),
+        future: Provider.of<Timetable>(context).setTeacherTimetables(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting)
             return Center(

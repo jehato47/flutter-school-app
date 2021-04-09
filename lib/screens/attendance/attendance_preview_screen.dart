@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../providers/attendance.dart';
-import 'package:provider/provider.dart';
-import '../../providers/auth.dart';
 import '../../screens/attendance/attendance_detail_screen.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:intl/intl.dart';
@@ -40,7 +38,6 @@ class _AttendancePreviewScreenState extends State<AttendancePreviewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    token = Provider.of<Auth>(context).token;
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -60,6 +57,7 @@ class _AttendancePreviewScreenState extends State<AttendancePreviewScreen> {
               child: FutureBuilder(
                 future: FirebaseFirestore.instance
                     .collection('attendance/classes/11-c')
+                    .orderBy("date", descending: true)
                     .get(),
                 builder: (context, attendance) {
                   if (attendance.connectionState == ConnectionState.waiting)

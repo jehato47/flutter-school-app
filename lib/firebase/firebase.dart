@@ -40,14 +40,17 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
             child: Text("send"),
             onPressed: () async {
               // FirebaseAuth auth = FirebaseAuth.instance;
-              CollectionReference syllabus =
-                  FirebaseFirestore.instance.collection("syllabus");
-
-              QuerySnapshot snapshot = await syllabus.get();
+              CollectionReference attendance =
+                  FirebaseFirestore.instance.collection("attendance");
+              attendance.doc("classes").get().then((value) {
+                print(value.data());
+              });
+              // final snapshot = await attendance.doc("classes").get();
+              // print(snapshot.id);
               // snapshot.docs[0].data().forEach((key, value) {
               //   print(value);
               // });
-              print(snapshot.docs[0].data());
+              // print(snapshot.docs);
             },
           ),
           SizedBox(

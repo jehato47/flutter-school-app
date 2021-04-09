@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school2/screens/homework/give_homework_screen.dart';
-import '../providers/auth.dart';
+// import '../providers/auth.dart';
 import '../widgets/home/pages_grid.dart';
 import '../screens/notifications/notification_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -82,7 +82,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget buildDrawer(BuildContext context, dynamic user) {
+  Widget buildDrawer(BuildContext context) {
     return SafeArea(
       child: Drawer(
         // semanticLabel: "Drawer",
@@ -104,17 +104,17 @@ class HomeScreen extends StatelessWidget {
                 child: Image(
                   fit: BoxFit.cover,
                   // TODO : bazen url tam olarak gelmiyor
-                  image: NetworkImage(user["profil_foto"]),
+                  image: NetworkImage(auth.currentUser.photoURL),
                 ),
               ),
               accountEmail: Text(
-                user["email"],
+                auth.currentUser.email,
                 style: TextStyle(
                   color: Colors.white,
                 ),
               ),
               accountName: Text(
-                user["isim"] + " " + user["soyisim"],
+                auth.currentUser.displayName,
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -123,8 +123,8 @@ class HomeScreen extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.logout),
               title: Text("Çıkış Yap"),
-              onTap: () {
-                Provider.of<Auth>(context).logout();
+              onTap: () async {
+                await auth.signOut();
               },
             )
           ],
@@ -135,18 +135,14 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<Auth>(context).userInform;
-
-    print(auth.currentUser.uid);
-    // auth.currentUser.displayName;
     return Scaffold(
-      // drawer: buildDrawer(context, user),
+      drawer: buildDrawer(context),
       appBar: AppBar(
         actions: [
           buildRingBell(context),
           buildHomeworkButton(context),
         ],
-        title: Text(auth.currentUser.email),
+        title: Text(auth.currentUser.displayName),
       ),
       body: PagesGrid(),
     );

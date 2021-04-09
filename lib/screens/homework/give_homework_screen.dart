@@ -85,11 +85,12 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
 
   showPickerModal(BuildContext context) async {
     FocusScope.of(context).requestFocus(new FocusNode());
-    final token = Provider.of<Auth>(context).token;
+
     // TODO : todo
     // await Provider.of<Attendance>(context)
     //     .getAllClassNamesForAttendancePreview(token);
-    final allClasses = Provider.of<Attendance>(context).allClasses;
+    // final allClasses = Provider.of<Attendance>(context).allClasses;
+    final allClasses = [];
 
     new Picker(
         adapter: PickerDataAdapter<String>(pickerdata: allClasses),

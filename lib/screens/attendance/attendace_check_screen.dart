@@ -4,7 +4,6 @@ import 'package:flutter_picker/Picker.dart';
 import 'package:intl/intl.dart';
 import 'package:school2/widgets/attendance/attendance_list.dart';
 import '../../providers/attendance.dart';
-import '../../widgets/attendance/empty_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AttendanceCheckScreen extends StatefulWidget {
@@ -69,12 +68,15 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
   }
 
   Future<void> sendAttendance() async {
-    // await FirebaseFirestore.instance
-    //     .collection('attendance')
-    //     .doc(currentClass)
-    //     .set({});
+    await FirebaseFirestore.instance
+        .collection('attendance')
+        .doc(currentClass)
+        .set({});
+    // CollectionReference att = FirebaseFirestore.instance
+    //     .collection('attendance/classes/$currentClass');
     CollectionReference att = FirebaseFirestore.instance
-        .collection('attendance/classes/$currentClass');
+        .collection('attendance/$currentClass/pieces');
+
     // Todo : Kurumlara göre ayırdığın zaman bunları düzlenle
     // Todo : referans beskalem/attendance/currentClass olsun
 
@@ -92,9 +94,15 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
   Widget build(BuildContext context) {
     var args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-
+    if (args != null) {
+      currentTime = args["date"];
+      currentClass = args["class"];
+    }
     return FutureBuilder(
-        future: Provider.of<Attendance>(context).getAttendance(),
+        future: Provider.of<Attendance>(context).getAttendance(
+          currentClass,
+          currentTime,
+        ),
         builder: (context, snapshot) {
           try {
             attendance = Provider.of<Attendance>(context).attendance;
@@ -125,9 +133,8 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
             appBar: AppBar(
               centerTitle: true,
               title: Text(
-                DateFormat("E HH:mm").format(currentTime) +
-                    " " +
-                    currentClass.toUpperCase(),
+                "${DateFormat("E HH:mm").format(currentTime)}" +
+                    " ${currentClass.toUpperCase()}",
               ),
               actions: [
                 IconButton(
