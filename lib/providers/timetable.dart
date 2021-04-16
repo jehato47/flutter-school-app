@@ -121,6 +121,9 @@ class Timetable extends ChangeNotifier {
   void addRecursiveAppointment(
       DateTime startTime, DateTime endTime, String subject, WeekDays day) {
     final Appointment weeklyAppointment = Appointment(
+      // startTimeZone: "Belarus Standard Time",
+      // endTimeZone: "Belarus Standard Time",
+
       startTime: startTime.subtract(Duration(days: 180)),
       endTime: endTime.subtract(Duration(days: 180)),
     );

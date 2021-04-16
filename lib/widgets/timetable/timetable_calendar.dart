@@ -29,7 +29,7 @@ class _TimetableCalendarState extends State<TimetableCalendar> {
   Widget build(BuildContext context) {
     // dynamic teacherData = widget.teacherData;
     return SfCalendar(
-      // timeZone: "Turkey Standard Time",
+      timeZone: "Turkey Standard Time",
       firstDayOfWeek: 1,
       allowedViews:
           widget.isTeacher ? _allowedViewsTeacher : _allowedViewsStudent,
@@ -76,7 +76,6 @@ class _TimetableCalendarState extends State<TimetableCalendar> {
       showNavigationArrow: true,
       showDatePickerButton: true,
       view: widget.isTeacher ? CalendarView.week : CalendarView.month,
-
       scheduleViewSettings: ScheduleViewSettings(
         // dayHeaderSettings: DayHeaderSettings(
         //   dayTextStyle: TextStyle(),
