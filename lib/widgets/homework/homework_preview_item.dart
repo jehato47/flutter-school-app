@@ -32,7 +32,7 @@ class HomeworkPreviewItem extends StatelessWidget {
               ),
             ),
             title: Text(hw["title"]),
-            subtitle: Text(hw["title"]),
+            subtitle: Text(hw["homework"]),
             trailing: Text(
               hw["dueDate"].toDate().difference(DateTime.now()).inDays <= 0
                   ? "Bitti"

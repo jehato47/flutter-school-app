@@ -88,7 +88,7 @@ class Timetable extends ChangeNotifier {
   List<Appointment> createAppointments(bool isTeacher) {
     _appointments = [];
 
-    DateTime date = DateTime.now();
+    // DateTime date = DateTime.now();
     // addAppointment(
     //   date,
     //   date.add(Duration(minutes: 50)),
@@ -120,15 +120,22 @@ class Timetable extends ChangeNotifier {
 
   void addRecursiveAppointment(
       DateTime startTime, DateTime endTime, String subject, WeekDays day) {
-    final Appointment weeklyAppointment = Appointment();
+    final Appointment weeklyAppointment = Appointment(
+      startTime: startTime.subtract(Duration(days: 180)),
+      endTime: endTime.subtract(Duration(days: 180)),
+    );
 
-    weeklyAppointment.startTime = startTime;
-    weeklyAppointment.endTime = endTime;
+    weeklyAppointment.startTime = startTime.subtract(Duration(days: 180));
+    weeklyAppointment.endTime = endTime.subtract(Duration(days: 180));
     weeklyAppointment.color = colorCollection[random.nextInt(9)];
     weeklyAppointment.subject = subject;
 
     final RecurrenceProperties recurrencePropertiesForWeeklyAppointment =
-        RecurrenceProperties();
+        RecurrenceProperties(
+      startDate: startTime.subtract(
+        Duration(days: 180),
+      ),
+    );
     recurrencePropertiesForWeeklyAppointment.recurrenceType =
         RecurrenceType.weekly;
     recurrencePropertiesForWeeklyAppointment.recurrenceRange =

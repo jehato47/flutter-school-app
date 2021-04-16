@@ -53,7 +53,7 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
     );
   }
 
-  void pickFile() async {
+  Future<void> pickFile() async {
     FilePickerResult result = await FilePicker.platform.pickFiles();
     if (result == null) return;
 
@@ -63,7 +63,7 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
     });
   }
 
-  void sendHomework() async {
+  Future<void> sendHomework() async {
     bool isValid = _form.currentState.validate();
 
     if (!isValid || date == null) return;
@@ -71,7 +71,7 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
     _form.currentState.save();
     hw["teacher"] = auth.currentUser.displayName;
     hw["teacherImage"] = auth.currentUser.photoURL;
-    hw["title"] = "title";
+    hw["title"] = auth.currentUser.displayName;
     setState(() {
       isLoading = true;
     });

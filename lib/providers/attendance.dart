@@ -125,6 +125,23 @@ class Attendance extends ChangeNotifier {
 
   Future<void> getAttendanceByClass() async {}
 
+  Future<List<QueryDocumentSnapshot>> filterAttendance(
+      dynamic startDate, dynamic endDate, String currentClass) async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('attendance/$currentClass/pieces')
+        .where(
+          "date",
+          isGreaterThanOrEqualTo: startDate,
+          isLessThanOrEqualTo: endDate,
+        )
+        .orderBy("date", descending: true)
+        .get();
+
+    final docs = snapshot.docs;
+
+    return docs;
+  }
+
   Future<dynamic> getOldAttendanceList(String currentClass) async {
     CollectionReference att =
         FirebaseFirestore.instance.collection('attendance');

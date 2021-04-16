@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import '../helpers/envs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,7 +10,6 @@ class Auth extends ChangeNotifier {
   // getInfoByToken
   // getStudentByNumber
   FirebaseAuth auth = FirebaseAuth.instance;
-  String _baseUrl = Envs.baseUrl;
   String _userToken;
   Map<String, dynamic> _userInfo;
 
@@ -42,6 +39,7 @@ class Auth extends ChangeNotifier {
     String classFirst,
     String classLast,
     String parentNumber,
+    String photoUrl,
   ) async {
     UserCredential userCredential = await auth
         .createUserWithEmailAndPassword(
@@ -63,7 +61,7 @@ class Auth extends ChangeNotifier {
       });
       await value.user.updateProfile(
         displayName: name + " " + surname,
-        photoURL: "https://schoolapi.pythonanywhere.com/media/default.jpg",
+        photoURL: photoUrl,
       );
       return value;
     });
@@ -77,6 +75,7 @@ class Auth extends ChangeNotifier {
     String surname,
     String phoneNumber,
     String lecture,
+    String photoUrl,
   ) async {
     UserCredential userCredential = await auth
         .createUserWithEmailAndPassword(
@@ -85,7 +84,7 @@ class Auth extends ChangeNotifier {
     )
         .then((value) async {
       CollectionReference students =
-          FirebaseFirestore.instance.collection('students');
+          FirebaseFirestore.instance.collection('teacher');
       students.doc(value.user.uid).set({
         "lecture": lecture,
         "phoneNumber": phoneNumber,
@@ -93,8 +92,9 @@ class Auth extends ChangeNotifier {
       });
       await value.user.updateProfile(
         displayName: name + " " + surname,
-        photoURL: "https://schoolapi.pythonanywhere.com/media/default.jpg",
+        photoURL: photoUrl,
       );
+
       return value;
     });
     print(userCredential.user.displayName);
@@ -107,9 +107,6 @@ class Auth extends ChangeNotifier {
         password: password,
       );
       print(response.additionalUserInfo.username);
-      response.user.updateProfile(
-        photoURL: "https://schoolapi.pythonanywhere.com/media/default.jpg",
-      );
     } catch (err) {
       print(err);
     }

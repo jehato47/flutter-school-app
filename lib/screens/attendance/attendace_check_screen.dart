@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:intl/intl.dart';
+import 'package:school2/screens/timetable/teacher_timetable_screen.dart';
 import 'package:school2/widgets/attendance/attendance_list.dart';
 import '../../providers/attendance.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -138,9 +139,10 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
               ),
               actions: [
                 IconButton(
-                  icon: Icon(Icons.info),
+                  icon: Icon(Icons.calendar_today_outlined),
                   onPressed: () {
-                    showPickerModal(context);
+                    Navigator.of(context)
+                        .pushReplacementNamed(TeacherTimetableScreen.url);
                   },
                 ),
                 IconButton(

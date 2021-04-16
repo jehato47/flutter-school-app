@@ -34,11 +34,12 @@ dependencies:
   flutter_downloader: ^1.5.2
   path_provider: ^2.0.1
   permission_handler: ^6.1.1
-  syncfusion_flutter_calendar: ^18.4.48
-  syncfusion_localizations: ^18.4.43+1
-  syncfusion_flutter_datagrid: ^18.4.44-beta
+  syncfusion_flutter_calendar: ^19.1.55
+  syncfusion_localizations: ^19.1.55
+  syncfusion_flutter_datagrid: ^19.1.55-beta
   flutter_picker: ^2.0.0
-  syncfusion_flutter_charts: ^18.4.30
+  syncfusion_flutter_charts: ^19.1.55+1
+  syncfusion_flutter_datepicker: ^19.1.55-beta
   firebase_core: ^1.0.2
   cupertino_icons: ^1.0.2
   flutter_slidable: ^0.5.7
