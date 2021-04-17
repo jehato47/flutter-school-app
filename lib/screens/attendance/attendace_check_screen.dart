@@ -31,7 +31,6 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
         if (!second.contains(ref)) second.add(ref);
       }
     });
-    print(ourattendance);
   }
 
   showPickerModal(BuildContext context) async {

@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import '../../providers/homework.dart';
 import '../../providers/auth.dart';
 import 'package:flutter_picker/Picker.dart';
-import '../../providers/attendance.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class GiveHomeworkScreen extends StatefulWidget {

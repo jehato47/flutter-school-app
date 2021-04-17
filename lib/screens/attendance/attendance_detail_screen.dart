@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../providers/auth.dart';
 import '../../widgets/attendance/attendance_detail_item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

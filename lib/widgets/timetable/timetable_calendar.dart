@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-// import 'package:syncfusion_flutter_core/theme.dart';
 import '../../providers/timetable.dart';
 import '../../helpers/timetable/timetable_helpers.dart';
 import '../../screens/attendance/attendace_check_screen.dart';
@@ -29,6 +28,7 @@ class _TimetableCalendarState extends State<TimetableCalendar> {
   Widget build(BuildContext context) {
     // dynamic teacherData = widget.teacherData;
     return SfCalendar(
+      // * TODO : Timezone olayını hallet
       timeZone: "Turkey Standard Time",
       firstDayOfWeek: 1,
       allowedViews:
@@ -62,14 +62,6 @@ class _TimetableCalendarState extends State<TimetableCalendar> {
               },
             );
           }
-
-          // print(element.startTime);
-          // print(element.subject);
-          // setState(() {
-          //   _appointments.removeWhere(
-          //     (v) => v.subject == element.subject,
-          //   );
-          // });
         });
       },
       scheduleViewMonthHeaderBuilder: scheduleViewBuilder,
