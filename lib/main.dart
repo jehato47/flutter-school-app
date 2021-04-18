@@ -28,6 +28,7 @@ import 'helpers/download/download_helper_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'screens/exam/students_exam_list.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -141,6 +142,7 @@ class MyApp extends StatelessWidget {
           StudentExamScreen.url: (ctx) => StudentExamScreen(),
           GiveEtudeScreen.url: (ctx) => GiveEtudeScreen(),
           NotificationScreen.url: (ctx) => NotificationScreen(),
+          StudentsExamList.url: (ctx) => StudentsExamList(),
         },
       ),
     );

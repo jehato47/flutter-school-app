@@ -39,17 +39,57 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
           ElevatedButton(
             child: Text("send"),
             onPressed: () async {
-              // FirebaseAuth auth = FirebaseAuth.instance;
-              await Provider.of<Auth>(context).signTeacherUp(
-                "jehatdeniz232@hotmail.com",
-                "123465789",
-                "jehat",
-                "deniz",
-                "05366639292",
-                "matematik",
-                "https://firebasestorage.googleapis.com/v0/b/school-f162e.appspot.com/o/default.jpg?alt=media&token=98ab15cf-2ea9-43db-a725-970650e5df5f",
-              );
-              // print(auth.currentUser.photoURL);
+              FirebaseAuth auth = FirebaseAuth.instance;
+              // await Provider.of<Auth>(context).signStudentUp(
+              //   "akcagrkcagc@hotmail.com",
+              //   "123465789",
+              //   "jehato231",
+              //   "Emine Münevver",
+              //   "Akcaağırkocaağaç",
+              //   2023,
+              //   "11",
+              //   "c",
+              //   "05366639292",
+              //   "https://firebasestorage.googleapis.com/v0/b/school-f162e.appspot.com/o/default.jpg?alt=media&token=98ab15cf-2ea9-43db-a725-970650e5df5f",
+              // );
+              CollectionReference ref =
+                  FirebaseFirestore.instance.collection("students");
+
+              final docs = await ref.get();
+              print(docs.docs[0].id);
+
+              CollectionReference ref2 =
+                  FirebaseFirestore.instance.collection("exam");
+              docs.docs.forEach((element) {
+                ref2.doc(element.id).set({
+                  "number": element["number"],
+                  "displayName": element["displayName"],
+                  "classFirst": element["classFirst"],
+                  "classLast": element["classLast"],
+                  "matematik": {
+                    "1": null,
+                    "2": null,
+                    "3": null,
+                  },
+                  "fizik": {
+                    "1": null,
+                    "2": null,
+                  },
+                  "biyoloji": {
+                    "1": null,
+                    "2": null,
+                  },
+                  "kimya": {
+                    "1": null,
+                    "2": null,
+                  },
+                  "türkçe": {
+                    "1": null,
+                    "2": null,
+                    "3": null,
+                  }
+                });
+              });
             },
           ),
           SizedBox(

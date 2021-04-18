@@ -39,6 +39,7 @@ class Attendance extends ChangeNotifier {
 
   Future<void> sendAttendance() async {}
 
+  // TODO: Eğer o gün ders yoksa ders yok yazdır
   Future<dynamic> getAttendance([
     String classTimetable,
     DateTime timeTimetable,
