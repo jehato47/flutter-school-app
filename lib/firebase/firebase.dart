@@ -39,7 +39,7 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
           ElevatedButton(
             child: Text("send"),
             onPressed: () async {
-              FirebaseAuth auth = FirebaseAuth.instance;
+              // FirebaseAuth auth = FirebaseAuth.instance;
               // await Provider.of<Auth>(context).signStudentUp(
               //   "akcagrkcagc@hotmail.com",
               //   "123465789",
@@ -87,6 +87,18 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
                     "1": null,
                     "2": null,
                     "3": null,
+                  },
+                  "coğrafya": {
+                    "1": null,
+                    "2": null,
+                  },
+                  "sosyalbilgiler": {
+                    "1": null,
+                    "2": null,
+                  },
+                  "dilbilgisi": {
+                    "1": null,
+                    "2": null,
                   }
                 });
               });
@@ -96,6 +108,28 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
             width: double.infinity,
             child: Container(),
           ),
+          StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection("exam")
+                .doc("07vrUvDetmXAOU1zzWq3JBCKcds2")
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting)
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+
+              return Expanded(
+                child: ListView(
+                  children: [
+                    ListTile(
+                      title: Text(snapshot.data["matematik"].toString()),
+                    )
+                  ],
+                ),
+              );
+            },
+          )
         ],
       ),
     );

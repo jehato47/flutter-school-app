@@ -55,15 +55,15 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
   Widget buildItem(int number) {
     TextEditingController controller = TextEditingController();
     if (generalData.containsKey(ids[index].id)) {
-      examData = generalData[ids[index].id]["matematik"];
+      examData = generalData[ids[index].id]["türkçe"];
       print(21222);
     } else {
-      examData = ids[index]["matematik"];
+      examData = ids[index]["türkçe"];
       print(33333);
     }
     if (examData["$number"] != null) {
       controller.text = examData["$number"].toString();
-      // generalData[ids[index].id] = {"matematik": examData};
+      // generalData[ids[index].id] = {"türkçe": examData};
     }
 
     return Column(
@@ -74,21 +74,26 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
             width: 70,
             height: 50,
             child: TextFormField(
+              textInputAction: TextInputAction.next,
               onChanged: (value) {
+                if (value != "" &&
+                    (double.parse(value) < 0 || double.parse(value) > 100)) {
+                  controller.text = controller.text.substring(0, 2);
+                }
                 if (value != "") {
                   examData["$number"] = double.parse(controller.text);
 
-                  generalData[ids[index].id] = {"matematik": examData};
+                  generalData[ids[index].id] = {"türkçe": examData};
                 }
               },
               controller: controller,
               validator: (value) {
-                print("validatorrr");
                 if (value != "" &&
                     (double.parse(value) < 0 || double.parse(value) > 100)) {
                   controller.text = controller.text.substring(0, 2);
                 }
 
+                print(controller.text);
                 return null;
               },
               maxLength: 4,
@@ -163,7 +168,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
                   itemBuilder: (context, i) {
                     return buildItem(i + 1);
                   },
-                  itemCount: ids[index]["matematik"].length,
+                  itemCount: ids[index]["türkçe"].length,
                 ),
               ),
               Row(

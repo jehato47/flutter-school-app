@@ -21,8 +21,8 @@ class _StudentsExamListState extends State<StudentsExamList> {
       body: FutureBuilder(
         future: FirebaseFirestore.instance
             .collection("exam")
-            .where("classFirst", isEqualTo: "11")
-            .where("classLast", isEqualTo: "c")
+            // .where("classFirst", isEqualTo: "11")
+            // .where("classLast", isEqualTo: "c")
             .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting)
