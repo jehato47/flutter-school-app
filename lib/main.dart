@@ -105,7 +105,9 @@ class MyApp extends StatelessWidget {
               ),
           primarySwatch: Colors.indigo,
           visualDensity: VisualDensity.adaptivePlatformDensity,
+          // fontFamily: "quicksand",
         ),
+
         home: Scaffold(
           body: FutureBuilder(
             future: Firebase.initializeApp(),

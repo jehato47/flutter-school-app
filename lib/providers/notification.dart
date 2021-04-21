@@ -11,11 +11,13 @@ class NotificationP extends ChangeNotifier {
     String creator,
     String content,
     File file,
+    String to,
   ) async {
     CollectionReference notifications =
         FirebaseFirestore.instance.collection('notification');
     String filename = file != null ? file.path.split("/").last : null;
     notifications.add({
+      "to": to,
       "creator": creator,
       "text": content,
       "isSeen": [],

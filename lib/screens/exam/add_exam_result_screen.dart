@@ -24,7 +24,6 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
     // QuerySnapshot attendance = await att.get();
     // final classes = attendance.docs.map((e) => e.id).toList();
     final students = ids.map((e) => e["displayName"]).toList();
-    print(students);
     // return;
     FocusScope.of(context).unfocus();
     await Future.delayed(Duration(milliseconds: 10));
@@ -42,13 +41,9 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
         title: Text(""),
         onConfirm: (Picker picker, List value) {
           setState(() {
-            print(value.first);
-            setState(() {
-              index = value.first;
-            });
+            index = value.first;
             // currentClass = picker.getSelectedValues().first;
           });
-          // print(picker.getSelectedValues().last);
         }).showModal(this.context);
   }
 
@@ -56,10 +51,8 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
     TextEditingController controller = TextEditingController();
     if (generalData.containsKey(ids[index].id)) {
       examData = generalData[ids[index].id]["türkçe"];
-      print(21222);
     } else {
       examData = ids[index]["türkçe"];
-      print(33333);
     }
     if (examData["$number"] != null) {
       controller.text = examData["$number"].toString();
@@ -76,24 +69,29 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
             child: TextFormField(
               textInputAction: TextInputAction.next,
               onChanged: (value) {
-                if (value != "" &&
-                    (double.parse(value) < 0 || double.parse(value) > 100)) {
-                  controller.text = controller.text.substring(0, 2);
-                }
                 if (value != "") {
-                  examData["$number"] = double.parse(controller.text);
+                  try {
+                    if (double.parse(value) < 0 || double.parse(value) > 100) {
+                      controller.text = controller.text.substring(0, 2);
+                    }
 
+                    examData["$number"] = int.parse(controller.text);
+                  } catch (err) {
+                    examData["$number"] = double.parse(controller.text);
+                  }
                   generalData[ids[index].id] = {"türkçe": examData};
                 }
               },
               controller: controller,
               validator: (value) {
-                if (value != "" &&
-                    (double.parse(value) < 0 || double.parse(value) > 100)) {
-                  controller.text = controller.text.substring(0, 2);
+                try {
+                  if (value != "" &&
+                      (double.parse(value) < 0 || double.parse(value) > 100)) {
+                    controller.text = controller.text.substring(0, 2);
+                  }
+                } catch (err) {
+                  return "";
                 }
-
-                print(controller.text);
                 return null;
               },
               maxLength: 4,
@@ -190,7 +188,6 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
                       child:
                           Text(index == ids.length - 1 ? "Bitti" : "sonraki"),
                       onPressed: () async {
-                        print(generalData);
                         if (index < ids.length - 1)
                           setState(() {
                             index += 1;

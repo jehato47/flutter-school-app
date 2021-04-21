@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../providers/homework.dart';
 import '../../screens/homework/homework_detail_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeworkPreviewItem extends StatelessWidget {
   final dynamic hw;
@@ -10,13 +9,11 @@ class HomeworkPreviewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference ref = FirebaseFirestore.instance.collection("homework");
-
     return Column(
       children: [
         InkWell(
           onLongPress: () async {
-            await Provider.of<HomeWork>(context).deleteHomework(ref, hw);
+            await Provider.of<HomeWork>(context).deleteHomework(hw);
           },
           borderRadius: BorderRadius.circular(4),
           onTap: () {

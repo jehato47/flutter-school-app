@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_picker/Picker.dart';
 import '../../providers/notification.dart';
 import '../../providers/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,6 +18,9 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+  dynamic classes;
+  String to;
+
   FirebaseAuth auth = FirebaseAuth.instance;
   NotificationP notificationP;
   File file;
@@ -133,7 +137,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 TextButton(
                   onPressed: () {
                     focusNode.unfocus();
-                    // showPickerModal(context);
+                    showPickerModal(context);
                   },
                   child: Text("sınıf seç"),
                 ),
@@ -147,6 +151,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     auth.currentUser.displayName,
                     mesaj.text.trim(),
                     file,
+                    "11-a",
                   );
                   file = null;
                   Navigator.of(context).pop();
@@ -160,23 +165,27 @@ class _NotificationScreenState extends State<NotificationScreen> {
     );
   }
 
-  // TODO : todo
-  // showPickerModal(BuildContext context) async {
-  //   final token = Provider.of<Auth>(context).token;
-  //   await Provider.of<Attendance>(context)
-  //       .getAllClassNamesForAttendancePreview(token);
-  //   final allClasses = Provider.of<Attendance>(context).allClasses;
+  showPickerModal(BuildContext context) async {
+    final att = FirebaseFirestore.instance.collection('attendance');
 
-  //   new Picker(
-  //       adapter: PickerDataAdapter<String>(pickerdata: allClasses),
-  //       changeToFirst: true,
-  //       hideHeader: false,
-  //       confirmText: "Seç",
-  //       cancelText: "Iptal",
-  //       title: Text("Sınıf seç"),
-  //       magnification: 1.2,
-  //       onConfirm: (Picker picker, List value) {
-  //         setState(() {});
-  //       }).showModal(this.context);
-  // }
+    QuerySnapshot attendance = await att.get();
+    classes = attendance.docs.map((e) => e.id).toList();
+    new Picker(
+        adapter: PickerDataAdapter<String>(pickerdata: classes),
+        changeToFirst: true,
+        hideHeader: false,
+        confirmText: "Seç",
+        cancelText: "Iptal",
+        diameterRatio: 1.5,
+        magnification: 1.2,
+        // title: Text(DateFormat('d MMMM').format(DateTime.now()).toString()),
+        onConfirm: (Picker picker, List value) {
+          setState(() {
+            to = picker.getSelectedValues().first;
+            // filteredDocs = [];
+            print(to);
+          });
+          // print(picker.getSelectedValues().last);
+        }).showModal(this.context);
+  }
 }

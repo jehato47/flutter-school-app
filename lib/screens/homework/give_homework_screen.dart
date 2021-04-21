@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:intl/intl.dart';
 import '../../providers/homework.dart';
-import '../../providers/auth.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../widgets/homework/homework_history.dart';
 
 class GiveHomeworkScreen extends StatefulWidget {
   static const url = "/give-homework";
@@ -68,9 +68,13 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
     if (!isValid || date == null) return;
 
     _form.currentState.save();
+    _form.currentState.reset();
+    date = null;
     hw["teacher"] = auth.currentUser.displayName;
     hw["teacherImage"] = auth.currentUser.photoURL;
     hw["title"] = auth.currentUser.displayName;
+    hw["uid"] = auth.currentUser.uid;
+    hw["to"] = "11-a";
     setState(() {
       isLoading = true;
     });
@@ -79,7 +83,7 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
       isLoading = false;
     });
 
-    Navigator.of(context).pop();
+    // Navigator.of(context).pop();
   }
 
   showPickerModal(BuildContext context) async {
@@ -110,9 +114,6 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
 
   @override
   Widget build(BuildContext context) {
-    user = Provider.of<Auth>(context).userInform;
-    token = Provider.of<Auth>(context).token;
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Ödev Ver"),
@@ -122,96 +123,104 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
           padding: EdgeInsets.all(20),
           child: Form(
             key: _form,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextFormField(
-                  validator: (value) {
-                    if (value.isEmpty) return "Ödev girmediniz";
-                    return null;
-                  },
-                  onSaved: (newValue) {
-                    hw["homework"] = newValue;
-                  },
-                  decoration: InputDecoration(
-                    labelText: "Ödev",
-                    // border: OutlineInputBorder(),
-                  ),
-                ),
-                TextFormField(
-                  minLines: 2,
-                  maxLines: 5,
-                  validator: (value) {
-                    if (value.isEmpty) return "Açıklama girmediniz";
-                    return null;
-                  },
-                  onSaved: (newValue) {
-                    hw["explanation"] = newValue;
-                  },
-                  decoration: InputDecoration(
-                    labelText: "Açıklama",
-                    alignLabelWithHint: true,
-                    // border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 40),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: pickFile,
-                        child: Text(
-                          file != null
-                              ? file.path.split("/").last
-                              : "Dosya ekle",
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 5),
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: showDatePickerFunc,
-                        child: Text(
-                          date != null
-                              ? DateFormat('d MMMM').format(date)
-                              : "Tarih Seç",
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 5),
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () {
-                          // TODO : Sınıf seçimini sayfa açıldığında yaptır
-                          // TODO : Sadece Öğretmenin Girdiği Sınıfları Göster
-                          showPickerModal(context);
-                        },
-                        child: Text(
-                          hw["classFirst"] != null && hw["classLast"] != null
-                              ? hw["classFirst"] + "-" + hw["classLast"]
-                              : "Sınıf Seç",
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: isLoading
-                      ? Center(child: CircularProgressIndicator())
-                      : OutlinedButton(
-                          onPressed: sendHomework,
-                          child: Text("Gönder"),
-                        ),
-                ),
-              ],
-            ),
+            child: mainColumn(context),
           ),
         ),
       ),
+    );
+  }
+
+  Column mainColumn(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextFormField(
+          // controller: hwController,
+          validator: (value) {
+            if (value.isEmpty) return "Ödev girmediniz";
+            return null;
+          },
+          onSaved: (newValue) {
+            hw["homework"] = newValue;
+          },
+          decoration: InputDecoration(
+            labelText: "Ödev",
+            // border: OutlineInputBorder(),
+          ),
+        ),
+        TextFormField(
+          minLines: 2,
+          maxLines: 5,
+          validator: (value) {
+            if (value.isEmpty) return "Açıklama girmediniz";
+            return null;
+          },
+          onSaved: (newValue) {
+            hw["explanation"] = newValue;
+          },
+          decoration: InputDecoration(
+            labelText: "Açıklama",
+            alignLabelWithHint: true,
+            // border: OutlineInputBorder(),
+          ),
+        ),
+        SizedBox(height: 40),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: OutlinedButton(
+                onPressed: pickFile,
+                child: Text(
+                  file != null ? file.path.split("/").last : "Dosya ekle",
+                ),
+              ),
+            ),
+            SizedBox(width: 5),
+            Expanded(
+              child: OutlinedButton(
+                onPressed: showDatePickerFunc,
+                child: Text(
+                  date != null
+                      ? DateFormat('d MMMM').format(date)
+                      : "Tarih Seç",
+                ),
+              ),
+            ),
+            SizedBox(width: 5),
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () {
+                  // TODO : Sınıf seçimini sayfa açıldığında yaptır
+                  // TODO : Sadece Öğretmenin Girdiği Sınıfları Göster
+                  showPickerModal(context);
+                },
+                child: Text(
+                  hw["classFirst"] != null && hw["classLast"] != null
+                      ? hw["classFirst"] + "-" + hw["classLast"]
+                      : "Sınıf Seç",
+                ),
+              ),
+            ),
+          ],
+        ),
+        sendButton(),
+        HomeworkHistory(),
+      ],
+    );
+  }
+
+  SizedBox sendButton() {
+    return SizedBox(
+      width: double.infinity,
+      child: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : OutlinedButton(
+              onPressed: sendHomework,
+              child: Text("Gönder"),
+            ),
     );
   }
 }

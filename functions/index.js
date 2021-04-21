@@ -7,7 +7,7 @@ exports.myFunction = functions.firestore
     .document("notification/{notification}")
     .onCreate((snapshot, context)=>{
       console.log(snapshot.data());
-      return admin.messaging().sendToTopic("11-a", {
+      return admin.messaging().sendToTopic(snapshot.data().to, {
         notification: {
           title: snapshot.data().text,
           body: snapshot.data().creator,
@@ -20,7 +20,7 @@ exports.myFunction2 = functions.firestore
     .document("homework/{homework}")
     .onCreate((snapshot, context)=>{
       console.log(snapshot.data());
-      return admin.messaging().sendToTopic("11-a", {
+      return admin.messaging().sendToTopic(snapshot.data().to, {
         notification: {
           title: "Ödev",
           body: snapshot.data().homework,

@@ -36,9 +36,9 @@ class HomeWork extends ChangeNotifier {
   }
 
   Future<void> deleteHomework(
-    CollectionReference ref,
     DocumentSnapshot homework,
   ) async {
+    CollectionReference ref = FirebaseFirestore.instance.collection("homework");
     ref.doc(homework.id).delete().then((value) async {
       if (homework["fileName"] != null) {
         try {

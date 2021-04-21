@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -112,6 +113,8 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
               ),
               padding: EdgeInsets.symmetric(vertical: 20),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ListTile(
                     leading: Icon(
@@ -149,6 +152,13 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
                     title: Text("Başarısını en çok arttıran"),
                     trailing: Text("Mükerrem"),
                   ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: TextButton(
+                      onPressed: () {},
+                      child: Text("Cevap kağıdını gör"),
+                    ),
+                  )
                 ],
               ),
             ),
