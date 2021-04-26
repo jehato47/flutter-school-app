@@ -20,6 +20,7 @@ class _HomeworkHistoryState extends State<HomeworkHistory> {
         stream: FirebaseFirestore.instance
             .collection("homework")
             .where("uid", isEqualTo: auth.currentUser.uid)
+            .orderBy("startDate")
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting)
@@ -38,8 +39,8 @@ class _HomeworkHistoryState extends State<HomeworkHistory> {
                   icon: Icons.how_to_reg,
                   color: Colors.blue,
                   onTap: () {
-                    Provider.of<HomeWork>(context)
-                        .addHomeWork(hws[index].data(), null);
+                    // Provider.of<HomeWork>(context)
+                    //     .addHomeWork(hws[index].data(), null);
                   },
                 ),
               ],
@@ -55,32 +56,32 @@ class _HomeworkHistoryState extends State<HomeworkHistory> {
                     arguments: hws[index],
                   );
                 },
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      hws[index]["teacherImage"],
-                    ),
-                  ),
-                  title: Text(hws[index]["title"]),
-                  subtitle: Text(hws[index]["homework"]),
-                  trailing: Text(
-                    hws[index]["dueDate"]
-                                .toDate()
-                                .difference(DateTime.now())
-                                .inDays <=
-                            0
-                        ? "Bitti"
-                        : hws[index]["dueDate"]
-                                .toDate()
-                                .difference(DateTime.now())
-                                .inDays
-                                .toString() +
-                            " gün",
-                  ),
-                ),
+                child: hwListTile(hws[index]),
               ),
             ),
           );
         });
+  }
+
+  ListTile hwListTile(hw) {
+    return ListTile(
+      leading: CircleAvatar(
+        backgroundImage: NetworkImage(
+          hw["teacherImage"],
+        ),
+      ),
+      title: Text(hw["title"]),
+      subtitle: Text(hw["homework"]),
+      trailing: Text(
+        hw["dueDate"].toDate().difference(DateTime.now()).inDays <= 0
+            ? "Bitti"
+            : hw["dueDate"]
+                    .toDate()
+                    .difference(DateTime.now())
+                    .inDays
+                    .toString() +
+                " gün",
+      ),
+    );
   }
 }

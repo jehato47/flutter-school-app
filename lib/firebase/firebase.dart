@@ -8,6 +8,7 @@ import './item.dart';
 import 'dart:math';
 import '../screens/attendance/attendance_detail_screen.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class FireBaseTryScreen extends StatefulWidget {
   @override
@@ -39,100 +40,71 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
           ElevatedButton(
             child: Text("send"),
             onPressed: () async {
-              FirebaseAuth auth = FirebaseAuth.instance;
-              // await Provider.of<Auth>(context).signStudentUp(
-              //   "akcagrkcagc@hotmail.com",
+              // FirebaseAuth auth = FirebaseAuth.instance;
+              // Provider.of<Auth>(context).signTeacherUp(
+              //   "jehat2223@hotmail.com",
               //   "123465789",
-              //   "jehato231",
-              //   "Emine Münevver",
-              //   "Akcaağırkocaağaç",
-              //   2023,
-              //   "11",
-              //   "c",
+              //   "hacı",
+              //   "ekram",
               //   "05366639292",
+              //   "biyoloji",
               //   "https://firebasestorage.googleapis.com/v0/b/school-f162e.appspot.com/o/default.jpg?alt=media&token=98ab15cf-2ea9-43db-a725-970650e5df5f",
               // );
-              Query query = FirebaseFirestore.instance
-                  .collection("homework")
-                  .where("uid", isEqualTo: auth.currentUser.uid);
 
-              final docs = await query.get();
-              print(docs.docs[0]["homework"]);
-              // final docs = await ref.get();
-              // print(docs.docs[0].id);
-// FirebaseFirestore.instance.collection("homework").where("field")
-              // CollectionReference ref2 =
-              //     FirebaseFirestore.instance.collection("exam");
-              // docs.docs.forEach((element) {
-              //   ref2.doc(element.id).set({
-              //     "number": element["number"],
-              //     "displayName": element["displayName"],
-              //     "classFirst": element["classFirst"],
-              //     "classLast": element["classLast"],
-              //     "matematik": {
-              //       "1": null,
-              //       "2": null,
-              //       "3": null,
-              //     },
-              //     "fizik": {
-              //       "1": null,
-              //       "2": null,
-              //     },
-              //     "biyoloji": {
-              //       "1": null,
-              //       "2": null,
-              //     },
-              //     "kimya": {
-              //       "1": null,
-              //       "2": null,
-              //     },
-              //     "türkçe": {
-              //       "1": null,
-              //       "2": null,
-              //       "3": null,
-              //     },
-              //     "coğrafya": {
-              //       "1": null,
-              //       "2": null,
-              //     },
-              //     "sosyalbilgiler": {
-              //       "1": null,
-              //       "2": null,
-              //     },
-              //     "dilbilgisi": {
-              //       "1": null,
-              //       "2": null,
-              //     }
-              //   });
-              // });
+              CollectionReference teacherRef =
+                  FirebaseFirestore.instance.collection("teacher");
+              final teachers = await teacherRef.get();
+
+              print(teachers.docs[1]["displayName"]);
+
+              CollectionReference ref =
+                  FirebaseFirestore.instance.collection("etudeTimes");
+
+              await ref.doc(teachers.docs[1].id).set({
+                "ref": teachers.docs[1].reference,
+                "lecture": teachers.docs[1]["lecture"],
+                "displayName": teachers.docs[1]["displayName"],
+                "monday": [
+                  DateTime(2021, 4, 26, 14, 30),
+                ],
+                "tuesday": [
+                  DateTime(2021, 4, 26, 14, 30),
+                ],
+                "wednesday": [
+                  DateTime(2021, 4, 26, 14, 30),
+                ],
+                "thursday": [
+                  DateTime(2021, 4, 26, 14, 30),
+                ],
+              });
+
+              final data = await ref.get();
+
+              print(data.docs);
+
+              // QuerySnapshot querySnapshot = await
+              FirebaseFirestore.instance
+                  .collection("etude/${teachers.docs[1].id}/pieces")
+                  //     .get();
+
+                  // print(querySnapshot.docs[0].data());
+                  .doc(DateTime(2021, 5, 26, 14, 30).toString())
+                  .set({
+                "date": DateTime(2021, 5, 26, 14, 30),
+                "notParticipate": [],
+                "registered": [],
+                "requests": [],
+                "subject": "",
+                "teacherName": "",
+                "uid": teachers.docs[1].id,
+                "lecture": teachers.docs[1]["lecture"]
+              });
             },
           ),
           SizedBox(
             width: double.infinity,
             child: Container(),
           ),
-          // StreamBuilder(
-          //   stream: FirebaseFirestore.instance
-          //       .collection("exam")
-          //       .doc("07vrUvDetmXAOU1zzWq3JBCKcds2")
-          //       .snapshots(),
-          //   builder: (context, snapshot) {
-          //     if (snapshot.connectionState == ConnectionState.waiting)
-          //       return Center(
-          //         child: CircularProgressIndicator(),
-          //       );
-
-          //     return Expanded(
-          //       child: ListView(
-          //         children: [
-          //           ListTile(
-          //             title: Text(snapshot.data["matematik"].toString()),
-          //           )
-          //         ],
-          //       ),
-          //     );
-          //   },
-          // )
         ],
       ),
     );

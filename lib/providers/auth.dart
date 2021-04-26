@@ -86,6 +86,7 @@ class Auth extends ChangeNotifier {
       CollectionReference students =
           FirebaseFirestore.instance.collection('teacher');
       students.doc(value.user.uid).set({
+        "displayName": name + " " + surname,
         "lecture": lecture,
         "phoneNumber": phoneNumber,
         "signUpDate": DateTime.now(),

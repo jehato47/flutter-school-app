@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:school2/firebase/firebase.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 import 'package:provider/provider.dart';
 import 'providers/notification.dart';
@@ -24,6 +25,8 @@ import 'screens/homework/give_homework_screen.dart';
 import 'screens/timetable/student_timetable_screen.dart';
 import 'screens/exam/add_exam_result_screen.dart';
 import 'screens/etude/give_etude_screen.dart';
+import 'screens/etude/show_etudes.dart';
+import 'screens/etude/etudes_screen.dart';
 import 'helpers/download/download_helper_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:intl/intl.dart';
@@ -121,7 +124,9 @@ class MyApp extends StatelessWidget {
                 stream: FirebaseAuth.instance.authStateChanges(),
                 builder: (ctx, snapshot) {
                   // FirebaseAuth.instance.signOut();
-                  if (snapshot.hasData) {
+                  // TODO : Login Form da setState hatası veriyor bak
+                  if (!(snapshot.connectionState == ConnectionState.waiting) &&
+                      snapshot.hasData) {
                     return HomeScreen();
                   }
                   return LoginScreen();
@@ -145,6 +150,8 @@ class MyApp extends StatelessWidget {
           GiveEtudeScreen.url: (ctx) => GiveEtudeScreen(),
           NotificationScreen.url: (ctx) => NotificationScreen(),
           StudentsExamList.url: (ctx) => StudentsExamList(),
+          ShowEtudes.url: (ctx) => ShowEtudes(),
+          EtudesScreen.url: (ctx) => EtudesScreen(),
         },
       ),
     );

@@ -19,20 +19,19 @@ class HomeWork extends ChangeNotifier {
             .child("homework")
             .child(value.id)
             .child(file.path.split("/").last)
-            .putFile(file);
+            .putFile(file)
+            .then((v) async {
+          value.update({"fileRef": v.ref.fullPath});
+        });
       }
     });
   }
 
   Future<String> getDownloadUrl(
-    DocumentSnapshot homework,
+    String fileRef,
   ) async {
-    return FirebaseStorage.instance
-        .ref()
-        .child("homework")
-        .child(homework.id)
-        .child(homework["fileName"])
-        .getDownloadURL();
+    final url = await FirebaseStorage.instance.ref(fileRef).getDownloadURL();
+    return url;
   }
 
   Future<void> deleteHomework(

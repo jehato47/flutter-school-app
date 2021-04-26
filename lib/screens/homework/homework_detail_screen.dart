@@ -67,7 +67,7 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
                     ? null
                     : () async {
                         final url = await Provider.of<HomeWork>(context)
-                            .getDownloadUrl(hw);
+                            .getDownloadUrl(hw["fileRef"]);
                         Provider.of<Download>(context).downloadFile(
                           url,
                           hw["fileName"],
