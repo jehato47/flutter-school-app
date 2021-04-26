@@ -12,7 +12,6 @@ class HomeworkHistory extends StatefulWidget {
 }
 
 class _HomeworkHistoryState extends State<HomeworkHistory> {
-  // TODO : tekrar oluşturduğun ödevin dosyasını indirmeyi hallet
   @override
   Widget build(BuildContext context) {
     FirebaseAuth auth = FirebaseAuth.instance;

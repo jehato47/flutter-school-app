@@ -58,16 +58,17 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
               child: Text("ok"))
         ],
         content: Column(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image(
-            //   height: 200,
-            //   fit: BoxFit.cover,
-            //   image: NetworkImage(
-            //     "https://schoolapi.pythonanywhere.com" + student["profil_foto"],
-            //   ),
-            // ),
+            Image(
+              height: 200,
+              fit: BoxFit.cover,
+              image: NetworkImage(
+                "https://firebasestorage.googleapis.com/v0/b/school-f162e.appspot.com/o/default.jpg?alt=media&token=98ab15cf-2ea9-43db-a725-970650e5df5f",
+              ),
+            ),
             SizedBox(height: 10),
             Text("Ad Soyad : ${student["name"]} ${student["surname"]}"),
             Text("Sınıf : ${student["classFirst"]} ${student["classLast"]}"),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../helpers/envs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -103,11 +102,10 @@ class Auth extends ChangeNotifier {
 
   Future<void> login(String username, String password) async {
     try {
-      final response = await auth.signInWithEmailAndPassword(
+      await auth.signInWithEmailAndPassword(
         email: username,
         password: password,
       );
-      print(response.additionalUserInfo.username);
     } catch (err) {
       print(err);
     }

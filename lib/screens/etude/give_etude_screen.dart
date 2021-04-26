@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
-import '../../providers/timetable.dart';
-import '../../helpers/timetable/timetable_helpers.dart';
-import '../../screens/attendance/attendace_check_screen.dart';
-import 'package:provider/provider.dart';
+
 import 'show_etudes.dart';
 
 class GiveEtudeScreen extends StatefulWidget {

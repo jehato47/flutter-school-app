@@ -146,6 +146,8 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
               ListTile(
                 trailing: Icon(Icons.autorenew_sharp),
                 onTap: () async {
+                  FocusScope.of(context).unfocus();
+                  await Future.delayed(Duration(milliseconds: 10));
                   await showPickerModal(context);
                 },
                 leading: Text(

@@ -6,7 +6,6 @@ import '../../screens/homework/give_homework_screen.dart';
 import '../../screens/homework/homework_preview_screen.dart';
 import '../../screens/timetable/teacher_timetable_screen.dart';
 import '../../screens/timetable/student_timetable_screen.dart';
-import '../../screens/exam/add_exam_result_screen.dart';
 import '../../screens/exam/students_exam_list.dart';
 import '../../screens/etude/give_etude_screen.dart';
 import 'page_grid_item.dart';

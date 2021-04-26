@@ -124,9 +124,11 @@ class MyApp extends StatelessWidget {
                 stream: FirebaseAuth.instance.authStateChanges(),
                 builder: (ctx, snapshot) {
                   // FirebaseAuth.instance.signOut();
-                  // TODO : Login Form da setState hatası veriyor bak
-                  if (!(snapshot.connectionState == ConnectionState.waiting) &&
-                      snapshot.hasData) {
+                  // * TODO : Login Form da setState hatası veriyor bak
+                  if (snapshot.hasData) {
+                    // ? TODO : Öğrenci ve Öğretmen eklerken resim urlsini ekle de kaydet
+                    // ? TODO : Yoklama Ekranında Öğreninin detaylarını göstermeyi hallet
+                    // ? TODO : Sınav sonuç ekranında detay pop-up ını bitir
                     return HomeScreen();
                   }
                   return LoginScreen();

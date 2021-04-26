@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'RegisterButton.dart';
+import '../../widgets/etude/register_button.dart';
 
 class EtudesScreen extends StatefulWidget {
   static const url = "etudes";
@@ -14,7 +14,7 @@ class _EtudesScreenState extends State<EtudesScreen> {
   bool isRequested = false;
   @override
   Widget build(BuildContext context) {
-    final auth = FirebaseAuth.instance;
+    // final auth = FirebaseAuth.instance;
     dynamic teacher = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
