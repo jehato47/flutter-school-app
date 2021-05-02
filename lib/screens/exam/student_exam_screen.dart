@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class StudentExamScreen extends StatefulWidget {
   static const url = "/student-exam";
@@ -11,6 +11,17 @@ class StudentExamScreen extends StatefulWidget {
 }
 
 class _StudentExamScreenState extends State<StudentExamScreen> {
+  dynamic examScore;
+  Map exam3 = {
+    "1": "matematik",
+    "2": "fizik",
+    "3": "kimya",
+    "4": "biyoloji",
+    "5": "türkçe",
+    "6": "sosyalbilgiler",
+    "7": "coğrafya",
+    "8": "dilbilgisi",
+  };
   List<GridColumn> getColumns() {
     List<GridColumn> columns;
 
@@ -27,7 +38,7 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
         ),
       ),
       GridTextColumn(
-        columnName: 'firstExam',
+        columnName: '1',
         label: Container(
           padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
@@ -38,7 +49,7 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
         ),
       ),
       GridTextColumn(
-        columnName: 'secondExam',
+        columnName: '2',
         label: Container(
           padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
@@ -49,7 +60,7 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
         ),
       ),
       GridTextColumn(
-        columnName: 'thirdExam',
+        columnName: '3',
         label: Container(
           padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
@@ -58,7 +69,6 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
             overflow: TextOverflow.ellipsis,
           ),
         ),
-        // columnWidthMode: ColumnWidthMode.lastColumnFill,
       ),
       GridTextColumn(
         columnName: 'mean',
@@ -70,7 +80,6 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
             overflow: TextOverflow.ellipsis,
           ),
         ),
-        // columnWidthMode: ColumnWidthMode.lastColumnFill,
       ),
     ];
     return columns;
@@ -92,6 +101,19 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
         if (indexes.rowIndex == 0 ||
             indexes.columnIndex == 4 ||
             indexes.columnIndex == 0) return;
+
+        String lecture = exam3[details.rowColumnIndex.rowIndex.toString()];
+        // print(details.rowColumnIndex.columnIndex);
+        // print(lecture);
+        examScore = data[lecture][details.column.columnName];
+        if (examScore == null) return;
+        DocumentSnapshot snapshot = await FirebaseFirestore.instance
+            .collection("examDetails/11-c/$lecture")
+            .doc(details.rowColumnIndex.columnIndex.toString())
+            .get();
+
+        if (snapshot.data() == null) return;
+
         await showModalBottomSheet(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -112,9 +134,9 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
                 ),
               ),
               padding: EdgeInsets.symmetric(vertical: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: ListView(
+                // mainAxisAlignment: MainAxisAlignment.start,
+                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ListTile(
                     leading: Icon(
@@ -122,8 +144,8 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
                       color: Colors.green,
                     ),
                     title: Text("Sınıf ort"),
-                    trailing: Text("Benim notum 53"),
-                    subtitle: Text("90"),
+                    subtitle: Text(snapshot["branchMean"].toStringAsFixed(2)),
+                    trailing: Text("Benim notum $examScore"),
                   ),
                   ListTile(
                     leading: Icon(
@@ -131,34 +153,27 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
                       color: Colors.red,
                     ),
                     title: Text("Okul ort"),
-                    trailing: Text("Benim notum 60"),
-                    subtitle: Text("80"),
+                    subtitle: Text(snapshot["gradeMean"].toStringAsFixed(2)),
+                    trailing: Text("Benim notum $examScore"),
                   ),
-                  ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        "https://firebasestorage.googleapis.com/v0/b/school-f162e.appspot.com/o/default.jpg?alt=media&token=98ab15cf-2ea9-43db-a725-970650e5df5f",
-                      ),
+                  Divider(thickness: 1),
+                  Center(
+                    // padding: EdgeInsets.symmetric(horizontal: 30),
+                    child: Text(
+                      "En başarılı öğrenciler",
+                      style: TextStyle(fontSize: 20),
                     ),
-                    title: Text("En başarılı"),
-                    trailing: Text("Hacı Mehmet"),
                   ),
-                  ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        "https://firebasestorage.googleapis.com/v0/b/school-f162e.appspot.com/o/default.jpg?alt=media&token=98ab15cf-2ea9-43db-a725-970650e5df5f",
-                      ),
-                    ),
-                    title: Text("Başarısını en çok arttıran"),
-                    trailing: Text("Mükerrem"),
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text("Cevap kağıdını gör"),
-                    ),
-                  )
+                  ...snapshot["mostSuccessful"]
+                      .map((e) => ListTile(
+                            leading: Icon(
+                              Icons.done,
+                              color: Colors.blue,
+                            ),
+                            title: Text(e["displayName"]),
+                            trailing: Text("Aldığı Not : ${e["grade"]}"),
+                          ))
+                      .toList(),
                 ],
               ),
             ),
@@ -181,7 +196,7 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection("exam")
-              .doc("07vrUvDetmXAOU1zzWq3JBCKcds2")
+              .doc("ECkPBIzt7xU0NDGuJa6T1KBRJTr1")
               .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting)
@@ -217,8 +232,6 @@ class _SelectionDataGridSource extends DataGridSource {
     }).toList(growable: false);
   }
 
-  // Overrides
-
   @override
   List<DataGridRow> get rows => dataGridRows;
 
@@ -230,7 +243,16 @@ class _SelectionDataGridSource extends DataGridSource {
       TextOverflow textOverflow = TextOverflow.ellipsis,
       Object value,
     }) {
-      return Container(
+      return
+          //  value == 100
+          //     ? Image(
+          //         fit: BoxFit.cover,
+          //         image: NetworkImage(
+          //           "https://media.giphy.com/media/TgGWZwWlsODxFPA21A/giphy.gif",
+          //         ),
+          //       )
+          //     :
+          Container(
         padding: padding,
         alignment: alignment,
         child: Text(

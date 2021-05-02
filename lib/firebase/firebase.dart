@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +10,7 @@ import 'dart:math';
 import '../screens/attendance/attendance_detail_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
 
 class FireBaseTryScreen extends StatefulWidget {
   @override
@@ -16,6 +18,7 @@ class FireBaseTryScreen extends StatefulWidget {
 }
 
 class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
+  File file;
   String classFirst;
   String classLast;
   CollectionReference attendance;
@@ -28,6 +31,14 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
     "saturday",
     "sunday"
   ];
+  Future<void> pickFile() async {
+    FilePickerResult result = await FilePicker.platform.pickFiles();
+    if (result == null) return;
+
+    setState(() {
+      file = File(result.files.single.path);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,70 +51,142 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
           ElevatedButton(
             child: Text("send"),
             onPressed: () async {
-              // FirebaseAuth auth = FirebaseAuth.instance;
-              // Provider.of<Auth>(context).signTeacherUp(
-              //   "jehat2223@hotmail.com",
+              var list =
+                  new List<String>.generate(2, (i) => (i + 1).toString());
+              // print(list[0] + "qwe");
+              FirebaseAuth auth = FirebaseAuth.instance;
+              // Provider.of<Auth>(context).signStudentUp(
+              //   "ilysumt@hotmail.com",
               //   "123465789",
-              //   "hacı",
-              //   "ekram",
+              //   "ilyasumut",
+              //   "İlyas Umut",
+              //   "Apul",
+              //   159,
+              //   "11",
+              //   "g",
               //   "05366639292",
-              //   "biyoloji",
-              //   "https://firebasestorage.googleapis.com/v0/b/school-f162e.appspot.com/o/default.jpg?alt=media&token=98ab15cf-2ea9-43db-a725-970650e5df5f",
+              //   file,
               // );
+              // Provider.of<Auth>(context).signTeacherUp(
+              //   "pkcnaksz@hotmail.com",
+              //   "123465789",
+              //   "Pekcan",
+              //   "Aksöz",
+              //   "05366639292",
+              //   "matematik",
+              //   file,
+              // );
+              // CollectionReference ref =
+              //     FirebaseFirestore.instance.collection("students");
+              // CollectionReference ref2 =
+              //     FirebaseFirestore.instance.collection("exam");
 
-              CollectionReference teacherRef =
-                  FirebaseFirestore.instance.collection("teacher");
-              final teachers = await teacherRef.get();
+              // QuerySnapshot snapshot = await ref.get();
+              // print(snapshot.docs[0].id);
 
-              print(teachers.docs[1]["displayName"]);
+              // snapshot.docs.forEach((element) async {
+              //   await ref2.doc(element.id).set({
+              //     "displayName": element["displayName"],
+              //     "number": element["number"],
+              //     "classFirst": element["classFirst"],
+              //     "classLast": element["classLast"],
+              //     "matematik": {
+              //       "1": null,
+              //       "2": null,
+              //       "3": null,
+              //     },
+              //     "fizik": {
+              //       "1": null,
+              //       "2": null,
+              //     },
+              //     "kimya": {
+              //       "1": null,
+              //       "2": null,
+              //     },
+              //     "biyoloji": {
+              //       "1": null,
+              //       "2": null,
+              //     },
+              //     "türkçe": {
+              //       "1": null,
+              //       "2": null,
+              //       "3": null,
+              //     },
+              //     "sosyalbilgiler": {
+              //       "1": null,
+              //       "2": null,
+              //     },
+              //     "coğrafya": {
+              //       "1": null,
+              //       "2": null,
+              //     },
+              //     "dilbilgisi": {
+              //       "1": null,
+              //       "2": null,
+              //     },
+              //   });
+              // });
 
-              CollectionReference ref =
-                  FirebaseFirestore.instance.collection("etudeTimes");
+              // CollectionReference teacherRef =
+              //     FirebaseFirestore.instance.collection("teacher");
+              // final teachers = await teacherRef.get();
 
-              await ref.doc(teachers.docs[1].id).set({
-                "ref": teachers.docs[1].reference,
-                "lecture": teachers.docs[1]["lecture"],
-                "displayName": teachers.docs[1]["displayName"],
-                "monday": [
-                  DateTime(2021, 4, 26, 14, 30),
-                ],
-                "tuesday": [
-                  DateTime(2021, 4, 26, 14, 30),
-                ],
-                "wednesday": [
-                  DateTime(2021, 4, 26, 14, 30),
-                ],
-                "thursday": [
-                  DateTime(2021, 4, 26, 14, 30),
-                ],
-              });
+              // print(teachers.docs[0]["displayName"]);
 
-              final data = await ref.get();
+              // CollectionReference ref =
+              //     FirebaseFirestore.instance.collection("etudeTimes");
 
-              print(data.docs);
+              // await ref.doc(teachers.docs[0].id).set({
+              //   "ref": teachers.docs[0].reference,
+              //   "lecture": teachers.docs[0]["lecture"],
+              //   "displayName": teachers.docs[0]["displayName"],
+              //   "monday": [
+              //     DateTime(2021, 4, 26, 14, 30),
+              //   ],
+              //   "tuesday": [
+              //     DateTime(2021, 4, 26, 14, 30),
+              //   ],
+              //   "wednesday": [
+              //     DateTime(2021, 4, 26, 14, 30),
+              //   ],
+              //   "thursday": [
+              //     DateTime(2021, 4, 26, 14, 30),
+              //   ],
+              // });
 
-              // QuerySnapshot querySnapshot = await
-              FirebaseFirestore.instance
-                  .collection("etude/${teachers.docs[1].id}/pieces")
-                  //     .get();
+              // final data = await ref.get();
 
-                  // print(querySnapshot.docs[0].data());
-                  .doc(DateTime(2021, 5, 26, 14, 30).toString())
-                  .set({
-                "date": DateTime(2021, 5, 26, 14, 30),
-                "notParticipate": [],
-                "registered": [],
-                "requests": [],
-                "subject": "",
-                "teacherName": "",
-                "uid": teachers.docs[1].id,
-                "lecture": teachers.docs[1]["lecture"]
-              });
+              // print(data.docs);
+
+              // // QuerySnapshot querySnapshot = await
+              // FirebaseFirestore.instance
+              //     .collection("etude/${teachers.docs[0].id}/pieces")
+              //     //     .get();
+
+              //     // print(querySnapshot.docs[0].data());
+              //     .doc(DateTime(2021, 5, 26, 14, 30).toString())
+              //     .set({
+              //   "date": DateTime(2021, 5, 26, 14, 30),
+              //   "notParticipate": [],
+              //   "registered": [],
+              //   "requests": [],
+              //   "subject": "",
+              //   "teacherName": "",
+              //   "uid": teachers.docs[0].id,
+              //   "lecture": teachers.docs[0]["lecture"]
+              // });
             },
           ),
           SizedBox(
             width: double.infinity,
-            child: Container(),
+            child: TextButton(
+              child: Text(
+                file != null ? file.path.split("/").last : "pick image",
+              ),
+              onPressed: () async {
+                await pickFile();
+              },
+            ),
           ),
         ],
       ),

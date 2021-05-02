@@ -61,7 +61,6 @@ class Timetable extends ChangeNotifier {
   void createStudentTimeTable() {
     studentData.forEach((day, value) {
       value.forEach((teacher, timestamp) {
-        print(teacher);
         addRecursiveAppointment(
           timestamp.toDate(),
           timestamp.toDate().add(Duration(minutes: 40)),

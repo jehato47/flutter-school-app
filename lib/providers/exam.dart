@@ -1,94 +1,93 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import '../models/sinav.dart';
-import '../helpers/envs.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class Exam extends ChangeNotifier {
-  // -- Functions --
-  // setExams
-  // sendExcel
-  // getStudentResults
-  final baseUrl = Envs.baseUrl;
-
-  Future<void> setExams(String token) async {
-    var headers = {'Authorization': 'Token $token'};
-    final response = await http.get(
-      Uri.parse(baseUrl + "/exam/set"),
-      headers: headers,
-    );
-    // print(json.decode(response.body));
-  }
-
-  Future<Map<String, dynamic>> getExcel(String token, String classes) async {
-    var headers = {'Authorization': 'Token $token'};
-    final response = await http.get(
-      Uri.parse(baseUrl + "/exam/cxl/" + classes),
-      headers: headers,
-    );
-
-    final normalResponse = utf8.decode(response.bodyBytes);
-    final normalJson = json.decode(normalResponse);
-    return normalJson;
-  }
-
-  Future<void> sendExcel(String token, String filePath) async {
-    var headers = {'Authorization': 'Token $token'};
-    var request =
-        http.MultipartRequest('POST', Uri.parse(baseUrl + '/exam/xl'));
-    request.files.add(
-      await http.MultipartFile.fromPath('exams', filePath),
-    );
-    request.headers.addAll(headers);
-
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
-    } else {
-      print(response.reasonPhrase);
-    }
-  }
-
-  Future<List<Sinav>> getStudentResults(String token) async {
-    List<Sinav> _sinavlar = [];
-    var headers = {'Authorization': 'Token $token'};
-    final response = await http.get(
-      Uri.parse(baseUrl + "/exam/res/24"),
-      headers: headers,
-    );
-
-    final normalResponse = utf8.decode(response.bodyBytes);
-    final normalJson = json.decode(normalResponse) as Map;
-    final dersler = [
-      'matematik',
-      'fizik',
-      'kimya',
-      'biyoloji',
-      'türk_dili',
-      'edebiyat',
-      'sosyal',
-      'cografya'
+  Future<void> setDetails(String lecture) async {
+    lecture = "fizik";
+    List lectures = [
+      "fizik",
+      "kimya",
+      "biyoloji",
+      "matematik",
+      "dilbilgisi",
+      "coğrafya",
+      "türkçe",
+      "sosyalbilgiler"
     ];
 
-    dersler.forEach((element) {
-      var e = normalJson[element] as Map;
-      if (e.isNotEmpty) {
-        // TODO : Her zaman 3 tane sınav olmayabilir
-        _sinavlar.add(
-          Sinav(
-            element,
-            e["1"]["not"] != -1 ? e["1"]["not"] : 0,
-            e["2"]["not"] != -1 ? e["2"]["not"] : 0,
-            e["3"]["not"] != -1 ? e["3"]["not"] : 0,
-          ),
-        );
-      } else {
-        _sinavlar.add(
-          Sinav(element, 0, 0, 0),
-        );
-      }
+    String fullClass;
+    QuerySnapshot studentExams = await FirebaseFirestore.instance
+        .collection("exam")
+        .where("classFirst", isEqualTo: "11")
+        .get();
+
+    final students = studentExams.docs;
+
+    List<dynamic> allClasses = students
+        .map((e) => e["classFirst"] + "-" + e["classLast"])
+        .toSet()
+        .toList();
+
+    dynamic gradeSum = 0;
+    dynamic gradeCount = 0;
+
+    dynamic branchSum = 0;
+    dynamic branchCount = 0;
+
+    lectures.forEach((lct) {
+      lecture = lct;
+      allClasses.forEach((clss) {
+        fullClass = clss;
+        if (students.length != 0)
+          students[0][lecture].forEach((which, value) async {
+            gradeSum = 0;
+            gradeCount = 0;
+            branchSum = 0;
+            branchCount = 0;
+            students.forEach((exam) {
+              if (exam[lecture][which] == null) return;
+              gradeSum += exam[lecture][which];
+              gradeCount += 1;
+
+              if (exam["classFirst"] + "-" + exam["classLast"] == fullClass) {
+                branchSum += exam[lecture][which];
+                branchCount += 1;
+              }
+            });
+
+            List liste = students;
+            liste.sort((a, b) {
+              if (b[lecture][which] == null && a[lecture][which] == null)
+                return 0;
+              if (b[lecture][which] == null && a[lecture][which] != null)
+                return -1;
+              if (b[lecture][which] != null && a[lecture][which] == null)
+                return 1;
+              return b[lecture][which].compareTo(a[lecture][which]);
+            });
+
+            liste = liste
+                .where((element) =>
+                    element[lecture][which] == liste[0][lecture][which])
+                .map((e) => {
+                      "displayName": e["displayName"],
+                      "uid": e.id,
+                      "grade": e[lecture][which],
+                    })
+                .toList();
+
+            CollectionReference ref = FirebaseFirestore.instance
+                .collection("examDetails/$fullClass/$lecture");
+            if (branchCount != 0 && gradeCount != 0)
+              await ref.doc("$which").set({
+                "branchMean": branchSum / branchCount,
+                "gradeMean": gradeSum / gradeCount,
+                "mostSuccessful": liste,
+              });
+          });
+      });
     });
-    return _sinavlar;
+    print("bitti");
   }
 }

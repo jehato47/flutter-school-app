@@ -29,7 +29,8 @@ class _GiveEtudeScreenState extends State<GiveEtudeScreen> {
             QuerySnapshot querySnapshot = snapshot.data;
             // print(querySnapshot.docs[0]["monday"]);
             dynamic liste =
-                querySnapshot.docs.toSet().map((e) => e["lecture"]).toList();
+                querySnapshot.docs.map((e) => e["lecture"]).toSet().toList();
+            print(liste);
 
             // liste.add("fizik");
             // liste.add("kimya");

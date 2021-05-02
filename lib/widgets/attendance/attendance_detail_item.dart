@@ -15,17 +15,16 @@ class _AttendanceDetailItemState extends State<AttendanceDetailItem> {
   @override
   Widget build(BuildContext context) {
     final student = widget.student;
+    print(student);
     // Eğer öğrenci daha sonra silinmiş olsa bile bilgileri gösterilecek
     // bool isStudentDeleted = widget.student["name"] == "deleted";
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListTile(
-          // leading: CircleAvatar(
-          //   backgroundImage: NetworkImage(
-          //     "https://schoolapi.pythonanywhere.com" + student["profil_foto"],
-          //   ),
-          // ),
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(student["photoUrl"]),
+          ),
           title: Text(
             student["name"] + " " + student["surname"],
           ),
@@ -58,7 +57,7 @@ class _AttendanceDetailItemState extends State<AttendanceDetailItem> {
                 // Expanded(child: SizedBox(height: 5)),
                 Expanded(
                   child: Text(
-                    "öğrenci telefon numarası : " + student["parentNumber"],
+                    "Email : " + student["email"],
                   ),
                 ),
                 // Expanded(

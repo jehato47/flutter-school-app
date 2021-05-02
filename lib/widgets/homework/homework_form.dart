@@ -72,7 +72,9 @@ class _HomeworkFormState extends State<HomeworkForm> {
 
     _form.currentState.save();
     _form.currentState.reset();
+
     date = null;
+
     hw["teacher"] = auth.currentUser.displayName;
     hw["teacherImage"] = auth.currentUser.photoURL;
     hw["title"] = auth.currentUser.displayName;
@@ -82,8 +84,10 @@ class _HomeworkFormState extends State<HomeworkForm> {
       isLoading = true;
     });
     await Provider.of<HomeWork>(context).addHomeWork(hw, file);
+
     setState(() {
       isLoading = false;
+      file = null;
     });
   }
 

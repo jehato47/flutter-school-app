@@ -44,10 +44,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // final auth = Provider.of<Auth>(context);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -126,9 +124,10 @@ class MyApp extends StatelessWidget {
                   // FirebaseAuth.instance.signOut();
                   // * TODO : Login Form da setState hatası veriyor bak
                   if (snapshot.hasData) {
-                    // ? TODO : Öğrenci ve Öğretmen eklerken resim urlsini ekle de kaydet
-                    // ? TODO : Yoklama Ekranında Öğreninin detaylarını göstermeyi hallet
-                    // ? TODO : Sınav sonuç ekranında detay pop-up ını bitir
+                    // todo : Öğrenci ve Öğretmen eklerken resim urlsini ekle de kaydet
+                    // todo : Yoklama Ekranında Öğreninin detaylarını göstermeyi hallet
+                    // todo : Sınav sonuç ekranında detay pop-up ını bitir
+                    // ? todo : Sınav cevap kağıdını göstermeyi hallet
                     return HomeScreen();
                   }
                   return LoginScreen();

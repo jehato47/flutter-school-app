@@ -2,6 +2,8 @@ import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import '../../providers/exam.dart';
 
 class AddExamResultScreen extends StatefulWidget {
   static const url = "add-ex-res";
@@ -11,6 +13,7 @@ class AddExamResultScreen extends StatefulWidget {
 }
 
 class _AddExamResultScreenState extends State<AddExamResultScreen> {
+  String lecture = "matematik";
   dynamic generalData = {};
   final _formKey = GlobalKey<FormState>();
   int index = 0;
@@ -50,13 +53,13 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
   Widget buildItem(int number) {
     TextEditingController controller = TextEditingController();
     if (generalData.containsKey(ids[index].id)) {
-      examData = generalData[ids[index].id]["türkçe"];
+      examData = generalData[ids[index].id][lecture];
     } else {
-      examData = ids[index]["türkçe"];
+      examData = ids[index][lecture];
     }
     if (examData["$number"] != null) {
       controller.text = examData["$number"].toString();
-      // generalData[ids[index].id] = {"türkçe": examData};
+      // generalData[ids[index].id] = {lecture: examData};
     }
 
     return Column(
@@ -79,7 +82,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
                   } catch (err) {
                     examData["$number"] = double.parse(controller.text);
                   }
-                  generalData[ids[index].id] = {"türkçe": examData};
+                  generalData[ids[index].id] = {lecture: examData};
                 }
               },
               controller: controller,
@@ -129,6 +132,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
               generalData.forEach((key, value) async {
                 await reference.doc(key).update(value);
               });
+              await Provider.of<Exam>(context).setDetails(lecture);
               Navigator.of(context).pop();
               Navigator.of(context).pop();
             },
@@ -168,7 +172,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
                   itemBuilder: (context, i) {
                     return buildItem(i + 1);
                   },
-                  itemCount: ids[index]["türkçe"].length,
+                  itemCount: ids[index][lecture].length,
                 ),
               ),
               Row(

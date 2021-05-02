@@ -1,6 +1,8 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
 
 class Auth extends ChangeNotifier {
   // -- Functions --
@@ -38,32 +40,46 @@ class Auth extends ChangeNotifier {
     String classFirst,
     String classLast,
     String parentNumber,
-    String photoUrl,
+    File file,
   ) async {
-    UserCredential userCredential = await auth
-        .createUserWithEmailAndPassword(
+    String photoUrl =
+        "https://firebasestorage.googleapis.com/v0/b/school-f162e.appspot.com/o/default.jpg?alt=media&token=98ab15cf-2ea9-43db-a725-970650e5df5f";
+
+    UserCredential userCredential = await auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
-    )
-        .then((value) async {
-      CollectionReference students =
-          FirebaseFirestore.instance.collection('students');
-      students.doc(value.user.uid).set({
-        "username": username,
-        "name": name,
-        "surname": surname,
-        "number": studentNumber,
-        "displayName": name + " " + surname,
-        "classFirst": classFirst,
-        "classLast": classLast,
-        "parentNumber": parentNumber,
+    );
+
+    CollectionReference students =
+        FirebaseFirestore.instance.collection('students');
+
+    if (file != null)
+      await FirebaseStorage.instance
+          .ref()
+          .child("profil_images")
+          .child(userCredential.user.uid)
+          .putFile(file)
+          .then((response) async {
+        photoUrl = await response.ref.getDownloadURL();
       });
-      await value.user.updateProfile(
-        displayName: name + " " + surname,
-        photoURL: photoUrl,
-      );
-      return value;
+
+    await students.doc(userCredential.user.uid).set({
+      "email": userCredential.user.email,
+      "photoUrl": photoUrl,
+      "username": username,
+      "name": name,
+      "surname": surname,
+      "number": studentNumber,
+      "displayName": name + " " + surname,
+      "classFirst": classFirst,
+      "classLast": classLast,
+      "parentNumber": parentNumber,
     });
+
+    await userCredential.user.updateProfile(
+      displayName: name + " " + surname,
+      photoURL: photoUrl,
+    );
     print(userCredential.user.displayName);
   }
 
@@ -74,29 +90,41 @@ class Auth extends ChangeNotifier {
     String surname,
     String phoneNumber,
     String lecture,
-    String photoUrl,
+    File file,
   ) async {
-    UserCredential userCredential = await auth
-        .createUserWithEmailAndPassword(
+    String photoUrl =
+        "https://firebasestorage.googleapis.com/v0/b/school-f162e.appspot.com/o/default.jpg?alt=media&token=98ab15cf-2ea9-43db-a725-970650e5df5f";
+    UserCredential userCredential = await auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
-    )
-        .then((value) async {
-      CollectionReference students =
-          FirebaseFirestore.instance.collection('teacher');
-      students.doc(value.user.uid).set({
-        "displayName": name + " " + surname,
-        "lecture": lecture,
-        "phoneNumber": phoneNumber,
-        "signUpDate": DateTime.now(),
-      });
-      await value.user.updateProfile(
-        displayName: name + " " + surname,
-        photoURL: photoUrl,
-      );
+    );
 
-      return value;
+    CollectionReference teachers =
+        FirebaseFirestore.instance.collection('teacher');
+    if (file != null)
+      await FirebaseStorage.instance
+          .ref()
+          .child("profil_images")
+          .child(userCredential.user.uid)
+          .putFile(file)
+          .then((response) async {
+        photoUrl = await response.ref.getDownloadURL();
+      });
+
+    await teachers.doc(userCredential.user.uid).set({
+      "email": userCredential.user.email,
+      "displayName": name + " " + surname,
+      "lecture": lecture,
+      "phoneNumber": phoneNumber,
+      "signUpDate": DateTime.now(),
+      "photoUrl": photoUrl,
     });
+
+    await userCredential.user.updateProfile(
+      displayName: name + " " + surname,
+      photoURL: photoUrl,
+    );
+
     print(userCredential.user.displayName);
   }
 

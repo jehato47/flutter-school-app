@@ -66,15 +66,14 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
               height: 200,
               fit: BoxFit.cover,
               image: NetworkImage(
-                "https://firebasestorage.googleapis.com/v0/b/school-f162e.appspot.com/o/default.jpg?alt=media&token=98ab15cf-2ea9-43db-a725-970650e5df5f",
+                student["photoUrl"],
               ),
             ),
             SizedBox(height: 10),
             Text("Ad Soyad : ${student["name"]} ${student["surname"]}"),
             Text("Sınıf : ${student["classFirst"]} ${student["classLast"]}"),
             Text("number : ${student["number"]}"),
-            Text("Ad Soyad : Jehat Armanç Deniz"),
-            Text("Ad Soyad : Jehat Armanç Deniz"),
+            Text("email : ${student["email"]}"),
           ],
         ),
       ),
@@ -100,8 +99,28 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
             showStudentDetailDialog(context);
           },
           child: Slidable(
-            // actionExtentRatio: 0.75 / 2,
             actionPane: SlidableDrawerActionPane(),
+            closeOnScroll: false,
+            actionExtentRatio: 0.3,
+            actions: [
+              IconSlideAction(
+                caption: "Gelmedi",
+                icon: Icons.alarm,
+                color: Colors.red,
+                onTap: () {
+                  setState(() {
+                    color = Colors.red;
+                  });
+                  changeValues(
+                    student.reference,
+                    attendance,
+                    attendance["lates"],
+                  );
+
+                  if (!checkbox.isChecked) checkbox.change();
+                },
+              ),
+            ],
             secondaryActions: [
               IconSlideAction(
                 caption: "İzinli",
@@ -125,7 +144,7 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
               IconSlideAction(
                 caption: "Geç geldi",
                 icon: Icons.alarm,
-                color: Colors.red,
+                color: Colors.amber,
                 onTap: () {
                   setState(() {
                     color = Colors.red;
@@ -147,7 +166,6 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
               value: checkbox.isChecked,
               onChanged: (v) {
                 if (checkbox.isChecked == false) {
-                  print(12);
                   setState(() {
                     color = Colors.green;
                   });
