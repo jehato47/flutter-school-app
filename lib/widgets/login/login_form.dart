@@ -38,10 +38,16 @@ class _LoginFormState extends State<LoginForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Text(
+            //   "Kullanıcı Adı",
+            //   style: TextStyle(fontSize: 30),
+            // ),
+
             Text(
-              "Kullanıcı Adı",
+              "Tekrar Hoşgeldin",
               style: TextStyle(fontSize: 30),
             ),
+            SizedBox(height: 25),
             TextFormField(
               keyboardType: TextInputType.emailAddress,
               validator: (value) {
@@ -52,7 +58,12 @@ class _LoginFormState extends State<LoginForm> {
                 return null;
               },
               decoration: InputDecoration(
-                hintText: "kanatlıayı1212",
+                filled: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                labelText: "kullanıcı adı",
+                hintText: "kullanıcı adınızı girin",
                 hintStyle: TextStyle(fontSize: 15),
               ),
               onSaved: (newValue) {
@@ -61,11 +72,12 @@ class _LoginFormState extends State<LoginForm> {
               },
             ),
             SizedBox(height: 20),
-            Text(
-              "Şifre",
-              style: TextStyle(fontSize: 30),
-            ),
+            // Text(
+            //   "Şifre",
+            //   style: TextStyle(fontSize: 30),
+            // ),
             TextFormField(
+              obscureText: true,
               validator: (value) {
                 if (value.isEmpty) {
                   return "Şifrenizi girin";
@@ -74,8 +86,12 @@ class _LoginFormState extends State<LoginForm> {
                 return null;
               },
               decoration: InputDecoration(
+                labelText: "şifre",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 hintStyle: TextStyle(fontSize: 15),
-                hintText: "........ ",
+                hintText: "şifrenizi girin",
               ),
               onSaved: (newValue) {
                 password = newValue;

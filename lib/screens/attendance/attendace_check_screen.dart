@@ -14,6 +14,7 @@ class AttendanceCheckScreen extends StatefulWidget {
 }
 
 class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
+  bool isSent = false;
   String currentClass = "";
   DateTime currentTime;
   Map<String, dynamic> attendance;
@@ -68,26 +69,28 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
   }
 
   Future<void> sendAttendance() async {
-    await FirebaseFirestore.instance
-        .collection('attendance')
-        .doc(currentClass)
-        .set({});
-    // CollectionReference att = FirebaseFirestore.instance
-    //     .collection('attendance/classes/$currentClass');
-    CollectionReference att = FirebaseFirestore.instance
-        .collection('attendance/$currentClass/pieces');
+    if (!isSent) {
+      isSent = true;
+      await FirebaseFirestore.instance
+          .collection('attendance')
+          .doc(currentClass)
+          .set({});
 
-    // Todo : Kurumlara göre ayırdığın zaman bunları düzlenle
-    // Todo : referans beskalem/attendance/currentClass olsun
+      CollectionReference att = FirebaseFirestore.instance
+          .collection('attendance/$currentClass/pieces');
 
-    await att.doc(currentTime.toString()).set({
-      "info": attendance,
-      "date": currentTime,
-      "classFirst": currentClass.split("-").first,
-      "classLast": currentClass.split("-").last,
-      "lecture": "matematik",
-    });
-    Navigator.of(context).pop();
+      // Todo : Kurumlara göre ayırdığın zaman bunları düzlenle
+      // Todo : referans beskalem/attendance/currentClass olsun
+
+      await att.doc(currentTime.toString()).set({
+        "info": attendance,
+        "date": currentTime,
+        "classFirst": currentClass.split("-").first,
+        "classLast": currentClass.split("-").last,
+        "lecture": "matematik",
+      });
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -113,6 +116,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
               "lates": [],
               "permitted": [],
               "notExists": [],
+              "empty": [],
             };
           }
 

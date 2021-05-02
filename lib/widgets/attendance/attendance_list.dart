@@ -23,7 +23,7 @@ class AttendanceList extends StatelessWidget {
               if (!attendance
                   .toString()
                   .contains(students[index].reference.toString()))
-                attendance["notExists"].add(students[index].reference);
+                attendance["empty"].add(students[index].reference);
               return ChangeNotifierProvider.value(
                 value: StudentCheckBox(),
                 child: StudentCheckItem(

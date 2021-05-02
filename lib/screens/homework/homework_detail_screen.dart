@@ -23,6 +23,7 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('${hw["title"]} ${hw["classFirst"]} - ${hw["classLast"]}'),
+        actions: [IconButton(icon: Icon(Icons.assignment), onPressed: () {})],
       ),
       body: SingleChildScrollView(
         child: Padding(

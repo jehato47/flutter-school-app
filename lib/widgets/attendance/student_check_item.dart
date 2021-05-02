@@ -19,8 +19,12 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
       checkbox.setIsChecked(true);
       color = Colors.green;
     }
-    if (attendance["notExists"].contains(student.reference)) {
+    if (attendance["empty"].contains(student.reference)) {
       color = Colors.green;
+    }
+    if (attendance["notExists"].contains(student.reference)) {
+      checkbox.setIsChecked(true);
+      color = Colors.red;
     }
     if (attendance["permitted"].contains(student.reference)) {
       checkbox.setIsChecked(true);
@@ -28,7 +32,7 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
     }
     if (attendance["lates"].contains(student.reference)) {
       checkbox.setIsChecked(true);
-      color = Colors.red;
+      color = Colors.amber;
     }
   }
 
@@ -101,26 +105,8 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
           child: Slidable(
             actionPane: SlidableDrawerActionPane(),
             closeOnScroll: false,
-            actionExtentRatio: 0.3,
-            actions: [
-              IconSlideAction(
-                caption: "Gelmedi",
-                icon: Icons.alarm,
-                color: Colors.red,
-                onTap: () {
-                  setState(() {
-                    color = Colors.red;
-                  });
-                  changeValues(
-                    student.reference,
-                    attendance,
-                    attendance["lates"],
-                  );
-
-                  if (!checkbox.isChecked) checkbox.change();
-                },
-              ),
-            ],
+            // actionExtentRatio: 0.3,
+            // actions: [],
             secondaryActions: [
               IconSlideAction(
                 caption: "İzinli",
@@ -147,12 +133,29 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
                 color: Colors.amber,
                 onTap: () {
                   setState(() {
-                    color = Colors.red;
+                    color = Colors.amber;
                   });
                   changeValues(
                     student.reference,
                     attendance,
                     attendance["lates"],
+                  );
+
+                  if (!checkbox.isChecked) checkbox.change();
+                },
+              ),
+              IconSlideAction(
+                caption: "Gelmedi",
+                icon: Icons.alarm,
+                color: Colors.red,
+                onTap: () {
+                  setState(() {
+                    color = Colors.red;
+                  });
+                  changeValues(
+                    student.reference,
+                    attendance,
+                    attendance["notExists"],
                   );
 
                   if (!checkbox.isChecked) checkbox.change();
@@ -164,6 +167,7 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
               title: Text(student["name"] + " " + student["surname"]),
               subtitle: Text(student["number"].toString()),
               value: checkbox.isChecked,
+              // controlAffinity: ListTileControlAffinity.leading,
               onChanged: (v) {
                 if (checkbox.isChecked == false) {
                   setState(() {
@@ -181,7 +185,7 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
                   changeValues(
                     student.reference,
                     attendance,
-                    attendance["notExists"],
+                    attendance["empty"],
                   );
                 }
               },
