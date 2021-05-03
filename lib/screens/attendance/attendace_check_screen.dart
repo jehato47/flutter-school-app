@@ -135,7 +135,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
 
           return Scaffold(
             appBar: AppBar(
-              centerTitle: true,
+              // centerTitle: true,
               title: Text(
                 "${DateFormat("E HH:mm").format(currentTime)}" +
                     " ${currentClass.toUpperCase()}",

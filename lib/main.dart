@@ -32,6 +32,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'screens/exam/students_exam_list.dart';
+import 'widgets/home/bottom_navbar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -130,7 +131,7 @@ class MyApp extends StatelessWidget {
                     // todo : Yoklama Ekranında Öğreninin detaylarını göstermeyi hallet
                     // todo : Sınav sonuç ekranında detay pop-up ını bitir
                     // ? todo : Sınav cevap kağıdını göstermeyi hallet
-                    return HomeScreen();
+                    return BottomNavbar();
                   }
                   return LoginScreen();
                 },
