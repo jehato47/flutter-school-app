@@ -77,7 +77,6 @@ class _HomeworkFormState extends State<HomeworkForm> {
 
     hw["teacher"] = auth.currentUser.displayName;
     hw["teacherImage"] = auth.currentUser.photoURL;
-    hw["title"] = auth.currentUser.displayName;
     hw["uid"] = auth.currentUser.uid;
     hw["to"] = "11-a";
     setState(() {

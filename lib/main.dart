@@ -98,7 +98,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'school2',
         theme: ThemeData(
-          // fontFamily: "quicksand",
+          // fontFamily: "ruda",
           // primaryColor: Colors.indigo,
           primaryTextTheme: ThemeData.light().textTheme.copyWith(
                 headline6: TextStyle(

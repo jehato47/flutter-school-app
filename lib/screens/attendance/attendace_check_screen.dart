@@ -95,6 +95,8 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    print(size);
     var args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     if (args != null) {
@@ -155,7 +157,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
               ],
             ),
             body: Padding(
-              padding: const EdgeInsets.all(10),
+              padding: EdgeInsets.all(size.width / 40),
               child: AttendanceList(attendance, changeValues),
             ),
           );

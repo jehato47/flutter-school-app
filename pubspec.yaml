@@ -101,6 +101,15 @@ flutter:
       fonts:
         - asset: fonts/Lora-Regular.ttf
       
+    - family: ruda
+      fonts:
+        - asset: fonts/Ruda-Regular.ttf
+        - asset: fonts/Ruda-Medium.ttf
+        - asset: fonts/Ruda-Black.ttf
+        - asset: fonts/Ruda-Regular.ttf
+        - asset: fonts/Ruda-Bold.ttf
+          weight: 700
+      
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

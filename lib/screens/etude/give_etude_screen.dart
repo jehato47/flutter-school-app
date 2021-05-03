@@ -12,14 +12,17 @@ class GiveEtudeScreen extends StatefulWidget {
 class _GiveEtudeScreenState extends State<GiveEtudeScreen> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Etüt"),
       ),
       body: Padding(
-        padding: EdgeInsets.all(20),
-        child: FutureBuilder(
-          future: FirebaseFirestore.instance.collection("etudeTimes").get(),
+        padding: EdgeInsets.all(size.width / 20),
+        child: StreamBuilder(
+          stream:
+              FirebaseFirestore.instance.collection("etudeTimes").snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting)
               return Center(
@@ -27,16 +30,9 @@ class _GiveEtudeScreenState extends State<GiveEtudeScreen> {
               );
 
             QuerySnapshot querySnapshot = snapshot.data;
-            // print(querySnapshot.docs[0]["monday"]);
             dynamic liste =
                 querySnapshot.docs.map((e) => e["lecture"]).toSet().toList();
-            print(liste);
 
-            // liste.add("fizik");
-            // liste.add("kimya");
-            // liste.add("biyoloji");
-
-            // print(liste);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

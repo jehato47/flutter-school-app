@@ -51,6 +51,7 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
   }
 
   Future<Widget> showStudentDetailDialog(BuildContext context) async {
+    Size size = MediaQuery.of(context).size;
     return await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -67,7 +68,7 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image(
-              height: 200,
+              height: size.height / 3.5,
               fit: BoxFit.cover,
               image: NetworkImage(
                 student["photoUrl"],

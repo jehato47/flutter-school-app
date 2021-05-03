@@ -5,6 +5,7 @@ import '../../screens/timetable/teacher_timetable_screen.dart';
 import '../../screens/exam/add_exam_result_screen.dart';
 import '../../screens/etude/give_etude_screen.dart';
 import '../../screens/exam/students_exam_list.dart';
+import '../../screens/exam/student_exam_screen.dart';
 
 class BottomNavbar extends StatefulWidget {
   @override
@@ -42,7 +43,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
           } else if (value == 3) {
             setState(() {
               index = value;
-              body = StudentsExamList();
+              body = StudentExamScreen();
             });
           } else if (value == 4) {
             setState(() {

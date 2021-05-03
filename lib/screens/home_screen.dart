@@ -7,8 +7,15 @@ import '../screens/notifications/notification_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static const url = "home";
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  dynamic body = PagesGrid();
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   Widget buildRingBell(BuildContext context) {
@@ -30,6 +37,7 @@ class HomeScreen extends StatelessWidget {
             alignment: Alignment.center,
             children: [
               IconButton(
+                tooltip: "Bildirimler",
                 icon: Icon(Icons.notifications),
                 onPressed: () {
                   Navigator.of(context).pushNamed(NotificationScreen.url);
@@ -72,6 +80,7 @@ class HomeScreen extends StatelessWidget {
         ),
         margin: EdgeInsets.all(8),
         child: IconButton(
+          tooltip: "Ödev Ver",
           color: Colors.indigo,
           icon: Icon(Icons.add),
           onPressed: () {
@@ -121,12 +130,22 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             ListTile(
+              leading: Icon(Icons.grid_view),
+              title: Text("grid"),
+              onTap: () {
+                setState(() {
+                  body = Container();
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.logout),
               title: Text("Çıkış Yap"),
               onTap: () async {
                 await auth.signOut();
               },
-            )
+            ),
           ],
         ),
       ),
@@ -144,7 +163,7 @@ class HomeScreen extends StatelessWidget {
         ],
         title: Text(auth.currentUser.displayName),
       ),
-      body: PagesGrid(),
+      body: body,
     );
   }
 }

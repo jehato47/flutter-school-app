@@ -44,151 +44,88 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ElevatedButton(
-            child: Text("send"),
-            onPressed: () async {
-              var list =
-                  new List<String>.generate(2, (i) => (i + 1).toString());
-              // print(list[0] + "qwe");
-              FirebaseAuth auth = FirebaseAuth.instance;
-              // Provider.of<Auth>(context).signStudentUp(
-              //   "ilysumt@hotmail.com",
-              //   "123465789",
-              //   "ilyasumut",
-              //   "İlyas Umut",
-              //   "Apul",
-              //   159,
-              //   "11",
-              //   "g",
-              //   "05366639292",
-              //   file,
-              // );
-              // Provider.of<Auth>(context).signTeacherUp(
-              //   "pkcnaksz@hotmail.com",
-              //   "123465789",
-              //   "Pekcan",
-              //   "Aksöz",
-              //   "05366639292",
-              //   "matematik",
-              //   file,
-              // );
-              // CollectionReference ref =
-              //     FirebaseFirestore.instance.collection("students");
-              // CollectionReference ref2 =
-              //     FirebaseFirestore.instance.collection("exam");
+      body: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // ElevatedButton(
+            //   child: Text("send"),
+            //   onPressed: () async {},
+            // ),
 
-              // QuerySnapshot snapshot = await ref.get();
-              // print(snapshot.docs[0].id);
+            // Card(
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //       borderRadius: BorderRadius.circular(10),
+            //       color: Color.fromRGBO(255, 235, 228, 1),
+            //     ),
+            //     // margin: EdgeInsets.all(20),
+            //     padding: EdgeInsets.all(20),
+            //     child: Column(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         Text(
+            //           "Football",
+            //           style:
+            //               TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            //         ),
+            //         SizedBox(height: 10),
+            //         Text(
+            //           "Ligue 1 opener postponed after marseille virus cases",
+            //           style: TextStyle(
+            //               // fontWeight: FontWeight.w300,
+            //               color: Colors.black45),
+            //         ),
+            //         SizedBox(height: 10),
+            //         Row(
+            //           children: [
+            //             Icon(
+            //               Icons.location_on_rounded,
+            //               color: Colors.blue,
+            //             ),
+            //             Text(
+            //               "Marlowe",
+            //               style: TextStyle(color: Colors.blue),
+            //             ),
+            //           ],
+            //         ),
+            //         Divider(),
+            //         Row(
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           children: [
+            //             Row(
+            //               children: [
+            //                 Icon(Icons.schedule),
+            //                 SizedBox(width: 10),
+            //                 Text(
+            //                   "4:30 PM - 5:45 PM",
+            //                 ),
+            //               ],
+            //             ),
+            //             Row(
+            //               children: [
+            //                 CircleAvatar(
+            //                   backgroundImage: NetworkImage(
+            //                       "https://images.pexels.com/photos/6619945/pexels-photo-6619945.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"),
+            //                 ),
+            //                 CircleAvatar(
+            //                   backgroundImage: NetworkImage(
+            //                       "https://images.pexels.com/photos/6619945/pexels-photo-6619945.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"),
+            //                 ),
+            //               ],
+            //             )
+            //           ],
+            //         )
+            //       ],
+            //     ),
+            //   ),
+            // ),
 
-              // snapshot.docs.forEach((element) async {
-              //   await ref2.doc(element.id).set({
-              //     "displayName": element["displayName"],
-              //     "number": element["number"],
-              //     "classFirst": element["classFirst"],
-              //     "classLast": element["classLast"],
-              //     "matematik": {
-              //       "1": null,
-              //       "2": null,
-              //       "3": null,
-              //     },
-              //     "fizik": {
-              //       "1": null,
-              //       "2": null,
-              //     },
-              //     "kimya": {
-              //       "1": null,
-              //       "2": null,
-              //     },
-              //     "biyoloji": {
-              //       "1": null,
-              //       "2": null,
-              //     },
-              //     "türkçe": {
-              //       "1": null,
-              //       "2": null,
-              //       "3": null,
-              //     },
-              //     "sosyalbilgiler": {
-              //       "1": null,
-              //       "2": null,
-              //     },
-              //     "coğrafya": {
-              //       "1": null,
-              //       "2": null,
-              //     },
-              //     "dilbilgisi": {
-              //       "1": null,
-              //       "2": null,
-              //     },
-              //   });
-              // });
-
-              // CollectionReference teacherRef =
-              //     FirebaseFirestore.instance.collection("teacher");
-              // final teachers = await teacherRef.get();
-
-              // print(teachers.docs[0]["displayName"]);
-
-              // CollectionReference ref =
-              //     FirebaseFirestore.instance.collection("etudeTimes");
-
-              // await ref.doc(teachers.docs[0].id).set({
-              //   "ref": teachers.docs[0].reference,
-              //   "lecture": teachers.docs[0]["lecture"],
-              //   "displayName": teachers.docs[0]["displayName"],
-              //   "monday": [
-              //     DateTime(2021, 4, 26, 14, 30),
-              //   ],
-              //   "tuesday": [
-              //     DateTime(2021, 4, 26, 14, 30),
-              //   ],
-              //   "wednesday": [
-              //     DateTime(2021, 4, 26, 14, 30),
-              //   ],
-              //   "thursday": [
-              //     DateTime(2021, 4, 26, 14, 30),
-              //   ],
-              // });
-
-              // final data = await ref.get();
-
-              // print(data.docs);
-
-              // // QuerySnapshot querySnapshot = await
-              // FirebaseFirestore.instance
-              //     .collection("etude/${teachers.docs[0].id}/pieces")
-              //     //     .get();
-
-              //     // print(querySnapshot.docs[0].data());
-              //     .doc(DateTime(2021, 5, 26, 14, 30).toString())
-              //     .set({
-              //   "date": DateTime(2021, 5, 26, 14, 30),
-              //   "notParticipate": [],
-              //   "registered": [],
-              //   "requests": [],
-              //   "subject": "",
-              //   "teacherName": "",
-              //   "uid": teachers.docs[0].id,
-              //   "lecture": teachers.docs[0]["lecture"]
-              // });
-            },
-          ),
-          SizedBox(
-            width: double.infinity,
-            child: TextButton(
-              child: Text(
-                file != null ? file.path.split("/").last : "pick image",
-              ),
-              onPressed: () async {
-                await pickFile();
-              },
-            ),
-          ),
-        ],
+            // ListTile
+          ],
+        ),
       ),
     );
   }

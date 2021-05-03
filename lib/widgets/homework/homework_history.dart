@@ -69,7 +69,7 @@ class _HomeworkHistoryState extends State<HomeworkHistory> {
           hw["teacherImage"],
         ),
       ),
-      title: Text(hw["title"]),
+      title: Text(hw["teacher"]),
       subtitle: Text(hw["homework"]),
       trailing: Text(
         hw["dueDate"].toDate().difference(DateTime.now()).inDays <= 0

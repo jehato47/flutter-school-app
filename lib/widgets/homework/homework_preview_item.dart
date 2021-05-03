@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../providers/homework.dart';
 import '../../screens/homework/homework_detail_screen.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +29,12 @@ class HomeworkPreviewItem extends StatelessWidget {
                 hw["teacherImage"],
               ),
             ),
-            title: Text(hw["title"]),
+            title: Text(
+              hw["teacher"],
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+              ),
+            ),
             subtitle: Text(hw["homework"]),
             trailing: Text(
               hw["dueDate"].toDate().difference(DateTime.now()).inDays <= 0
