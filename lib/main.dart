@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:school2/firebase/firebase.dart';
@@ -11,6 +15,7 @@ import 'providers/auth.dart';
 import 'providers/homework.dart';
 import 'providers/exam.dart';
 import 'providers/etude.dart';
+import 'providers/local_notification/local_notification.dart';
 import 'screens/notifications/notification_screen.dart';
 import 'screens/exam/student_exam_screen.dart';
 import 'screens/homework/homework_detail_screen.dart';
@@ -28,17 +33,15 @@ import 'screens/etude/give_etude_screen.dart';
 import 'screens/etude/show_etudes.dart';
 import 'screens/etude/etudes_screen.dart';
 import 'helpers/download/download_helper_provider.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:intl/intl.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'screens/exam/students_exam_list.dart';
 import 'widgets/home/bottom_navbar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await FlutterDownloader.initialize(
-      debug: true // optional: set false to disable printing logs to console
-      );
+  if (!kIsWeb)
+    await FlutterDownloader.initialize(
+        debug: true // optional: set false to disable printing logs to console
+        );
   Intl.defaultLocale = 'tr_TR';
 
   runApp(MyApp());
@@ -72,6 +75,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => NotificationP(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => PushNotification(),
         ),
       ],
       child: MaterialApp(
@@ -131,7 +137,7 @@ class MyApp extends StatelessWidget {
                     // todo : Yoklama Ekranında Öğreninin detaylarını göstermeyi hallet
                     // todo : Sınav sonuç ekranında detay pop-up ını bitir
                     // ? todo : Sınav cevap kağıdını göstermeyi hallet
-                    return BottomNavbar();
+                    return HomeScreen();
                   }
                   return LoginScreen();
                 },

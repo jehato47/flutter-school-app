@@ -10,6 +10,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import '../../widgets/notification/notification_item.dart';
 import '../../widgets/notification/notification_empty.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class NotificationScreen extends StatefulWidget {
   static const url = "/notification";
@@ -31,9 +32,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     final fbm = FirebaseMessaging.instance;
-
-    fbm.requestPermission();
-    fbm.subscribeToTopic("11-a");
+    if (!kIsWeb) {
+      fbm.requestPermission();
+      fbm.subscribeToTopic("11-a");
+    }
     super.initState();
   }
 

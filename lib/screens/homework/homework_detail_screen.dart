@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../helpers/download/download_helper_provider.dart';
 import '../../providers/homework.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class HomeWorkDetailScreen extends StatefulWidget {
   static const url = "/hw-detail";
@@ -12,6 +14,9 @@ class HomeWorkDetailScreen extends StatefulWidget {
 }
 
 class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
+  void _launchURL(_url) async => await canLaunch(_url)
+      ? await launch(_url)
+      : throw 'Could not launch $_url';
   @override
   void dispose() {
     super.dispose();
@@ -68,12 +73,36 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
                 onTap: hw["fileName"] == null
                     ? null
                     : () async {
+                        // ScaffoldMessenger.of(context).showSnackBar(
+                        //   SnackBar(
+                        //     action: SnackBarAction(
+                        //       label: "bas",
+                        //       onPressed: () async {
+                        //         final _url =
+                        //             await Provider.of<HomeWork>(context)
+                        //                 .getDownloadUrl(hw["fileRef"]);
+                        //         await canLaunch(_url)
+                        //             ? await launch(_url)
+                        //             : throw 'Could not launch $_url';
+                        //       },
+                        //     ),
+                        //     backgroundColor: Colors.amber,
+                        //     content: Text(
+                        //       "İndirme başlamadıysa tıkla",
+                        //       style: TextStyle(color: Colors.black),
+                        //     ),
+                        //   ),
+                        // );
+                        // return;
                         final url = await Provider.of<HomeWork>(context)
                             .getDownloadUrl(hw["fileRef"]);
-                        Provider.of<Download>(context).downloadFile(
-                          url,
-                          hw["fileName"],
-                        );
+                        if (kIsWeb) {
+                          _launchURL(url);
+                        } else
+                          Provider.of<Download>(context).downloadFile(
+                            url,
+                            hw["fileName"],
+                          );
                       },
                 child: Text(
                   hw["fileName"] != null

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:school2/firebase/firebase.dart';
 import 'package:school2/screens/homework/give_homework_screen.dart';
 // import '../providers/auth.dart';
 import '../widgets/home/pages_grid.dart';
+import '../widgets/home/bottom_navbar.dart';
+
+import '../screens/home/main_home_screen.dart';
 import '../screens/notifications/notification_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -131,12 +135,44 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ListTile(
               leading: Icon(Icons.grid_view),
-              title: Text("grid"),
+              title: Text("navbar"),
               onTap: () {
-                setState(() {
-                  body = Container();
-                });
-                Navigator.of(context).pop();
+                // body = BottomNavbar();
+
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => BottomNavbar()));
+
+                // Navigator.of(context).pop();
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.grid_view),
+              title: Text("home screen"),
+              onTap: () {
+                // body = BottomNavbar();
+
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => HomeScreen(),
+                  ),
+                );
+
+                // Navigator.of(context).pop();
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.grid_view),
+              title: Text("firebasetryscreen"),
+              onTap: () {
+                // body = BottomNavbar();
+
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => FireBaseTryScreen(),
+                  ),
+                );
+
+                // Navigator.of(context).pop();
               },
             ),
             ListTile(

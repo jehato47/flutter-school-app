@@ -92,19 +92,23 @@ class _AttendancePreviewScreenState extends State<AttendancePreviewScreen> {
         child: Column(
           children: [
             Expanded(
-              child: FutureBuilder(
-                future: Provider.of<Attendance>(context, listen: false)
-                    .filterAttendance(
-                  startDate,
-                  endDate,
-                  currentClass,
-                ),
+              child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('attendance/$currentClass/pieces')
+                    .where(
+                      "date",
+                      isGreaterThanOrEqualTo: startDate,
+                      isLessThanOrEqualTo: endDate,
+                    )
+                    .orderBy("date", descending: true)
+                    .snapshots(),
                 builder: (context, attendance) {
                   if (attendance.connectionState == ConnectionState.waiting)
                     return Center(child: CircularProgressIndicator());
+
                   List<dynamic> data;
                   if (filteredDocs.length == 0)
-                    data = attendance.data;
+                    data = attendance.data.docs;
                   else
                     data = filteredDocs;
                   // print(data);

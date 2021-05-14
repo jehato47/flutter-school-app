@@ -195,6 +195,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.5.2"
+  flutter_local_notifications:
+    dependency: "direct main"
+    description:
+      name: flutter_local_notifications
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.0.0+3"
+  flutter_local_notifications_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_local_notifications_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -231,13 +245,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  foldable_sidebar:
-    dependency: "direct main"
-    description:
-      name: foldable_sidebar
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   http:
     dependency: "direct main"
     description:
@@ -424,7 +431,7 @@ packages:
       name: syncfusion_flutter_calendar
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.1.55"
+    version: "19.1.59"
   syncfusion_flutter_charts:
     dependency: "direct main"
     description:
@@ -438,7 +445,7 @@ packages:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.1.55"
+    version: "19.1.59"
   syncfusion_flutter_datagrid:
     dependency: "direct main"
     description:
@@ -452,7 +459,7 @@ packages:
       name: syncfusion_flutter_datepicker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.1.55-beta"
+    version: "19.1.59-beta"
   syncfusion_localizations:
     dependency: "direct main"
     description:
@@ -480,7 +487,7 @@ packages:
       name: timezone
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.0-nullsafety.0"
+    version: "0.7.0"
   typed_data:
     dependency: transitive
     description:

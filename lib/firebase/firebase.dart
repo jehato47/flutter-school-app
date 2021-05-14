@@ -1,3 +1,5 @@
+// import 'dart:html';
+import '../providers/local_notification/local_notification.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,6 +13,9 @@ import '../screens/attendance/attendance_detail_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FireBaseTryScreen extends StatefulWidget {
   @override
@@ -18,6 +23,8 @@ class FireBaseTryScreen extends StatefulWidget {
 }
 
 class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
   File file;
   String classFirst;
   String classLast;
@@ -41,91 +48,153 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    // var anroidInitialize = AndroidInitializationSettings("app_icon");
+    // var iosInitializtioe = IOSInitializationSettings();
+    // var initializeSettings = InitializationSettings(
+    //     android: anroidInitialize, iOS: iosInitializtioe);
+    // flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    // flutterLocalNotificationsPlugin.initialize(
+    //   initializeSettings,
+    //   onSelectNotification: onSelectNotification,
+    // );
+  }
+
+  Future<void> showBigPictureNotification() async {
+    var iosDetails = IOSNotificationDetails();
+    var androidDetails = AndroidNotificationDetails(
+      "Channel ID",
+      "Random",
+      "This is my channel",
+      importance: Importance.max,
+      icon: "app_icon",
+      color: Colors.red,
+      ledColor: Colors.green,
+      ledOnMs: 1,
+      ledOffMs: 2,
+    );
+    var bigPictureStyleInformation = BigPictureStyleInformation(
+      DrawableResourceAndroidBitmap("flutter_devs"),
+      largeIcon: DrawableResourceAndroidBitmap("flutter_devs"),
+      contentTitle: 'flutter devs',
+      summaryText: 'summaryText',
+    );
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'big text channel id',
+        'big text channel name',
+        'big text channel description',
+        styleInformation: bigPictureStyleInformation);
+    var platformChannelSpecifics =
+        NotificationDetails(android: androidDetails, iOS: iosDetails);
+    await flutterLocalNotificationsPlugin.show(
+        0, 'big text title', 'silent body', platformChannelSpecifics,
+        payload: "big image notifications");
+  }
+
+  Future _showNotification() async {
+    var bigPictureStyleInformation = BigPictureStyleInformation(
+      DrawableResourceAndroidBitmap("app_icon"),
+      largeIcon: DrawableResourceAndroidBitmap("app_icon"),
+      contentTitle: 'flutter devs',
+      summaryText: 'summaryText',
+    );
+    var androidDetails = AndroidNotificationDetails(
+      "Channel ID", "Random", "This is my channel",
+      importance: Importance.max,
+      icon: "app_icon",
+      color: Colors.red,
+      ledColor: Colors.green,
+      ledOnMs: 1,
+      ledOffMs: 2,
+      enableLights: true,
+      // priority: Priority.max,
+      subText: "subtextttt",
+      // timeoutAfter: 300,
+      // usesChronometer: true,
+      showWhen: true,
+      // fullScreenIntent: true,
+      // onlyAlertOnce: true,
+      autoCancel: true,
+      priority: Priority.min,
+      channelShowBadge: true,
+      setAsGroupSummary: true,
+      maxProgress: 5,
+      tag: "tg23",
+      channelAction: AndroidNotificationChannelAction.createIfNotExists,
+    );
+
+    var iosDetails = IOSNotificationDetails();
+
+    var generalDetails =
+        NotificationDetails(android: androidDetails, iOS: iosDetails);
+
+    await flutterLocalNotificationsPlugin
+        .show(0, "title", "body", generalDetails, payload: "veriqweqwe");
+    // var time = DateTime.now().add(Duration(seconds: 5));
+
+    // await flutterLocalNotificationsPlugin.schedule(
+    //   1,
+    //   "Task",
+    //   "Scheduled Notification",
+    //   time,
+    //   generalDetails,
+    // );
+  }
+
+  Future onSelectNotification(String payload) async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Container(
+          child: Text("tıklandı $payload"),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _launchURL(String _url) async => await canLaunch(_url)
+      ? await launch(_url)
+      : throw 'Could not launch $_url';
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // ElevatedButton(
-            //   child: Text("send"),
-            //   onPressed: () async {},
-            // ),
-
-            // Card(
-            //   child: Container(
-            //     decoration: BoxDecoration(
-            //       borderRadius: BorderRadius.circular(10),
-            //       color: Color.fromRGBO(255, 235, 228, 1),
-            //     ),
-            //     // margin: EdgeInsets.all(20),
-            //     padding: EdgeInsets.all(20),
-            //     child: Column(
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //         Text(
-            //           "Football",
-            //           style:
-            //               TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            //         ),
-            //         SizedBox(height: 10),
-            //         Text(
-            //           "Ligue 1 opener postponed after marseille virus cases",
-            //           style: TextStyle(
-            //               // fontWeight: FontWeight.w300,
-            //               color: Colors.black45),
-            //         ),
-            //         SizedBox(height: 10),
-            //         Row(
-            //           children: [
-            //             Icon(
-            //               Icons.location_on_rounded,
-            //               color: Colors.blue,
-            //             ),
-            //             Text(
-            //               "Marlowe",
-            //               style: TextStyle(color: Colors.blue),
-            //             ),
-            //           ],
-            //         ),
-            //         Divider(),
-            //         Row(
-            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //           children: [
-            //             Row(
-            //               children: [
-            //                 Icon(Icons.schedule),
-            //                 SizedBox(width: 10),
-            //                 Text(
-            //                   "4:30 PM - 5:45 PM",
-            //                 ),
-            //               ],
-            //             ),
-            //             Row(
-            //               children: [
-            //                 CircleAvatar(
-            //                   backgroundImage: NetworkImage(
-            //                       "https://images.pexels.com/photos/6619945/pexels-photo-6619945.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"),
-            //                 ),
-            //                 CircleAvatar(
-            //                   backgroundImage: NetworkImage(
-            //                       "https://images.pexels.com/photos/6619945/pexels-photo-6619945.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"),
-            //                 ),
-            //               ],
-            //             )
-            //           ],
-            //         )
-            //       ],
-            //     ),
-            //   ),
-            // ),
-
-            // ListTile
-          ],
-        ),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {},
+          ),
+        ],
+        title: Text("Çilem Akçay"),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Ana Sayfa"),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Ana Sayfa"),
+        ],
+      ),
+      body: Column(
+        children: [
+          Center(
+            child: ElevatedButton(
+              onPressed: () async {
+                CollectionReference ref =
+                    FirebaseFirestore.instance.collection("notification");
+                QuerySnapshot snapshot = await ref.get();
+                print(snapshot);
+              },
+              child: Text(
+                "btn",
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

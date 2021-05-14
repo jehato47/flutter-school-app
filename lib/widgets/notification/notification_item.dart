@@ -5,6 +5,8 @@ import '../../helpers/download/download_helper_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:url_launcher/url_launcher.dart';
 
 class NotificationItem extends StatefulWidget {
   final ref;
@@ -16,6 +18,9 @@ class NotificationItem extends StatefulWidget {
 }
 
 class _NotificationItemState extends State<NotificationItem> {
+  void _launchURL(_url) async => await canLaunch(_url)
+      ? await launch(_url)
+      : throw 'Could not launch $_url';
   FirebaseAuth auth = FirebaseAuth.instance;
   CollectionReference ref;
   DocumentSnapshot notification;
@@ -76,11 +81,14 @@ class _NotificationItemState extends State<NotificationItem> {
               ),
               onPressed: () async {
                 final url = await notificationP.getDownloadUrl(notification);
-
-                await Provider.of<Download>(context).downloadFile(
-                  url,
-                  notification["fileName"],
-                );
+                if (!kIsWeb) {
+                  await Provider.of<Download>(context).downloadFile(
+                    url,
+                    notification["fileName"],
+                  );
+                } else {
+                  _launchURL(url);
+                }
               },
             ),
     );

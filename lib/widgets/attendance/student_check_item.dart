@@ -104,6 +104,9 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
             showStudentDetailDialog(context);
           },
           child: Slidable(
+            // fastThreshold: 0.1,
+
+            // showAllActionsThreshold: 0.1,
             actionPane: SlidableDrawerActionPane(),
             closeOnScroll: false,
             // actionExtentRatio: 0.3,
