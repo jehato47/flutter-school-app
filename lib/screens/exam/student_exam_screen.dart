@@ -243,23 +243,21 @@ class _SelectionDataGridSource extends DataGridSource {
       TextOverflow textOverflow = TextOverflow.ellipsis,
       Object value,
     }) {
-      return
-          //  value == 100
-          //     ? Image(
-          //         fit: BoxFit.cover,
-          //         image: NetworkImage(
-          //           "https://media.giphy.com/media/TgGWZwWlsODxFPA21A/giphy.gif",
-          //         ),
-          //       )
-          //     :
-          Container(
-        padding: padding,
-        alignment: alignment,
-        child: Text(
-          value == null ? "-" : value.toString(),
-          overflow: textOverflow,
-        ),
-      );
+      return value == 100
+          ? Image(
+              // fit: BoxFit.cover,
+              image: NetworkImage(
+                "https://media.giphy.com/media/TgGWZwWlsODxFPA21A/giphy.gif",
+              ),
+            )
+          : Container(
+              padding: padding,
+              alignment: alignment,
+              child: Text(
+                value == null ? "-" : value.toString(),
+                overflow: textOverflow,
+              ),
+            );
     }
 
     return DataGridRowAdapter(

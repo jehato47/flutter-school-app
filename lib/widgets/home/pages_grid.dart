@@ -13,12 +13,15 @@ import 'page_grid_item.dart';
 class PagesGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    // print(size.width);
+    double width = size.width;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: GridView(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           childAspectRatio: 1,
-          crossAxisCount: 2,
+          crossAxisCount: width >= 700 ? 4 : 2,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
         ),

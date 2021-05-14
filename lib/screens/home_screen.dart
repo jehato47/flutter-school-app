@@ -5,8 +5,6 @@ import 'package:school2/screens/homework/give_homework_screen.dart';
 // import '../providers/auth.dart';
 import '../widgets/home/pages_grid.dart';
 import '../widgets/home/bottom_navbar.dart';
-
-import '../screens/home/main_home_screen.dart';
 import '../screens/notifications/notification_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

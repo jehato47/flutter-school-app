@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/StudentCheckBox/student_checkbox.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class StudentCheckItem extends StatefulWidget {
   final dynamic student;
@@ -95,6 +96,9 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
 
   @override
   Widget build(BuildContext context) {
+    // Size size = MediaQuery.of(context).size;
+    // double width = size.width;
+    // print("${width / 4000} 123123");
     return ChangeNotifierProvider.value(
       value: StudentCheckBox(),
       child: Card(
@@ -109,7 +113,7 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
             // showAllActionsThreshold: 0.1,
             actionPane: SlidableDrawerActionPane(),
             closeOnScroll: false,
-            // actionExtentRatio: 0.3,
+            actionExtentRatio: 0.1,
             // actions: [],
             secondaryActions: [
               IconSlideAction(
