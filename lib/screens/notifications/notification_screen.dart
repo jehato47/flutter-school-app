@@ -34,6 +34,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     final fbm = FirebaseMessaging.instance;
     if (!kIsWeb) {
       fbm.requestPermission();
+      // Todo : Production
       fbm.subscribeToTopic("11-a");
     }
     super.initState();
@@ -153,6 +154,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     auth.currentUser.displayName,
                     mesaj.text.trim(),
                     file,
+                    // TODO : production
                     "11-a",
                   );
                   file = null;

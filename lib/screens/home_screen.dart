@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school2/firebase/firebase.dart';
 import 'package:school2/screens/homework/give_homework_screen.dart';
+import 'package:school2/screens/login_screen2.dart';
 // import '../providers/auth.dart';
 import '../widgets/home/pages_grid.dart';
 import '../widgets/home/bottom_navbar.dart';
@@ -19,6 +20,21 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   dynamic body = PagesGrid();
   final FirebaseAuth auth = FirebaseAuth.instance;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: buildDrawer(context),
+      appBar: AppBar(
+        actions: [
+          buildRingBell(context),
+          buildHomeworkButton(context),
+        ],
+        title: Text(auth.currentUser.displayName),
+      ),
+      body: body,
+    );
+  }
 
   Widget buildRingBell(BuildContext context) {
     return StreamBuilder(
@@ -177,27 +193,14 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: Icon(Icons.logout),
               title: Text("Çıkış Yap"),
               onTap: () async {
+                // await Navigator.of(context).push(
+                //     MaterialPageRoute(builder: (context) => LoginScreen2()));
                 await auth.signOut();
               },
             ),
           ],
         ),
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: buildDrawer(context),
-      appBar: AppBar(
-        actions: [
-          buildRingBell(context),
-          buildHomeworkButton(context),
-        ],
-        title: Text(auth.currentUser.displayName),
-      ),
-      body: body,
     );
   }
 }

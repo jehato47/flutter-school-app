@@ -35,6 +35,7 @@ import 'screens/etude/etudes_screen.dart';
 import 'helpers/download/download_helper_provider.dart';
 import 'screens/exam/students_exam_list.dart';
 import 'widgets/home/bottom_navbar.dart';
+import 'screens/login_screen2.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

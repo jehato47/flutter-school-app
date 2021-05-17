@@ -4,8 +4,10 @@ import 'package:flutter_picker/Picker.dart';
 import 'package:intl/intl.dart';
 import 'package:school2/screens/timetable/teacher_timetable_screen.dart';
 import 'package:school2/widgets/attendance/attendance_list.dart';
+import 'package:school2/widgets/attendance/empty_info.dart';
 import '../../providers/attendance.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../widgets/attendance/no_lecture_info.dart';
 
 class AttendanceCheckScreen extends StatefulWidget {
   static const url = "/attendance";
@@ -17,7 +19,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
   bool isSent = false;
   String currentClass = "";
   DateTime currentTime;
-  Map<String, dynamic> attendance;
+  dynamic attendance;
 
   // Başta herkes gelmeyen olarak işaretleniyor daha sonra listelere dağılıyor
   // Öğrenci numarasını diğer tüm listelerden çıkartıp istenen listeye koyar
@@ -71,6 +73,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
   Future<void> sendAttendance() async {
     if (!isSent) {
       isSent = true;
+
       await FirebaseFirestore.instance
           .collection('attendance')
           .doc(currentClass)
@@ -87,6 +90,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
         "date": currentTime,
         "classFirst": currentClass.split("-").first,
         "classLast": currentClass.split("-").last,
+        // TODO : production
         "lecture": "matematik",
       });
       Navigator.of(context).pop();
@@ -111,7 +115,10 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
         builder: (context, snapshot) {
           try {
             attendance = Provider.of<Attendance>(context).attendance;
-            if (attendance == null) throw Error();
+            // Eğer seçilen günde hiç ders yoksa
+            if (attendance.length == 0)
+              return NoLectureInfo();
+            else if (attendance == null) throw Error();
           } catch (err) {
             attendance = {
               "arrivals": [],

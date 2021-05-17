@@ -113,7 +113,7 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
             // showAllActionsThreshold: 0.1,
             actionPane: SlidableDrawerActionPane(),
             closeOnScroll: false,
-            actionExtentRatio: 0.1,
+            // actionExtentRatio: 0.1,
             // actions: [],
             secondaryActions: [
               IconSlideAction(

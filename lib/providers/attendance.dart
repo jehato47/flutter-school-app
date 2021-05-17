@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+// import '../models/http_exceptions.dart';
 
 class Attendance extends ChangeNotifier {
   dynamic _classes;
@@ -16,6 +17,14 @@ class Attendance extends ChangeNotifier {
   };
 
   var _studentList;
+
+  set setCurrentClass(String val) {
+    _currentClass = val;
+  }
+
+  set setCurrentTime(DateTime val) {
+    _currentTime = val;
+  }
 
   get currentClass {
     return _currentClass;
@@ -50,12 +59,12 @@ class Attendance extends ChangeNotifier {
     if (timeTimetable != null) {
       _currentTime = timeTimetable;
       _currentClass = classTimetable;
-
       // CollectionReference att = FirebaseFirestore.instance
       //     .collection('attendance/classes/$currentClass');
       CollectionReference att = FirebaseFirestore.instance
           .collection('attendance/$currentClass/pieces');
       DocumentSnapshot old = await att.doc(_currentTime.toString()).get();
+
       classFirst = classTimetable.split("-").first;
       classLast = classTimetable.split("-").last;
       if (old.exists) attendance = old["info"];
@@ -70,6 +79,14 @@ class Attendance extends ChangeNotifier {
       Intl.defaultLocale = "en_EN";
       String day = DateFormat("EEEE").format(date).toLowerCase();
       Intl.defaultLocale = "tr_TR";
+
+      // TODO : Eğer gelen verinin içinde buradaki gün yoksa hata verir
+
+      if (syl.data()[day].length == 0) {
+        // Eğer seçilen günde hiç ders yoksa
+        attendance = {};
+        return;
+      }
 
       syl[day].forEach((key, value) {
         DateTime sylDate = value.toDate();
