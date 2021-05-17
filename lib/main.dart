@@ -31,7 +31,9 @@ import 'screens/timetable/student_timetable_screen.dart';
 import 'screens/exam/add_exam_result_screen.dart';
 import 'screens/etude/give_etude_screen.dart';
 import 'screens/etude/show_etudes.dart';
+import 'screens/etude/student_etude_screen.dart';
 import 'screens/etude/etudes_screen.dart';
+import 'screens/etude/my_etudes_screen.dart';
 import 'helpers/download/download_helper_provider.dart';
 import 'screens/exam/students_exam_list.dart';
 import 'widgets/home/bottom_navbar.dart';
@@ -163,6 +165,8 @@ class MyApp extends StatelessWidget {
           StudentsExamList.url: (ctx) => StudentsExamList(),
           ShowEtudes.url: (ctx) => ShowEtudes(),
           EtudesScreen.url: (ctx) => EtudesScreen(),
+          StudentEtudeScreen.url: (ctx) => StudentEtudeScreen(),
+          MyEtudesScreen.url: (ctx) => MyEtudesScreen(),
         },
       ),
     );

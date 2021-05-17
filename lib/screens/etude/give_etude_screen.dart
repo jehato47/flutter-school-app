@@ -36,11 +36,6 @@ class _GiveEtudeScreenState extends State<GiveEtudeScreen> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Hangi dersten etüt almak istiyorsun?",
-                  style: TextStyle(fontSize: 30),
-                ),
-                Divider(thickness: 1),
                 Expanded(
                   child: ListView.builder(
                     itemCount: liste.length,
@@ -56,7 +51,7 @@ class _GiveEtudeScreenState extends State<GiveEtudeScreen> {
                         );
                       },
                       title: Text(
-                        liste[i],
+                        "${liste[i]} istekleri",
                         style: TextStyle(fontSize: 20),
                       ),
                       trailing: Icon(Icons.arrow_forward),
