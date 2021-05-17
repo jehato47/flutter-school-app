@@ -92,14 +92,14 @@ class _RegisterEtudePopUpState extends State<RegisterEtudePopUp> {
   @override
   Widget build(BuildContext context) {
     createStudentChips();
-    final token = Provider.of<Auth>(context).token;
-    final info = Provider.of<Auth>(context).userInform;
+    final token = Provider.of<Auth>(context, listen: false).token;
+    final info = Provider.of<Auth>(context, listen: false).userInform;
     String hour = widget.appointment.startTime.hour.toString();
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await Provider.of<Etude>(context)
+          await Provider.of<Etude>(context, listen: false)
               .enrollToEtude(token, notes, day, hour, info, teacherUser);
 
           setState(() {

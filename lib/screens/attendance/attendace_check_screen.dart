@@ -38,7 +38,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
 
   showPickerModal(BuildContext context) async {
     Map<String, dynamic> classes =
-        await Provider.of<Attendance>(context).classes;
+        await Provider.of<Attendance>(context, listen: false).classes;
 
     new Picker(
         adapter: PickerDataAdapter<String>(pickerdata: [classes]),
@@ -108,13 +108,14 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
       currentClass = args["class"];
     }
     return FutureBuilder(
-        future: Provider.of<Attendance>(context).getAttendance(
+        future: Provider.of<Attendance>(context, listen: false).getAttendance(
           currentClass,
           currentTime,
         ),
         builder: (context, snapshot) {
           try {
-            attendance = Provider.of<Attendance>(context).attendance;
+            attendance =
+                Provider.of<Attendance>(context, listen: false).attendance;
             // Eğer seçilen günde hiç ders yoksa
             if (attendance.length == 0)
               return NoLectureInfo();
@@ -139,8 +140,10 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
                 child: CircularProgressIndicator(),
               ),
             );
-          currentClass = Provider.of<Attendance>(context).currentClass;
-          currentTime = Provider.of<Attendance>(context).currentTime;
+          currentClass =
+              Provider.of<Attendance>(context, listen: false).currentClass;
+          currentTime =
+              Provider.of<Attendance>(context, listen: false).currentTime;
 
           return Scaffold(
             appBar: AppBar(

@@ -132,7 +132,8 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
               generalData.forEach((key, value) async {
                 await reference.doc(key).update(value);
               });
-              await Provider.of<Exam>(context).setDetails(lecture);
+              await Provider.of<Exam>(context, listen: false)
+                  .setDetails(lecture);
               Navigator.of(context).pop();
               Navigator.of(context).pop();
             },

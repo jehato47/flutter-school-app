@@ -79,7 +79,7 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
                         //       label: "bas",
                         //       onPressed: () async {
                         //         final _url =
-                        //             await Provider.of<HomeWork>(context)
+                        //             await Provider.of<HomeWork>(context,listen: false)
                         //                 .getDownloadUrl(hw["fileRef"]);
                         //         await canLaunch(_url)
                         //             ? await launch(_url)
@@ -94,8 +94,9 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
                         //   ),
                         // );
                         // return;
-                        final url = await Provider.of<HomeWork>(context)
-                            .getDownloadUrl(hw["fileRef"]);
+                        final url =
+                            await Provider.of<HomeWork>(context, listen: false)
+                                .getDownloadUrl(hw["fileRef"]);
                         if (kIsWeb) {
                           _launchURL(url);
                         } else

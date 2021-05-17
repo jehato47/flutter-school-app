@@ -25,7 +25,7 @@ class TeacherTimetableScreen extends StatelessWidget {
             return Center(
               child: CircularProgressIndicator(),
             );
-          Provider.of<Timetable>(context).teacherData =
+          Provider.of<Timetable>(context, listen: false).teacherData =
               snapshot.data.docs[0].data();
 
           return TimetableCalendar(isTeacher: true);

@@ -6,6 +6,7 @@
     "source": "functions"
   },
   "hosting": {
+    "site": "school-ff",
     "public": "build/web",
     "ignore": [
       "firebase.json",

@@ -22,7 +22,7 @@ class StudentTimetableScreen extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting)
             return Center(child: CircularProgressIndicator());
 
-          Provider.of<Timetable>(context).studentData =
+          Provider.of<Timetable>(context, listen: false).studentData =
               snapshot.data.docs[0].data();
           return TimetableCalendar(isTeacher: false);
         },

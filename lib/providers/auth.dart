@@ -134,8 +134,9 @@ class Auth extends ChangeNotifier {
         email: username,
         password: password,
       );
+      return null;
     } catch (err) {
-      print(err);
+      return err.toString();
     }
   }
 

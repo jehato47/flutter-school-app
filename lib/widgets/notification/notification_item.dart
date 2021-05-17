@@ -41,7 +41,8 @@ class _NotificationItemState extends State<NotificationItem> {
     notification = widget.notification;
     user = widget.user;
 
-    NotificationP notificationP = Provider.of<NotificationP>(context);
+    NotificationP notificationP =
+        Provider.of<NotificationP>(context, listen: false);
 
     return ListTile(
       onLongPress: () {

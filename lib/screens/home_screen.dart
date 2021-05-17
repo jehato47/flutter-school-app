@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:school2/firebase/firebase.dart';
 import 'package:school2/screens/homework/give_homework_screen.dart';
 import 'package:school2/screens/login_screen2.dart';
-// import '../providers/auth.dart';
 import '../widgets/home/pages_grid.dart';
 import '../widgets/home/bottom_navbar.dart';
 import '../screens/notifications/notification_screen.dart';
@@ -45,6 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
             return Center(
               child: CircularProgressIndicator(),
             );
+
+          if (snapshot.data == null) return Container();
           final docs = snapshot.data.docs;
           int length = 0;
           docs.forEach((element) {
@@ -193,8 +193,9 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: Icon(Icons.logout),
               title: Text("Çıkış Yap"),
               onTap: () async {
-                // await Navigator.of(context).push(
-                //     MaterialPageRoute(builder: (context) => LoginScreen2()));
+                // await FirebaseAuth.instance.signOut();
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => LoginScreen2()));
                 await auth.signOut();
               },
             ),

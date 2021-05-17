@@ -124,25 +124,30 @@ class MyApp extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               }
-              return StreamBuilder(
-                // TODO: login, logout, signup yapıldıgında bu stream değişecek
-                // TODO: onAuthstateChanged -> authStateChanges
-                stream: FirebaseAuth.instance.authStateChanges(),
-                builder: (ctx, snapshot) {
-                  // FirebaseAuth.instance.signOut();
-                  // * TODO : Login Form da setState hatası veriyor bak
-                  if (snapshot.connectionState == ConnectionState.waiting)
-                    return Center(child: CircularProgressIndicator());
-                  if (snapshot.hasData) {
-                    // todo : Öğrenci ve Öğretmen eklerken resim urlsini ekle de kaydet
-                    // todo : Yoklama Ekranında Öğreninin detaylarını göstermeyi hallet
-                    // todo : Sınav sonuç ekranında detay pop-up ını bitir
-                    // ? todo : Sınav cevap kağıdını göstermeyi hallet
-                    return HomeScreen();
-                  }
-                  return LoginScreen();
-                },
-              );
+              if (FirebaseAuth.instance.currentUser != null)
+                return HomeScreen();
+              return LoginScreen2();
+              // return StreamBuilder(
+              //   // TODO: login, logout, signup yapıldıgında bu stream değişecek
+              //   // TODO: onAuthstateChanged -> authStateChanges
+              //   stream: FirebaseAuth.instance.authStateChanges(),
+              //   builder: (ctx, snapshot) {
+              //     // FirebaseAuth.instance.signOut();
+              //     // * TODO : Login Form da setState hatası veriyor bak
+              //     if (snapshot.connectionState == ConnectionState.waiting)
+              //       return Center(child: CircularProgressIndicator());
+
+              //     if (snapshot.hasData) {
+              //       print(122);
+              //       // todo : Öğrenci ve Öğretmen eklerken resim urlsini ekle de kaydet
+              //       // todo : Yoklama Ekranında Öğreninin detaylarını göstermeyi hallet
+              //       // todo : Sınav sonuç ekranında detay pop-up ını bitir
+              //       // ? todo : Sınav cevap kağıdını göstermeyi hallet
+              //       // return HomeScreen();
+              //     }
+              //     return LoginScreen2();
+              //   },
+              // );
             },
           ),
         ),

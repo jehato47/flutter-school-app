@@ -22,7 +22,7 @@ class _LoginFormState extends State<LoginForm> {
       isLoading = true;
     });
     _form.currentState.save();
-    await Provider.of<Auth>(context).login(email, password);
+    await Provider.of<Auth>(context, listen: false).login(email, password);
     setState(() {
       isLoading = false;
     });
