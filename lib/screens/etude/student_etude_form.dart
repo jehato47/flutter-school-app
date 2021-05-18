@@ -33,6 +33,9 @@ class _StudentEtudeFormState extends State<StudentEtudeForm> {
               Divider(thickness: 1),
               SizedBox(height: 20),
               TextFormField(
+                onChanged: (value) {
+                  print(controller.text);
+                },
                 onSaved: (newValue) {
                   note = newValue;
                 },
@@ -41,27 +44,28 @@ class _StudentEtudeFormState extends State<StudentEtudeForm> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  _formKey.currentState.save();
-                  QuerySnapshot snapshot = await FirebaseFirestore.instance
-                      .collection("etudeRequest")
-                      .where("date",
-                          isLessThanOrEqualTo:
-                              DateTime.now().add(Duration(days: 3)))
-                      .where("lecture", isEqualTo: "fizik")
-                      .where("uid", isEqualTo: auth.currentUser.uid)
-                      .get();
-                  print(snapshot.docs);
-                  if (snapshot.docs.length > 0) {
-                    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        backgroundColor: Colors.red,
-                        content: Text(
-                            "Son üç gün içinde aynı derse tekrar istek gönderemezsiniz"),
-                      ),
-                    );
-                    return;
-                  }
+                  print(controller.text);
+                  // _formKey.currentState.save();
+                  // QuerySnapshot snapshot = await FirebaseFirestore.instance
+                  //     .collection("etudeRequest")
+                  //     .where("date",
+                  //         isLessThanOrEqualTo:
+                  //             DateTime.now().add(Duration(days: 3)))
+                  //     .where("lecture", isEqualTo: "fizik")
+                  //     .where("uid", isEqualTo: auth.currentUser.uid)
+                  //     .get();
+                  // print(snapshot.docs);
+                  // if (snapshot.docs.length > 0) {
+                  //   ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                  //   ScaffoldMessenger.of(context).showSnackBar(
+                  //     SnackBar(
+                  //       backgroundColor: Colors.red,
+                  //       content: Text(
+                  //           "Son üç gün içinde aynı derse tekrar istek gönderemezsiniz"),
+                  //     ),
+                  //   );
+                  //   return;
+                  // }
 
                   await FirebaseFirestore.instance
                       .collection("etudeRequest")
@@ -70,7 +74,7 @@ class _StudentEtudeFormState extends State<StudentEtudeForm> {
                     "lecture": "fizik",
                     "uid": auth.currentUser.uid,
                     "date": DateTime.now(),
-                    "note": note,
+                    "note": controller.text,
                     "state": "waiting",
                   });
 
@@ -82,6 +86,7 @@ class _StudentEtudeFormState extends State<StudentEtudeForm> {
                       ),
                     ),
                   );
+                  _formKey.currentState.reset();
                 },
                 child: Text("Gönder"),
               )

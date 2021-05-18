@@ -32,9 +32,17 @@ class _MyEtudesScreenState extends State<MyEtudesScreen> {
             itemCount: data.length,
             itemBuilder: (context, index) {
               bool isDone = data[index]["state"] != "waiting";
+              Color color;
+              if (data[index]["state"] == "rejected")
+                color = Colors.red;
+              else if (data[index]["state"] == "done")
+                color = Colors.green;
+              else
+                color = Colors.amber;
+
               return ListTile(
                 onTap: () {},
-                tileColor: isDone ? Colors.green : Colors.amber,
+                tileColor: color,
                 title: Text(data[index]["note"]),
                 subtitle: Text(data[index]["lecture"]),
                 trailing: Icon(isDone ? Icons.done : Icons.hourglass_bottom),

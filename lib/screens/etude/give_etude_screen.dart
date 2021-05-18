@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'student_etude_detail_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'show_etudes.dart';
+import 'package:intl/intl.dart';
 
 class GiveEtudeScreen extends StatefulWidget {
   static const url = "/give-etude";
@@ -19,46 +19,48 @@ class _GiveEtudeScreenState extends State<GiveEtudeScreen> {
         title: Text("Etüt"),
       ),
       body: Padding(
-        padding: EdgeInsets.all(size.width / 20),
+        padding: EdgeInsets.all(10),
         child: StreamBuilder(
           stream:
-              FirebaseFirestore.instance.collection("etudeTimes").snapshots(),
+              FirebaseFirestore.instance.collection("etudeRequest").snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting)
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-
-            QuerySnapshot querySnapshot = snapshot.data;
-            dynamic liste =
-                querySnapshot.docs.map((e) => e["lecture"]).toSet().toList();
-
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: liste.length,
-                    itemBuilder: (ctx, i) => ListTile(
-                      contentPadding: EdgeInsets.all(0),
-                      onTap: () {
-                        dynamic lectureTeachers = querySnapshot.docs
-                            .where((element) => element["lecture"] == liste[i])
-                            .toList();
-                        Navigator.of(context).pushNamed(
-                          ShowEtudes.url,
-                          arguments: lectureTeachers,
-                        );
-                      },
-                      title: Text(
-                        "${liste[i]} istekleri",
-                        style: TextStyle(fontSize: 20),
+              return Center(child: CircularProgressIndicator());
+            final docs = snapshot.data.docs;
+            return ListView.builder(
+              itemCount: snapshot.data.docs.length,
+              itemBuilder: (context, index) {
+                bool isDone = docs[index]["state"] != "waiting";
+                Color color;
+                if (docs[index]["state"] == "rejected")
+                  color = Colors.red;
+                else if (docs[index]["state"] == "done")
+                  color = Colors.green;
+                else
+                  color = Colors.amber;
+                return Container(
+                  margin: EdgeInsets.all(5),
+                  decoration:
+                      BoxDecoration(border: Border.all(color: color, width: 2)),
+                  child: ListTile(
+                    // tileColor: color,
+                    onTap: () {
+                      Navigator.of(context).pushNamed(
+                        StudentEtudeDetailScreen.url,
+                        arguments: docs[index],
+                      );
+                    },
+                    leading: Text(docs[index]["lecture"]),
+                    title: Text(docs[index]["displayName"]),
+                    subtitle: Text(docs[index]["note"]),
+                    trailing: Text(
+                      DateFormat("dd-MM-yyyy HH:MM").format(
+                        docs[index]["date"].toDate(),
                       ),
-                      trailing: Icon(Icons.arrow_forward),
                     ),
                   ),
-                )
-              ],
+                );
+              },
             );
           },
         ),
