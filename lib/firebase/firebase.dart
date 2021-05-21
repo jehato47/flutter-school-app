@@ -52,133 +52,118 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
             child: ElevatedButton(
               child: Text("send"),
               onPressed: () async {
-                // var list =
-                //     new List<String>.generate(2, (i) => (i + 1).toString());
-
+                // return;
                 FirebaseAuth auth = FirebaseAuth.instance;
-                // Provider.of<Auth>(context).signStudentUp(
-                //   "ilysumt@hotmail.com",
-                //   "123465789",
-                //   "ilyasumut",
-                //   "İlyas Umut",
-                //   "Apul",
-                //   159,
-                //   "11",
-                //   "g",
-                //   "05366639292",
-                //   file,
-                // );
-                // Provider.of<Auth>(context).signTeacherUp(
-                //   "pkcnaksz@hotmail.com",
-                //   "123465789",
-                //   "Pekcan",
-                //   "Aksöz",
-                //   "05366639292",
-                //   "matematik",
-                //   file,
-                // );
-                // CollectionReference ref =
-                //     FirebaseFirestore.instance.collection("students");
-                // CollectionReference ref2 =
-                //     FirebaseFirestore.instance.collection("exam");
+                // QuerySnapshot snapshot2 = await FirebaseFirestore.instance
+                //     .collection("etude/TXWUtv8s9bZnMfGZNpkrJLDKRmE3/pieces")
+                //     .where(
+                //       "date",
+                //       isGreaterThanOrEqualTo: DateTime.now(),
+                //     )
+                //     .get();
+                // List<QueryDocumentSnapshot> docs2 = snapshot2.docs;
+                // print(docs2);
 
-                // QuerySnapshot snapshot = await ref.get();
-                // print(snapshot.docs[0].id);
+                // return;
+                QuerySnapshot snapshot = await FirebaseFirestore.instance
+                    .collection("etudeTimes")
+                    .where("lecture", isEqualTo: "fizik")
+                    .get();
 
-                // snapshot.docs.forEach((element) async {
-                //   await ref2.doc(element.id).set({
-                //     "displayName": element["displayName"],
-                //     "number": element["number"],
-                //     "classFirst": element["classFirst"],
-                //     "classLast": element["classLast"],
-                //     "matematik": {
-                //       "1": null,
-                //       "2": null,
-                //       "3": null,
-                //     },
-                //     "fizik": {
-                //       "1": null,
-                //       "2": null,
-                //     },
-                //     "kimya": {
-                //       "1": null,
-                //       "2": null,
-                //     },
-                //     "biyoloji": {
-                //       "1": null,
-                //       "2": null,
-                //     },
-                //     "türkçe": {
-                //       "1": null,
-                //       "2": null,
-                //       "3": null,
-                //     },
-                //     "sosyalbilgiler": {
-                //       "1": null,
-                //       "2": null,
-                //     },
-                //     "coğrafya": {
-                //       "1": null,
-                //       "2": null,
-                //     },
-                //     "dilbilgisi": {
-                //       "1": null,
-                //       "2": null,
-                //     },
-                //   });
-                // });
+                List<QueryDocumentSnapshot> docs = snapshot.docs;
 
-                CollectionReference teacherRef =
-                    FirebaseFirestore.instance.collection("teacher");
-                final teachers = await teacherRef.get();
+                for (int i = 0; i < 15; i++) {
+                  DateTime now = DateTime.now().add(Duration(days: i));
+                  Intl.defaultLocale = "en_EN";
+                  String day = DateFormat("EEEE").format(now).toLowerCase();
+                  Intl.defaultLocale = "tr_TR";
 
-                print(teachers.docs[0]["displayName"]);
+                  docs.forEach((doc) async {
+                    dynamic etudesofday = doc.data()[day];
+                    if (!doc.data().containsKey(day)) return;
 
-                CollectionReference ref =
-                    FirebaseFirestore.instance.collection("etudeTimes");
+                    await etudesofday.forEach((e) async {
+                      DateTime oldDate = e.toDate();
 
-                await ref.doc(teachers.docs[0].id).set({
-                  "ref": teachers.docs[0].reference,
-                  "lecture": teachers.docs[0]["lecture"],
-                  "displayName": teachers.docs[0]["displayName"],
-                  "monday": [
-                    DateTime(2021, 4, 26, 14, 30),
-                  ],
-                  "tuesday": [
-                    DateTime(2021, 4, 26, 14, 30),
-                  ],
-                  "wednesday": [
-                    DateTime(2021, 4, 26, 14, 30),
-                  ],
-                  "thursday": [
-                    DateTime(2021, 4, 26, 14, 30),
-                  ],
-                });
+                      DateTime newTime = DateTime(
+                        now.year,
+                        now.month,
+                        now.day,
+                        oldDate.hour,
+                        oldDate.minute,
+                      );
+                      // print("$day $newTime");
+                      QuerySnapshot dSnapshot = await FirebaseFirestore.instance
+                          .collection("etude")
+                          .where("uid", isEqualTo: doc.id)
+                          .where("date", isEqualTo: newTime)
+                          .get();
 
-                final data = await ref.get();
-
-                print(data.docs);
-
-                // QuerySnapshot querySnapshot = await
-                FirebaseFirestore.instance
-                    .collection("etude/${teachers.docs[0].id}/pieces")
-                    //     .get();
-
-                    // print(querySnapshot.docs[0].data());
-                    .doc(DateTime(2021, 5, 26, 14, 30).toString())
-                    .set({
-                  "date": DateTime(2021, 5, 26, 14, 30),
-                  "notParticipate": [],
-                  "registered": [],
-                  "requests": [],
-                  "subject": "",
-                  "teacherName": "",
-                  "uid": teachers.docs[0].id,
-                  "lecture": teachers.docs[0]["lecture"]
-                });
+                      if (dSnapshot.docs.isEmpty)
+                        await FirebaseFirestore.instance.collection("etude")
+                            // .doc(newTime.toString())
+                            .add({
+                          "date": newTime,
+                          "lecture": doc["lecture"],
+                          "notParticipate": [],
+                          "registered": [],
+                          "subject": "Düzgün Doğrusal Hareket",
+                          "teacherName": doc["displayName"],
+                          "uid": doc.id,
+                        });
+                      // else if (dSnapshot.docs.length == 1)
+                      //   await FirebaseFirestore.instance
+                      //       .collection("etude")
+                      //       // .doc(newTime.toString())
+                      //       .doc(dSnapshot.docs[0].id)
+                      //       .update({
+                      //     "date": newTime,
+                      //     "lecture": doc["lecture"],
+                      //     "notParticipate": [],
+                      //     "registered": [1, 1, 3, 2],
+                      //     "subject": "Düzgün Doğrusal Hareket",
+                      //     "teacherName": doc["displayName"],
+                      //     "uid": doc.id,
+                      //   });
+                    });
+                  });
+                }
+                return;
               },
             ),
           ),
+          Expanded(
+            child: StreamBuilder(
+              stream:
+                  FirebaseFirestore.instance.collection("etude").snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting)
+                  return Center(child: CircularProgressIndicator());
+                List<QueryDocumentSnapshot> docs = snapshot.data.docs;
+
+                return ListView.builder(
+                  itemCount: docs.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      onTap: () async {
+                        print(docs[index].id);
+                        // return;
+                        await FirebaseFirestore.instance
+                            .collection("etude")
+                            .doc(docs[index].id)
+                            .update({
+                          "notParticipate": [1, 2, 3, 4]
+                        });
+                      },
+                      title: Text(
+                        docs[index]["lecture"],
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          )
         ],
       ),
     );

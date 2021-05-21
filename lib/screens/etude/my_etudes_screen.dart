@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:school2/screens/etude/student_etude_screen.dart';
 
 class MyEtudesScreen extends StatefulWidget {
   static const url = "my-etudes";
@@ -14,6 +15,14 @@ class _MyEtudesScreenState extends State<MyEtudesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              Navigator.of(context).pushNamed(StudentEtudeScreen.url);
+            },
+          )
+        ],
         title: Text("Etütlerim"),
       ),
       body: StreamBuilder(

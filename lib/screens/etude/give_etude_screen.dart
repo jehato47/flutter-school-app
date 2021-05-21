@@ -21,8 +21,10 @@ class _GiveEtudeScreenState extends State<GiveEtudeScreen> {
       body: Padding(
         padding: EdgeInsets.all(10),
         child: StreamBuilder(
-          stream:
-              FirebaseFirestore.instance.collection("etudeRequest").snapshots(),
+          stream: FirebaseFirestore.instance
+              .collection("etudeRequest")
+              .orderBy("date", descending: true)
+              .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting)
               return Center(child: CircularProgressIndicator());
@@ -30,7 +32,6 @@ class _GiveEtudeScreenState extends State<GiveEtudeScreen> {
             return ListView.builder(
               itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) {
-                bool isDone = docs[index]["state"] != "waiting";
                 Color color;
                 if (docs[index]["state"] == "rejected")
                   color = Colors.red;

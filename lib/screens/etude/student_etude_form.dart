@@ -76,6 +76,7 @@ class _StudentEtudeFormState extends State<StudentEtudeForm> {
                     "date": DateTime.now(),
                     "note": controller.text,
                     "state": "waiting",
+                    "ref": null,
                   });
 
                   ScaffoldMessenger.of(context).showSnackBar(

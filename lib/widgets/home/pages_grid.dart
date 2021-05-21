@@ -73,11 +73,11 @@ class PagesGrid extends StatelessWidget {
             "Etüt Ver",
             "subtitle",
           ),
-          PageGridItem(
-            StudentEtudeScreen.url,
-            "Etüt Al",
-            "subtitle",
-          ),
+          // PageGridItem(
+          //   StudentEtudeScreen.url,
+          //   "Etüt Al",
+          //   "subtitle",
+          // ),
           PageGridItem(
             MyEtudesScreen.url,
             "Etütlerim",

@@ -1,0 +1,13 @@
+[
+  {
+    "origin": [
+      "https://school-f162e.web.app",
+      "https://school-ff.web.app"
+    ],
+    "method": [
+      "GET",
+      "POST"
+    ],
+    "maxAgeSeconds": 3600
+  }
+]
