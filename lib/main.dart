@@ -32,8 +32,10 @@ import 'screens/exam/add_exam_result_screen.dart';
 import 'screens/etude/give_etude_screen.dart';
 import 'screens/etude/student_etude_detail_screen.dart';
 import 'screens/etude/student_etude_screen.dart';
-// import 'screens/etude/etudes_screen.dart';
+import 'screens/etude/student_etude_form.dart';
+import 'screens/etude/etudes.dart';
 import 'screens/etude/my_etudes_screen.dart';
+import 'screens/etude/etude_chat_screen.dart';
 import 'helpers/download/download_helper_provider.dart';
 import 'screens/exam/students_exam_list.dart';
 import 'widgets/home/bottom_navbar.dart';
@@ -167,6 +169,9 @@ class MyApp extends StatelessWidget {
           // EtudesScreen.url: (ctx) => EtudesScreen(),
           StudentEtudeScreen.url: (ctx) => StudentEtudeScreen(),
           MyEtudesScreen.url: (ctx) => MyEtudesScreen(),
+          EtudeChatScreen.url: (ctx) => EtudeChatScreen(),
+          StudentEtudeForm.url: (ctx) => StudentEtudeForm(),
+          EtudesScreen.url: (ctx) => EtudesScreen(),
         },
       ),
     );

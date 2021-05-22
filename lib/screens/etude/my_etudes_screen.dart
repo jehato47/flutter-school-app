@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:school2/screens/etude/student_etude_screen.dart';
+import 'etude_chat_screen.dart';
 
 class MyEtudesScreen extends StatefulWidget {
   static const url = "my-etudes";
@@ -36,7 +37,11 @@ class _MyEtudesScreenState extends State<MyEtudesScreen> {
               child: CircularProgressIndicator(),
             );
           var data = snapshot.data.docs;
-
+          if (data.length == 0)
+            return Center(
+              child: Text(
+                  "Etüt istekleriniz burada görünür. Henüz etüt isteğiniz yok."),
+            );
           return ListView.builder(
             itemCount: data.length,
             itemBuilder: (context, index) {
@@ -50,7 +55,12 @@ class _MyEtudesScreenState extends State<MyEtudesScreen> {
                 color = Colors.amber;
 
               return ListTile(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).pushNamed(
+                    EtudeChatScreen.url,
+                    arguments: data[index],
+                  );
+                },
                 tileColor: color,
                 title: Text(data[index]["note"]),
                 subtitle: Text(data[index]["lecture"]),

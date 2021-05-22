@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'etude_chat_screen.dart';
 
 class StudentEtudeForm extends StatefulWidget {
+  static const url = "etude-form";
   @override
   _StudentEtudeFormState createState() => _StudentEtudeFormState();
 }
@@ -14,6 +16,8 @@ class _StudentEtudeFormState extends State<StudentEtudeForm> {
   String note;
   @override
   Widget build(BuildContext context) {
+    final lecture = ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
       appBar: AppBar(
         actions: [],
@@ -44,39 +48,24 @@ class _StudentEtudeFormState extends State<StudentEtudeForm> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  print(controller.text);
-                  // _formKey.currentState.save();
-                  // QuerySnapshot snapshot = await FirebaseFirestore.instance
-                  //     .collection("etudeRequest")
-                  //     .where("date",
-                  //         isLessThanOrEqualTo:
-                  //             DateTime.now().add(Duration(days: 3)))
-                  //     .where("lecture", isEqualTo: "fizik")
-                  //     .where("uid", isEqualTo: auth.currentUser.uid)
-                  //     .get();
-                  // print(snapshot.docs);
-                  // if (snapshot.docs.length > 0) {
-                  //   ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                  //   ScaffoldMessenger.of(context).showSnackBar(
-                  //     SnackBar(
-                  //       backgroundColor: Colors.red,
-                  //       content: Text(
-                  //           "Son üç gün içinde aynı derse tekrar istek gönderemezsiniz"),
-                  //     ),
-                  //   );
-                  //   return;
-                  // }
-
-                  await FirebaseFirestore.instance
+                  DocumentReference eRequest = await FirebaseFirestore.instance
                       .collection("etudeRequest")
                       .add({
                     "displayName": auth.currentUser.displayName,
-                    "lecture": "fizik",
+                    "lecture": lecture,
                     "uid": auth.currentUser.uid,
                     "date": DateTime.now(),
                     "note": controller.text,
                     "state": "waiting",
                     "ref": null,
+                  });
+
+                  await FirebaseFirestore.instance.collection("etudeChat").add({
+                    "eRequestid": eRequest.id,
+                    "note": controller.text,
+                    "uid": auth.currentUser.uid,
+                    "displayName": auth.currentUser.displayName,
+                    "date": DateTime.now(),
                   });
 
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -88,6 +77,8 @@ class _StudentEtudeFormState extends State<StudentEtudeForm> {
                     ),
                   );
                   _formKey.currentState.reset();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
                 },
                 child: Text("Gönder"),
               )

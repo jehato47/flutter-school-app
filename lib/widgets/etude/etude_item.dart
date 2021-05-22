@@ -28,7 +28,7 @@ class _EtudeItemState extends State<EtudeItem> {
         children: [
           Text(etude["teacherName"]),
           Text(etude["lecture"]),
-          Text(DateFormat("d MMMM EEEE").format(etude["date"].toDate())),
+          Text(DateFormat("dd MMMM HH:mm").format(etude["date"].toDate())),
           Text("${etude["registered"].length} kişi kayıtlı"),
           ElevatedButton(
             onPressed: etudeRequest["state"] == "done" &&

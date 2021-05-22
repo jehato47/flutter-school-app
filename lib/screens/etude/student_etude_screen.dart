@@ -43,31 +43,11 @@ class _StudentEtudeScreenState extends State<StudentEtudeScreen> {
                     itemBuilder: (ctx, i) => ListTile(
                       contentPadding: EdgeInsets.all(0),
                       onTap: () async {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => StudentEtudeForm(),
-                          ),
+                        Navigator.of(context).pushNamed(
+                          StudentEtudeForm.url,
+                          arguments: liste[i],
                         );
-                        // Query ref = FirebaseFirestore.instance
-                        //     .collection("etudeTimes")
-                        //     .where(
-                        //       "lecture",
-                        //       isEqualTo: querySnapshot.docs[i]["lecture"],
-                        //     );
-
-                        // QuerySnapshot snapshot = await ref.get();
-                        // print(snapshot.docs);
-
-                        // snapshot.docs.forEach((element) {
-                        //   var requestNumber = element.data()["requests"];
-                        //   FirebaseFirestore.instance
-                        //       .collection("etudeTimes")
-                        //       .doc(element.id)
-                        //       .update({"requests": requestNumber + 1});
-                        // });
                       },
-                      // trailing:
-                      //     Text(querySnapshot.docs[i]["requests"].toString()),
                       title: Text(
                         liste[i],
                         style: TextStyle(fontSize: 20),

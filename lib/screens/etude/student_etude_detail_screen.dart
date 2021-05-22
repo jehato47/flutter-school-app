@@ -22,6 +22,7 @@ class _StudentEtudeDetailScreenState extends State<StudentEtudeDetailScreen> {
             stream: FirebaseFirestore.instance
                 .collection("etude")
                 .orderBy("date")
+                .where("lecture", isEqualTo: "fizik")
                 .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting)
