@@ -1,5 +1,3 @@
-// import 'dart:html';
-import '../providers/local_notification/local_notification.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,9 +11,6 @@ import '../screens/attendance/attendance_detail_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/timezone.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class FireBaseTryScreen extends StatefulWidget {
   @override
@@ -23,8 +18,6 @@ class FireBaseTryScreen extends StatefulWidget {
 }
 
 class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-
   File file;
   String classFirst;
   String classLast;
@@ -48,152 +41,129 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    // var anroidInitialize = AndroidInitializationSettings("app_icon");
-    // var iosInitializtioe = IOSInitializationSettings();
-    // var initializeSettings = InitializationSettings(
-    //     android: anroidInitialize, iOS: iosInitializtioe);
-    // flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    // flutterLocalNotificationsPlugin.initialize(
-    //   initializeSettings,
-    //   onSelectNotification: onSelectNotification,
-    // );
-  }
-
-  Future<void> showBigPictureNotification() async {
-    var iosDetails = IOSNotificationDetails();
-    var androidDetails = AndroidNotificationDetails(
-      "Channel ID",
-      "Random",
-      "This is my channel",
-      importance: Importance.max,
-      icon: "app_icon",
-      color: Colors.red,
-      ledColor: Colors.green,
-      ledOnMs: 1,
-      ledOffMs: 2,
-    );
-    var bigPictureStyleInformation = BigPictureStyleInformation(
-      DrawableResourceAndroidBitmap("flutter_devs"),
-      largeIcon: DrawableResourceAndroidBitmap("flutter_devs"),
-      contentTitle: 'flutter devs',
-      summaryText: 'summaryText',
-    );
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'big text channel id',
-        'big text channel name',
-        'big text channel description',
-        styleInformation: bigPictureStyleInformation);
-    var platformChannelSpecifics =
-        NotificationDetails(android: androidDetails, iOS: iosDetails);
-    await flutterLocalNotificationsPlugin.show(
-        0, 'big text title', 'silent body', platformChannelSpecifics,
-        payload: "big image notifications");
-  }
-
-  Future _showNotification() async {
-    var bigPictureStyleInformation = BigPictureStyleInformation(
-      DrawableResourceAndroidBitmap("app_icon"),
-      largeIcon: DrawableResourceAndroidBitmap("app_icon"),
-      contentTitle: 'flutter devs',
-      summaryText: 'summaryText',
-    );
-    var androidDetails = AndroidNotificationDetails(
-      "Channel ID", "Random", "This is my channel",
-      importance: Importance.max,
-      icon: "app_icon",
-      color: Colors.red,
-      ledColor: Colors.green,
-      ledOnMs: 1,
-      ledOffMs: 2,
-      enableLights: true,
-      // priority: Priority.max,
-      subText: "subtextttt",
-      // timeoutAfter: 300,
-      // usesChronometer: true,
-      showWhen: true,
-      // fullScreenIntent: true,
-      // onlyAlertOnce: true,
-      autoCancel: true,
-      priority: Priority.min,
-      channelShowBadge: true,
-      setAsGroupSummary: true,
-      maxProgress: 5,
-      tag: "tg23",
-      channelAction: AndroidNotificationChannelAction.createIfNotExists,
-    );
-
-    var iosDetails = IOSNotificationDetails();
-
-    var generalDetails =
-        NotificationDetails(android: androidDetails, iOS: iosDetails);
-
-    await flutterLocalNotificationsPlugin
-        .show(0, "title", "body", generalDetails, payload: "veriqweqwe");
-    // var time = DateTime.now().add(Duration(seconds: 5));
-
-    // await flutterLocalNotificationsPlugin.schedule(
-    //   1,
-    //   "Task",
-    //   "Scheduled Notification",
-    //   time,
-    //   generalDetails,
-    // );
-  }
-
-  Future onSelectNotification(String payload) async {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        content: Container(
-          child: Text("tıklandı $payload"),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _launchURL(String _url) async => await canLaunch(_url)
-      ? await launch(_url)
-      : throw 'Could not launch $_url';
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            icon: Icon(Icons.notifications),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {},
-          ),
-        ],
-        title: Text("Çilem Akçay"),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Ana Sayfa"),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Ana Sayfa"),
-        ],
-      ),
+      appBar: AppBar(),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
             child: ElevatedButton(
+              child: Text("send"),
               onPressed: () async {
-                CollectionReference ref =
-                    FirebaseFirestore.instance.collection("notification");
-                QuerySnapshot snapshot = await ref.get();
-                print(snapshot);
+                // return;
+                FirebaseAuth auth = FirebaseAuth.instance;
+                // QuerySnapshot snapshot2 = await FirebaseFirestore.instance
+                //     .collection("etude/TXWUtv8s9bZnMfGZNpkrJLDKRmE3/pieces")
+                //     .where(
+                //       "date",
+                //       isGreaterThanOrEqualTo: DateTime.now(),
+                //     )
+                //     .get();
+                // List<QueryDocumentSnapshot> docs2 = snapshot2.docs;
+                // print(docs2);
+
+                // return;
+                QuerySnapshot snapshot = await FirebaseFirestore.instance
+                    .collection("etudeTimes")
+                    .where("lecture", isEqualTo: "matematik")
+                    .get();
+
+                List<QueryDocumentSnapshot> docs = snapshot.docs;
+
+                for (int i = 0; i < 15; i++) {
+                  DateTime now = DateTime.now().add(Duration(days: i));
+                  Intl.defaultLocale = "en_EN";
+                  String day = DateFormat("EEEE").format(now).toLowerCase();
+                  Intl.defaultLocale = "tr_TR";
+
+                  docs.forEach((doc) async {
+                    dynamic etudesofday = doc.data()[day];
+                    if (!doc.data().containsKey(day)) return;
+
+                    await etudesofday.forEach((e) async {
+                      DateTime oldDate = e.toDate();
+
+                      DateTime newTime = DateTime(
+                        now.year,
+                        now.month,
+                        now.day,
+                        oldDate.hour,
+                        oldDate.minute,
+                      );
+                      // print("$day $newTime");
+                      QuerySnapshot dSnapshot = await FirebaseFirestore.instance
+                          .collection("etude")
+                          .where("uid", isEqualTo: doc.id)
+                          .where("date", isEqualTo: newTime)
+                          .get();
+
+                      if (dSnapshot.docs.isEmpty)
+                        await FirebaseFirestore.instance.collection("etude")
+                            // .doc(newTime.toString())
+                            .add({
+                          "date": newTime,
+                          "lecture": doc["lecture"],
+                          "notParticipate": [],
+                          "registered": [],
+                          "subject": "Düzgün Doğrusal Hareket",
+                          "teacherName": doc["displayName"],
+                          "uid": doc.id,
+                        });
+                      // else if (dSnapshot.docs.length == 1)
+                      //   await FirebaseFirestore.instance
+                      //       .collection("etude")
+                      //       // .doc(newTime.toString())
+                      //       .doc(dSnapshot.docs[0].id)
+                      //       .update({
+                      //     "date": newTime,
+                      //     "lecture": doc["lecture"],
+                      //     "notParticipate": [],
+                      //     "registered": [1, 1, 3, 2],
+                      //     "subject": "Düzgün Doğrusal Hareket",
+                      //     "teacherName": doc["displayName"],
+                      //     "uid": doc.id,
+                      //   });
+                    });
+                  });
+                }
+                return;
               },
-              child: Text(
-                "btn",
-              ),
             ),
           ),
+          Expanded(
+            child: StreamBuilder(
+              stream:
+                  FirebaseFirestore.instance.collection("etude").snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting)
+                  return Center(child: CircularProgressIndicator());
+                List<QueryDocumentSnapshot> docs = snapshot.data.docs;
+
+                return ListView.builder(
+                  itemCount: docs.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      onTap: () async {
+                        print(docs[index].id);
+                        // return;
+                        await FirebaseFirestore.instance
+                            .collection("etude")
+                            .doc(docs[index].id)
+                            .update({
+                          "notParticipate": [1, 2, 3, 4]
+                        });
+                      },
+                      title: Text(
+                        docs[index]["lecture"],
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          )
         ],
       ),
     );

@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: NetworkImage(
-                    "https://images.wallpapersden.com/image/wxl-desert-night-illustration_63345.jpg",
+                    "https://images.pexels.com/photos/7440502/pexels-photo-7440502.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
                   ),
                 ),
               ),
