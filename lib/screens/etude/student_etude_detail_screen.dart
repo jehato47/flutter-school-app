@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../../widgets/etude/etude_item.dart';
 
 class StudentEtudeDetailScreen extends StatefulWidget {
   // TODO : Bu Sayfa Çöp Responsive
@@ -14,6 +15,7 @@ class _StudentEtudeDetailScreenState extends State<StudentEtudeDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final doc = ModalRoute.of(context).settings.arguments as dynamic;
+
     Widget buildStream(DocumentSnapshot docsnap) {
       return Expanded(
         child: StreamBuilder<Object>(
@@ -34,65 +36,9 @@ class _StudentEtudeDetailScreenState extends State<StudentEtudeDetailScreen> {
                 itemCount: docs.length,
                 itemBuilder: (context, index) => InkWell(
                   onTap: () {},
-                  child: Container(
-                    width: 150,
-                    margin: EdgeInsets.only(right: 5),
-                    color: Colors.black12,
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(docs[index]["teacherName"]),
-                        Text(docs[index]["lecture"]),
-                        Text(DateFormat("d MMMM EEEE")
-                            .format(docs[index]["date"].toDate())),
-                        Text(
-                            "${docs[index]["registered"].length} kişi kayıtlı"),
-                        ElevatedButton(
-                          onPressed: docsnap["state"] == "done" &&
-                                  docs[index].reference != docsnap["ref"]
-                              ? null
-                              : () async {
-                                  List registered = docs[index]["registered"];
-                                  if (!registered.contains(doc["uid"])) {
-                                    registered.add(doc["uid"]);
-
-                                    await FirebaseFirestore.instance
-                                        .collection("etude")
-                                        .doc(docs[index].id)
-                                        .update({"registered": registered});
-
-                                    await FirebaseFirestore.instance
-                                        .collection("etudeRequest")
-                                        .doc(doc.id)
-                                        .update({
-                                      "state": "done",
-                                      "ref": docs[index].reference
-                                    });
-                                  } else {
-                                    print(1111);
-                                    registered.removeWhere(
-                                        (element) => element == doc["uid"]);
-
-                                    await FirebaseFirestore.instance
-                                        .collection("etude")
-                                        .doc(docs[index].id)
-                                        .update({"registered": registered});
-
-                                    await FirebaseFirestore.instance
-                                        .collection("etudeRequest")
-                                        .doc(doc.id)
-                                        .update(
-                                            {"state": "waiting", "ref": null});
-                                  }
-                                },
-                          child: Text(docs[index].reference == docsnap["ref"]
-                              ? "Geri Al"
-                              : "kaydet"),
-                        )
-                      ],
-                    ),
+                  child: EtudeItem(
+                    docs[index],
+                    docsnap,
                   ),
                 ),
               );
