@@ -67,7 +67,7 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
                 // return;
                 QuerySnapshot snapshot = await FirebaseFirestore.instance
                     .collection("etudeTimes")
-                    .where("lecture", isEqualTo: "matematik")
+                    .where("lecture", isEqualTo: "fizik")
                     .get();
 
                 List<QueryDocumentSnapshot> docs = snapshot.docs;

@@ -43,6 +43,45 @@ class _StudentEtudeScreenState extends State<StudentEtudeScreen> {
                     itemBuilder: (ctx, i) => ListTile(
                       contentPadding: EdgeInsets.all(0),
                       onTap: () async {
+                        // showDialog(
+                        //   context: context,
+                        //   builder: (context) => Dialog(
+                        //     child: Container(
+                        //       height: 200,
+                        //       child: Column(
+                        //         mainAxisAlignment:
+                        //             MainAxisAlignment.spaceAround,
+                        //         children: [
+                        //           TextFormField(
+                        //             cursorColor: Theme.of(context)
+                        //                 .textSelectionTheme
+                        //                 .cursorColor,
+                        //             initialValue: 'Input text',
+                        //             maxLength: 20,
+                        //             decoration: InputDecoration(
+                        //               icon: Icon(Icons.favorite),
+                        //               labelText: 'Label text',
+                        //               labelStyle: TextStyle(
+                        //                 color: Color(0xFF6200EE),
+                        //               ),
+                        //               helperText: 'Helper text',
+                        //               suffixIcon: Icon(
+                        //                 Icons.check_circle,
+                        //               ),
+                        //               enabledBorder: UnderlineInputBorder(
+                        //                 borderSide: BorderSide(
+                        //                     color: Color(0xFF6200EE)),
+                        //               ),
+                        //             ),
+                        //           ),
+                        //           ElevatedButton(
+                        //               onPressed: () {}, child: Text("ww"))
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ),
+                        // );
+                        // return;
                         Navigator.of(context).pushNamed(
                           StudentEtudeForm.url,
                           arguments: liste[i],
