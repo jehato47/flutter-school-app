@@ -28,7 +28,8 @@ class _StudentEtudeFormState extends State<StudentEtudeForm> {
         child: Form(
           key: _formKey,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 "Ne zaman etüt almak istediğinizi ve bırakmak istediğiniz notu yazın",
@@ -37,15 +38,40 @@ class _StudentEtudeFormState extends State<StudentEtudeForm> {
               Divider(thickness: 1),
               SizedBox(height: 20),
               TextFormField(
-                onChanged: (value) {
-                  print(controller.text);
-                },
+                controller: controller,
                 onSaved: (newValue) {
                   note = newValue;
                 },
-                controller: controller,
-                decoration: InputDecoration(hintText: "Meramınızı anlatın"),
+                cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
+                // initialValue: 'Input text',
+                maxLength: 40,
+                decoration: InputDecoration(
+                  // icon: Icon(Icons.favorite),
+                  labelText: 'Meramınızı anlatın',
+                  labelStyle: TextStyle(
+                    color: Color(0xFF6200EE),
+                  ),
+                  helperText:
+                      'Kısa ve açıklayıcı olsun \nör: Salı günü saat 3 te meltem hoca',
+                  // suffixIcon: Icon(
+                  //   Icons.check_circle,
+                  // ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF6200EE)),
+                  ),
+                ),
               ),
+              // TextFormField(
+              //   onChanged: (value) {
+              //     print(controller.text);
+              //   },
+              // onSaved: (newValue) {
+              //   note = newValue;
+              // },
+              //   controller: controller,
+              //   decoration: InputDecoration(hintText: "Meramınızı anlatın"),
+              // ),
+              SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
                   DocumentReference eRequest = await FirebaseFirestore.instance

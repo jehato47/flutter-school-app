@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:school2/screens/etude/etudes.dart';
 import '../../widgets/etude/message_bubble.dart';
 import 'package:intl/intl.dart';
+import '../../widgets/etude/etude_item.dart';
 
 class EtudeChatScreen extends StatefulWidget {
   static const url = "etude-chat";
@@ -46,12 +47,96 @@ class _EtudeChatScreenState extends State<EtudeChatScreen> {
       );
     }
 
+    void _showBottomSheet(dynamic docsnap) {
+      showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          final theme = Theme.of(context);
+          // Using Wrap makes the bottom sheet height the height of the content.
+          // Otherwise, the height will be half the height of the screen.
+          return Column(
+            children: [
+              ListTile(
+                title: Text(
+                  'Etütler',
+                  style: theme.textTheme.subtitle1
+                      .copyWith(color: theme.colorScheme.onPrimary),
+                ),
+                tileColor: theme.colorScheme.primary,
+              ),
+              Expanded(
+                child: StreamBuilder<Object>(
+                  stream: FirebaseFirestore.instance
+                      .collection("etude")
+                      .orderBy("date")
+                      .where("lecture", isEqualTo: "fizik")
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting)
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    QuerySnapshot snap = snapshot.data;
+                    List<QueryDocumentSnapshot> docs = snap.docs;
+
+                    return ListView.builder(
+                      // scrollDirection: Axis.horizontal,
+                      itemCount: docs.length,
+                      itemBuilder: (context, index) => InkWell(
+                        onTap: () {},
+                        child: EtudeItem(
+                          docs[index],
+                          docsnap,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              )
+            ],
+          );
+        },
+      );
+      // showModalBottomSheet(
+      //   context: context,
+      //   builder: (context) => StreamBuilder<Object>(
+      //     stream: FirebaseFirestore.instance
+      //         .collection("etude")
+      //         .orderBy("date")
+      //         .where("lecture", isEqualTo: "fizik")
+      //         .snapshots(),
+      //     builder: (context, snapshot) {
+      //       if (snapshot.connectionState == ConnectionState.waiting)
+      //         return Center(
+      //           child: CircularProgressIndicator(),
+      //         );
+      //       QuerySnapshot snap = snapshot.data;
+      //       List<QueryDocumentSnapshot> docs = snap.docs;
+
+      //       return ListView.builder(
+      //         scrollDirection: Axis.horizontal,
+      //         itemCount: docs.length,
+      //         itemBuilder: (context, index) => InkWell(
+      //           onTap: () {},
+      //           child: EtudeItem(
+      //             docs[index],
+      //             docsnap,
+      //           ),
+      //         ),
+      //       );
+      //     },
+      //   ),
+      // );
+    }
+
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
             icon: Icon(Icons.assignment),
             onPressed: () {
+              _showBottomSheet(doc);
+              return;
               Navigator.of(context).pushNamed(
                 EtudesScreen.url,
                 arguments: doc,
