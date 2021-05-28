@@ -9,6 +9,7 @@ import '../widgets/home/bottom_navbar.dart';
 import '../screens/notifications/notification_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'archive/teacher_archive_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const url = "home";
@@ -110,6 +111,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildDrawer(BuildContext context) {
+    // TODO : Bunu productionda kaldır
+    // auth.currentUser.updateProfile(
+    //     displayName: "abdullah baluken",
+    //     photoURL:
+    //         "https://firebasestorage.googleapis.com/v0/b/school-f162e.appspot.com/o/default.jpg?alt=media&token=516883de-679b-4624-90ef-72ecbd7b518d");
+
     return SafeArea(
       child: Drawer(
         // semanticLabel: "Drawer",
@@ -157,6 +164,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (BuildContext context) => BottomNavbar()));
 
                 // Navigator.of(context).pop();
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.archive,
+                color: Colors.indigo,
+              ),
+              title: Text("arşiv"),
+              onTap: () {
+                Navigator.of(context).pushNamed(TeacherArchiveScreen.url);
               },
             ),
             ListTile(

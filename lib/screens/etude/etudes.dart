@@ -27,12 +27,9 @@ class _EtudesScreenState extends State<EtudesScreen> {
         return ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: docs.length,
-          itemBuilder: (context, index) => InkWell(
-            onTap: () {},
-            child: EtudeItem(
-              docs[index],
-              docsnap,
-            ),
+          itemBuilder: (context, index) => EtudeItem(
+            docs[index],
+            docsnap,
           ),
         );
       },

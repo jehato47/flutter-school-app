@@ -43,7 +43,7 @@ class Auth extends ChangeNotifier {
     File file,
   ) async {
     String photoUrl =
-        "https://firebasestorage.googleapis.com/v0/b/school-f162e.appspot.com/o/default.jpg?alt=media&token=98ab15cf-2ea9-43db-a725-970650e5df5f";
+        "https://firebasestorage.googleapis.com/v0/b/school-f162e.appspot.com/o/default.jpg?alt=media&token=516883de-679b-4624-90ef-72ecbd7b518d";
 
     UserCredential userCredential = await auth.createUserWithEmailAndPassword(
       email: email,
@@ -93,7 +93,7 @@ class Auth extends ChangeNotifier {
     File file,
   ) async {
     String photoUrl =
-        "https://firebasestorage.googleapis.com/v0/b/school-f162e.appspot.com/o/default.jpg?alt=media&token=98ab15cf-2ea9-43db-a725-970650e5df5f";
+        "https://firebasestorage.googleapis.com/v0/b/school-f162e.appspot.com/o/default.jpg?alt=media&token=516883de-679b-4624-90ef-72ecbd7b518d";
     UserCredential userCredential = await auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
