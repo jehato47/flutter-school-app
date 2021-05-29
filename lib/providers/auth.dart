@@ -12,7 +12,7 @@ class Auth extends ChangeNotifier {
   // getStudentByNumber
   FirebaseAuth auth = FirebaseAuth.instance;
   String _userToken;
-  Map<String, dynamic> _userInfo;
+  dynamic _userInfo;
 
   get isAuth {
     return _userToken != null;
@@ -51,7 +51,7 @@ class Auth extends ChangeNotifier {
     );
 
     CollectionReference students =
-        FirebaseFirestore.instance.collection('students');
+        FirebaseFirestore.instance.collection('user');
 
     if (file != null)
       await FirebaseStorage.instance
@@ -64,6 +64,7 @@ class Auth extends ChangeNotifier {
       });
 
     await students.doc(userCredential.user.uid).set({
+      "role": "student",
       "email": userCredential.user.email,
       "photoUrl": photoUrl,
       "username": username,
@@ -100,7 +101,7 @@ class Auth extends ChangeNotifier {
     );
 
     CollectionReference teachers =
-        FirebaseFirestore.instance.collection('teacher');
+        FirebaseFirestore.instance.collection('user');
     if (file != null)
       await FirebaseStorage.instance
           .ref()
@@ -112,6 +113,7 @@ class Auth extends ChangeNotifier {
       });
 
     await teachers.doc(userCredential.user.uid).set({
+      "role": "teacher",
       "email": userCredential.user.email,
       "displayName": name + " " + surname,
       "lecture": lecture,

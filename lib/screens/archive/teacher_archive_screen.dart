@@ -17,6 +17,9 @@ class _TeacherArchiveScreenState extends State<TeacherArchiveScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context).settings.arguments;
+
+    print(args);
     List items = ["limit", "türev", "integral"];
     return Scaffold(
         appBar: AppBar(
@@ -86,7 +89,7 @@ class _TeacherArchiveScreenState extends State<TeacherArchiveScreen> {
                 List folderNames =
                     files.map((e) => e["folderName"]).toSet().toList();
 
-                print(folderNames);
+                // print(folderNames);
                 return GridView.builder(
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                     childAspectRatio: 3 / 2,
@@ -107,7 +110,7 @@ class _TeacherArchiveScreenState extends State<TeacherArchiveScreen> {
                       querySnapshot.docs.forEach((element) async {
                         await element.reference.delete();
                       });
-                      print("${auth.currentUser.uid}/${folderNames[index]}");
+                      // print("${auth.currentUser.uid}/${folderNames[index]}");
                       final ref = FirebaseStorage.instance
                           .ref("${auth.currentUser.uid}/${folderNames[index]}");
 

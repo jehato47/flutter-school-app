@@ -52,82 +52,37 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
             child: ElevatedButton(
               child: Text("send"),
               onPressed: () async {
-                // return;
-                FirebaseAuth auth = FirebaseAuth.instance;
-                // QuerySnapshot snapshot2 = await FirebaseFirestore.instance
-                //     .collection("etude/TXWUtv8s9bZnMfGZNpkrJLDKRmE3/pieces")
-                //     .where(
-                //       "date",
-                //       isGreaterThanOrEqualTo: DateTime.now(),
-                //     )
-                //     .get();
-                // List<QueryDocumentSnapshot> docs2 = snapshot2.docs;
-                // print(docs2);
-
-                // return;
                 QuerySnapshot snapshot = await FirebaseFirestore.instance
-                    .collection("etudeTimes")
-                    .where("lecture", isEqualTo: "fizik")
+                    .collection("teacher")
                     .get();
 
-                List<QueryDocumentSnapshot> docs = snapshot.docs;
+                List<QueryDocumentSnapshot> items = snapshot.docs;
 
-                for (int i = 0; i < 15; i++) {
-                  DateTime now = DateTime.now().add(Duration(days: i));
-                  Intl.defaultLocale = "en_EN";
-                  String day = DateFormat("EEEE").format(now).toLowerCase();
-                  Intl.defaultLocale = "tr_TR";
-
-                  docs.forEach((doc) async {
-                    dynamic etudesofday = doc.data()[day];
-                    if (!doc.data().containsKey(day)) return;
-
-                    await etudesofday.forEach((e) async {
-                      DateTime oldDate = e.toDate();
-
-                      DateTime newTime = DateTime(
-                        now.year,
-                        now.month,
-                        now.day,
-                        oldDate.hour,
-                        oldDate.minute,
-                      );
-                      // print("$day $newTime");
-                      QuerySnapshot dSnapshot = await FirebaseFirestore.instance
-                          .collection("etude")
-                          .where("uid", isEqualTo: doc.id)
-                          .where("date", isEqualTo: newTime)
-                          .get();
-
-                      if (dSnapshot.docs.isEmpty)
-                        await FirebaseFirestore.instance.collection("etude")
-                            // .doc(newTime.toString())
-                            .add({
-                          "date": newTime,
-                          "lecture": doc["lecture"],
-                          "notParticipate": [],
-                          "registered": [],
-                          "subject": "Düzgün Doğrusal Hareket",
-                          "teacherName": doc["displayName"],
-                          "uid": doc.id,
-                        });
-                      // else if (dSnapshot.docs.length == 1)
-                      //   await FirebaseFirestore.instance
-                      //       .collection("etude")
-                      //       // .doc(newTime.toString())
-                      //       .doc(dSnapshot.docs[0].id)
-                      //       .update({
-                      //     "date": newTime,
-                      //     "lecture": doc["lecture"],
-                      //     "notParticipate": [],
-                      //     "registered": [1, 1, 3, 2],
-                      //     "subject": "Düzgün Doğrusal Hareket",
-                      //     "teacherName": doc["displayName"],
-                      //     "uid": doc.id,
-                      //   });
-                    });
-                  });
+                for (var item in items) {
+                  await FirebaseAuth.instance.signInWithEmailAndPassword(
+                      email: item["email"], password: "123465789");
+                  await FirebaseAuth.instance.currentUser.delete();
+                  await Provider.of<Auth>(context).signTeacherUp(
+                    item["email"],
+                    item["password"],
+                    item["name"],
+                    item["surname"],
+                    item["phoneNumber"],
+                    item["lecture"],
+                    null,
+                  );
                 }
+
+                // await Provider.of<Auth>(context).signTeacherUp(
+                //   "mcanakay@hotmail.com",
+                //   "123465789",
+                //   "Mehmetcan",
+                //   "Akay",
+                //   "05366639292",
+                //   "fizik",
+                //   null,
+                // );
+
                 return;
               },
             ),

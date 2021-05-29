@@ -102,6 +102,15 @@ class _InArchiveFolderScreenState extends State<InArchiveFolderScreen> {
             return ListView.builder(
               itemCount: items.length,
               itemBuilder: (context, index) => ListTile(
+                onLongPress: () async {
+                  await FirebaseFirestore.instance
+                      .collection("archive")
+                      .doc(items[index].id)
+                      .delete();
+                  await FirebaseStorage.instance
+                      .ref(items[index]["fileRef"])
+                      .delete();
+                },
                 leading: Icon(Icons.file_download),
                 onTap: () {
                   launch(items[index]["url"]);

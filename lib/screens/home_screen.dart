@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school2/firebase/firebase.dart';
+import 'package:school2/screens/archive/archive_preview_screen.dart';
 import 'package:school2/screens/homework/give_homework_screen.dart';
 import 'package:school2/screens/login_screen2.dart';
 // import '../providers/auth.dart';
@@ -113,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget buildDrawer(BuildContext context) {
     // TODO : Bunu productionda kaldır
     // auth.currentUser.updateProfile(
-    //     displayName: "abdullah baluken",
+    //     displayName: "Çilem Akçay",
     //     photoURL:
     //         "https://firebasestorage.googleapis.com/v0/b/school-f162e.appspot.com/o/default.jpg?alt=media&token=516883de-679b-4624-90ef-72ecbd7b518d");
 
@@ -173,7 +174,22 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               title: Text("arşiv"),
               onTap: () {
-                Navigator.of(context).pushNamed(TeacherArchiveScreen.url);
+                Navigator.of(context).pushNamed(
+                  TeacherArchiveScreen.url,
+                  arguments: auth.currentUser.uid,
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.source,
+                color: Colors.indigo,
+              ),
+              title: Text("kaynaklar"),
+              onTap: () {
+                Navigator.of(context).pushNamed(
+                  ArchivePreviewScreen.url,
+                );
               },
             ),
             ListTile(
