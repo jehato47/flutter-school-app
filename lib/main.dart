@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:intl/intl.dart';
@@ -140,11 +141,24 @@ class MyApp extends StatelessWidget {
                   if (snapshot.connectionState == ConnectionState.waiting)
                     return Center(child: CircularProgressIndicator());
                   if (snapshot.hasData) {
-                    // todo : Öğrenci ve Öğretmen eklerken resim urlsini ekle de kaydet
-                    // todo : Yoklama Ekranında Öğreninin detaylarını göstermeyi hallet
-                    // todo : Sınav sonuç ekranında detay pop-up ını bitir
+                    User user = snapshot.data;
                     // ? todo : Sınav cevap kağıdını göstermeyi hallet
-                    return HomeScreen();
+
+                    return FutureBuilder(
+                        future: FirebaseFirestore.instance
+                            .collection("user")
+                            .doc(user.uid)
+                            .get(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting)
+                            return Center(child: CircularProgressIndicator());
+                          DocumentSnapshot documentSnapshot = snapshot.data;
+                          Provider.of<Auth>(context, listen: false).userInfo =
+                              documentSnapshot.data();
+
+                          return HomeScreen();
+                        });
                   }
                   return LoginScreen();
                 },
@@ -167,8 +181,6 @@ class MyApp extends StatelessWidget {
           GiveEtudeScreen.url: (ctx) => GiveEtudeScreen(),
           NotificationScreen.url: (ctx) => NotificationScreen(),
           StudentsExamList.url: (ctx) => StudentsExamList(),
-          // StudentEtudeDetailScreen.url: (ctx) => StudentEtudeDetailScreen(),
-          // EtudesScreen.url: (ctx) => EtudesScreen(),
           StudentEtudeScreen.url: (ctx) => StudentEtudeScreen(),
           MyEtudesScreen.url: (ctx) => MyEtudesScreen(),
           EtudeChatScreen.url: (ctx) => EtudeChatScreen(),

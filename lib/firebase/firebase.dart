@@ -52,6 +52,8 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
             child: ElevatedButton(
               child: Text("send"),
               onPressed: () async {
+                FirebaseAuth auth = FirebaseAuth.instance;
+                // auth.signInWithCustomToken();
                 QuerySnapshot snapshot = await FirebaseFirestore.instance
                     .collection("teacher")
                     .get();

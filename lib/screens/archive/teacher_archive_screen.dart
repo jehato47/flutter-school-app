@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'in_archive_folder_screen.dart';
+import 'package:provider/provider.dart';
+import '../../providers/auth.dart';
 
 class TeacherArchiveScreen extends StatefulWidget {
   static const url = "teacher-archive";
@@ -17,58 +19,60 @@ class _TeacherArchiveScreenState extends State<TeacherArchiveScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context).settings.arguments;
+    final uid = ModalRoute.of(context).settings.arguments;
+    final isTeacher = Provider.of<Auth>(context).userInfo["role"] == "teacher";
+    bool isMe = auth.currentUser.uid == uid;
 
-    print(args);
-    List items = ["limit", "türev", "integral"];
     return Scaffold(
         appBar: AppBar(
           actions: [
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    scrollable: true,
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Klasör oluştur"),
-                        SizedBox(height: 20),
-                        TextField(
-                          controller: controller,
-                          decoration:
-                              InputDecoration(labelText: "Klasör ismini girin"),
-                          minLines: 3,
-                          maxLines: 4,
-                        ),
-                        SizedBox(height: 20),
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              await FirebaseFirestore.instance
-                                  .collection("archive")
-                                  .add({
-                                "displayName": auth.currentUser.displayName,
-                                "folderName": controller.text,
-                                "uid": auth.currentUser.uid,
-                                "fileName": null,
-                              });
-                              controller.clear();
-                              Navigator.of(context).pop();
-                            },
-                            child: Text("Oluştur"),
+            if (isTeacher && isMe)
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      scrollable: true,
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Klasör oluştur"),
+                          SizedBox(height: 20),
+                          TextField(
+                            controller: controller,
+                            decoration: InputDecoration(
+                                labelText: "Klasör ismini girin"),
+                            minLines: 3,
+                            maxLines: 4,
                           ),
-                        ),
-                      ],
+                          SizedBox(height: 20),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                await FirebaseFirestore.instance
+                                    .collection("archive")
+                                    .add({
+                                  "date": DateTime.now(),
+                                  "displayName": auth.currentUser.displayName,
+                                  "folderName": controller.text.trim(),
+                                  "uid": uid,
+                                  "fileName": null,
+                                });
+                                controller.clear();
+                                Navigator.of(context).pop();
+                              },
+                              child: Text("Oluştur"),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
-            )
+                  );
+                },
+              )
           ],
           title: Text("Arşiv"),
         ),
@@ -77,7 +81,8 @@ class _TeacherArchiveScreenState extends State<TeacherArchiveScreen> {
           child: StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection("archive")
-                  .where("uid", isEqualTo: auth.currentUser.uid)
+                  .where("uid", isEqualTo: uid)
+                  .orderBy("date", descending: true)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting)
@@ -104,15 +109,15 @@ class _TeacherArchiveScreenState extends State<TeacherArchiveScreen> {
                       QuerySnapshot querySnapshot = await FirebaseFirestore
                           .instance
                           .collection("archive")
-                          .where("uid", isEqualTo: auth.currentUser.uid)
+                          .where("uid", isEqualTo: uid)
                           .where("folderName", isEqualTo: folderNames[index])
                           .get();
                       querySnapshot.docs.forEach((element) async {
                         await element.reference.delete();
                       });
-                      // print("${auth.currentUser.uid}/${folderNames[index]}");
+
                       final ref = FirebaseStorage.instance
-                          .ref("${auth.currentUser.uid}/${folderNames[index]}");
+                          .ref("${uid}/${folderNames[index]}");
 
                       await ref.listAll().then((result) async {
                         for (var item in result.items) {
@@ -124,14 +129,23 @@ class _TeacherArchiveScreenState extends State<TeacherArchiveScreen> {
                     },
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        settings: RouteSettings(arguments: folderNames[index]),
+                        settings: RouteSettings(arguments: [
+                          folderNames[index],
+                          uid,
+                        ]),
                         builder: (context) => InArchiveFolderScreen(),
                       ));
                     },
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      child: Center(child: Text(folderNames[index])),
-                      color: Colors.indigo[100],
+                    child: Column(
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.folder,
+                          size: 120,
+                          color: Colors.indigo[300],
+                        ),
+                        Text(folderNames[index]),
+                      ],
                     ),
                   ),
                 );
@@ -139,3 +153,10 @@ class _TeacherArchiveScreenState extends State<TeacherArchiveScreen> {
         ));
   }
 }
+// Container(
+//                       decoration: BoxDecoration(
+//                         color: Colors.indigo[100],
+//                       ),
+//                       padding: const EdgeInsets.all(8),
+//                       child: Center(child: Text(folderNames[index])),
+//                     )

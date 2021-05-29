@@ -12,7 +12,7 @@ class Auth extends ChangeNotifier {
   // getStudentByNumber
   FirebaseAuth auth = FirebaseAuth.instance;
   String _userToken;
-  dynamic _userInfo;
+  dynamic userInfo;
 
   get isAuth {
     return _userToken != null;
@@ -23,12 +23,12 @@ class Auth extends ChangeNotifier {
     return null;
   }
 
-  get userInform {
-    if (isAuth) {
-      return _userInfo;
-    }
-    return null;
-  }
+  // get userInform {
+  //   if (isAuth) {
+  //     return userInfo;
+  //   }
+  //   return null;
+  // }
 
   Future<void> signStudentUp(
     String email,
@@ -132,10 +132,17 @@ class Auth extends ChangeNotifier {
 
   Future<void> login(String username, String password) async {
     try {
-      await auth.signInWithEmailAndPassword(
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
         email: username,
         password: password,
       );
+
+      userInfo = await FirebaseFirestore.instance
+          .collection("user")
+          .doc(userCredential.user.uid)
+          .get();
+
+      print(122);
     } catch (err) {
       print(err);
     }

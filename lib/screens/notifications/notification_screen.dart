@@ -43,7 +43,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     notificationP = Provider.of<NotificationP>(context);
-    user = Provider.of<Auth>(context).userInform;
+    // user = Provider.of<Auth>(context).userInform;
 
     return Scaffold(
       appBar: AppBar(
@@ -87,7 +87,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
                         return Column(
                           children: [
-                            NotificationItem(ref, notification, user),
+                            NotificationItem(
+                              ref,
+                              notification,
+                              // user,
+                            ),
                             Divider(
                               thickness: 1.2,
                             ),

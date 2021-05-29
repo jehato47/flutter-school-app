@@ -156,18 +156,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.grid_view),
-              title: Text("navbar"),
-              onTap: () {
-                // body = BottomNavbar();
-
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) => BottomNavbar()));
-
-                // Navigator.of(context).pop();
-              },
-            ),
-            ListTile(
               leading: Icon(
                 Icons.archive,
                 color: Colors.indigo,
@@ -190,6 +178,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.of(context).pushNamed(
                   ArchivePreviewScreen.url,
                 );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.grid_view),
+              title: Text("navbar"),
+              onTap: () {
+                // body = BottomNavbar();
+
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => BottomNavbar()));
+
+                // Navigator.of(context).pop();
               },
             ),
             ListTile(
