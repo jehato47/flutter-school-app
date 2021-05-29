@@ -131,7 +131,7 @@ class MyApp extends StatelessWidget {
                     // todo : Yoklama Ekranında Öğreninin detaylarını göstermeyi hallet
                     // todo : Sınav sonuç ekranında detay pop-up ını bitir
                     // ? todo : Sınav cevap kağıdını göstermeyi hallet
-                    return BottomNavbar();
+                    return FireBaseTryScreen();
                   }
                   return LoginScreen();
                 },

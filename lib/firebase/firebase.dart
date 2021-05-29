@@ -53,7 +53,7 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
             onPressed: () async {
               var list =
                   new List<String>.generate(2, (i) => (i + 1).toString());
-              // print(list[0] + "qwe");
+              // print(list[1] + "qwe");
               FirebaseAuth auth = FirebaseAuth.instance;
               // Provider.of<Auth>(context).signStudentUp(
               //   "ilysumt@hotmail.com",
@@ -127,54 +127,55 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
               //   });
               // });
 
-              // CollectionReference teacherRef =
-              //     FirebaseFirestore.instance.collection("teacher");
-              // final teachers = await teacherRef.get();
+              Query teacherRef = FirebaseFirestore.instance
+                  .collection("user")
+                  .where("role", isEqualTo: "teacher");
+              final teachers = await teacherRef.get();
 
-              // print(teachers.docs[0]["displayName"]);
+              print(teachers.docs[0]["displayName"]);
 
-              // CollectionReference ref =
-              //     FirebaseFirestore.instance.collection("etudeTimes");
+              CollectionReference ref =
+                  FirebaseFirestore.instance.collection("etudeTimes");
 
-              // await ref.doc(teachers.docs[0].id).set({
-              //   "ref": teachers.docs[0].reference,
-              //   "lecture": teachers.docs[0]["lecture"],
-              //   "displayName": teachers.docs[0]["displayName"],
-              //   "monday": [
-              //     DateTime(2021, 4, 26, 14, 30),
-              //   ],
-              //   "tuesday": [
-              //     DateTime(2021, 4, 26, 14, 30),
-              //   ],
-              //   "wednesday": [
-              //     DateTime(2021, 4, 26, 14, 30),
-              //   ],
-              //   "thursday": [
-              //     DateTime(2021, 4, 26, 14, 30),
-              //   ],
-              // });
+              await ref.doc(teachers.docs[0].id).set({
+                "ref": teachers.docs[0].reference,
+                "lecture": teachers.docs[0]["lecture"],
+                "displayName": teachers.docs[0]["displayName"],
+                "monday": [
+                  DateTime(2021, 4, 26, 14, 30),
+                ],
+                "tuesday": [
+                  DateTime(2021, 4, 26, 14, 30),
+                ],
+                "wednesday": [
+                  DateTime(2021, 4, 26, 14, 30),
+                ],
+                "thursday": [
+                  DateTime(2021, 4, 26, 14, 30),
+                ],
+              });
 
-              // final data = await ref.get();
+              final data = await ref.get();
 
-              // print(data.docs);
+              print(data.docs);
 
-              // // QuerySnapshot querySnapshot = await
-              // FirebaseFirestore.instance
-              //     .collection("etude/${teachers.docs[0].id}/pieces")
-              //     //     .get();
+              // QuerySnapshot querySnapshot = await
+              FirebaseFirestore.instance
+                  .collection("etude/${teachers.docs[0].id}/pieces")
+                  //     .get();
 
-              //     // print(querySnapshot.docs[0].data());
-              //     .doc(DateTime(2021, 5, 26, 14, 30).toString())
-              //     .set({
-              //   "date": DateTime(2021, 5, 26, 14, 30),
-              //   "notParticipate": [],
-              //   "registered": [],
-              //   "requests": [],
-              //   "subject": "",
-              //   "teacherName": "",
-              //   "uid": teachers.docs[0].id,
-              //   "lecture": teachers.docs[0]["lecture"]
-              // });
+                  // print(querySnapshot.docs[0].data());
+                  .doc(DateTime(2021, 5, 26, 14, 30).toString())
+                  .set({
+                "date": DateTime(2021, 5, 26, 14, 30),
+                "notParticipate": [],
+                "registered": [],
+                "requests": [],
+                "subject": "",
+                "teacherName": "",
+                "uid": teachers.docs[0].id,
+                "lecture": teachers.docs[0]["lecture"]
+              });
             },
           ),
           SizedBox(
