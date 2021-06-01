@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:school2/screens/etude/etudes.dart';
 import '../../widgets/etude/message_bubble.dart';
 import 'package:intl/intl.dart';
 import '../../widgets/etude/etude_item.dart';
@@ -17,18 +16,13 @@ class _EtudeChatScreenState extends State<EtudeChatScreen> {
   ScrollController _scrollController = new ScrollController();
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     FocusNode node = FocusNode();
     FirebaseAuth auth = FirebaseAuth.instance;
     QueryDocumentSnapshot doc =
         ModalRoute.of(context).settings.arguments as dynamic;
-    // print(doc);
-    _send() async {
+
+    Future<void> _send() async {
       if (_controller.text.trim().isEmpty) return;
       String text = _controller.text;
       _controller.clear();
@@ -97,36 +91,6 @@ class _EtudeChatScreenState extends State<EtudeChatScreen> {
           );
         },
       );
-      // showModalBottomSheet(
-      //   context: context,
-      //   builder: (context) => StreamBuilder<Object>(
-      //     stream: FirebaseFirestore.instance
-      //         .collection("etude")
-      //         .orderBy("date")
-      //         .where("lecture", isEqualTo: "fizik")
-      //         .snapshots(),
-      //     builder: (context, snapshot) {
-      //       if (snapshot.connectionState == ConnectionState.waiting)
-      //         return Center(
-      //           child: CircularProgressIndicator(),
-      //         );
-      //       QuerySnapshot snap = snapshot.data;
-      //       List<QueryDocumentSnapshot> docs = snap.docs;
-
-      //       return ListView.builder(
-      //         scrollDirection: Axis.horizontal,
-      //         itemCount: docs.length,
-      //         itemBuilder: (context, index) => InkWell(
-      //           onTap: () {},
-      //           child: EtudeItem(
-      //             docs[index],
-      //             docsnap,
-      //           ),
-      //         ),
-      //       );
-      //     },
-      //   ),
-      // );
     }
 
     return Scaffold(
@@ -137,10 +101,6 @@ class _EtudeChatScreenState extends State<EtudeChatScreen> {
             onPressed: () {
               _showBottomSheet(doc);
               return;
-              Navigator.of(context).pushNamed(
-                EtudesScreen.url,
-                arguments: doc,
-              );
             },
           )
         ],

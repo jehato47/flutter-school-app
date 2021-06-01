@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'student_etude_detail_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'etude_chat_screen.dart';
 import 'package:intl/intl.dart';

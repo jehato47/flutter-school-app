@@ -53,27 +53,70 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
               child: Text("send"),
               onPressed: () async {
                 FirebaseAuth auth = FirebaseAuth.instance;
-                // auth.signInWithCustomToken();
-                QuerySnapshot snapshot = await FirebaseFirestore.instance
-                    .collection("teacher")
+
+                DocumentSnapshot snapshot = await FirebaseFirestore.instance
+                    .collection("syllabus")
+                    .doc("auth.currentUser.uid")
                     .get();
 
-                List<QueryDocumentSnapshot> items = snapshot.docs;
+                print(snapshot.data() == null);
 
-                for (var item in items) {
-                  await FirebaseAuth.instance.signInWithEmailAndPassword(
-                      email: item["email"], password: "123465789");
-                  await FirebaseAuth.instance.currentUser.delete();
-                  await Provider.of<Auth>(context).signTeacherUp(
-                    item["email"],
-                    item["password"],
-                    item["name"],
-                    item["surname"],
-                    item["phoneNumber"],
-                    item["lecture"],
-                    null,
-                  );
-                }
+                // QuerySnapshot snapshot = await FirebaseFirestore.instance
+                //     .collection("user")
+                //     .where("role", isEqualTo: "teacher")
+                //     .get();
+
+                // for (var teacher in snapshot.docs) {
+                //   FirebaseFirestore.instance
+                //       .collection("syllabus")
+                //       .doc(teacher.id)
+                //       .set({
+                //     "monday": {
+                //       "11-c": DateTime.now(),
+                //     },
+                //     "tuesday": {
+                //       "11-g": DateTime.now(),
+                //     },
+                //     "wednesday": {
+                //       "11-d": DateTime.now(),
+                //     },
+                //     "thursday": {
+                //       "11-f": DateTime.now(),
+                //     },
+                //     "friday": {
+                //       "11-d": DateTime.now(),
+                //     },
+                //     "saturday": {
+                //       "11-c": DateTime.now(),
+                //     },
+                //     "sunday": {
+                //       "11-g": DateTime.now(),
+                //     },
+                //   });
+                // }
+
+                // FirebaseAuth auth = FirebaseAuth.instance;
+                // // auth.signInWithCustomToken();
+                // QuerySnapshot snapshot = await FirebaseFirestore.instance
+                //     .collection("teacher")
+                //     .get();
+
+                // List<QueryDocumentSnapshot> items = snapshot.docs;
+
+                // for (var item in items) {
+                //   await FirebaseAuth.instance.signInWithEmailAndPassword(
+                //       email: item["email"], password: "123465789");
+                //   await FirebaseAuth.instance.currentUser.delete();
+                //   await Provider.of<Auth>(context).signTeacherUp(
+                //     item["email"],
+                //     item["password"],
+                //     item["name"],
+                //     item["surname"],
+                //     item["phoneNumber"],
+                //     item["lecture"],
+                //     null,
+                //   );
+                // }
 
                 // await Provider.of<Auth>(context).signTeacherUp(
                 //   "mcanakay@hotmail.com",
