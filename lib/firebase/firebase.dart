@@ -59,7 +59,21 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
                     .get();
 
                 for (var teacher in snapshot.docs) {
-                  // FirebaseFirestore.instance.collection("etudeTimes").
+                  await FirebaseFirestore.instance
+                      .collection("etudeTimes")
+                      .doc(teacher.id)
+                      .set({
+                    "displayName": teacher["displayName"],
+                    "lecture": teacher["lecture"],
+                    "ref": teacher.reference,
+                    "monday": {},
+                    "tuesday": {},
+                    "wednesday": {},
+                    "thursday": {},
+                    "friday": {},
+                    "saturday": {},
+                    "sunday": {},
+                  });
                 }
                 // // DocumentSnapshot snapshot = await FirebaseFirestore.instance
                 // //     .collection("syllabus")
