@@ -73,7 +73,9 @@ class Attendance extends ChangeNotifier {
     } else {
       DocumentSnapshot syllabus = await FirebaseFirestore.instance
           .collection('syllabus')
-          .doc(auth.currentUser.uid)
+          // TODO : Production
+          // .doc(auth.currentUser.uid)
+          .doc("mF1uyNyCqLaXDf88zB47ZZqSuWh2")
           .get();
       if (syllabus.data() == null) {
         // Eğer ders programı yoksa

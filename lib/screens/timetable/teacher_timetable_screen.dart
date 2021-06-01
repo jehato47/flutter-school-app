@@ -21,14 +21,15 @@ class TeacherTimetableScreen extends StatelessWidget {
         stream: FirebaseFirestore.instance
             .collection("syllabus")
             // TODO : Production
-            .doc(auth.currentUser.uid)
+            .doc("mF1uyNyCqLaXDf88zB47ZZqSuWh2")
+            // .doc(auth.currentUser.uid)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting)
             return Center(
               child: CircularProgressIndicator(),
             );
-
+          // print(snapshot.data.data());
           if (snapshot.data.data() == null)
             return Center(
               child: Text(

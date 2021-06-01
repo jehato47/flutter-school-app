@@ -53,13 +53,20 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
               child: Text("send"),
               onPressed: () async {
                 FirebaseAuth auth = FirebaseAuth.instance;
-
-                DocumentSnapshot snapshot = await FirebaseFirestore.instance
-                    .collection("syllabus")
-                    .doc("auth.currentUser.uid")
+                QuerySnapshot snapshot = await FirebaseFirestore.instance
+                    .collection("user")
+                    .where("role", isEqualTo: "teacher")
                     .get();
 
-                print(snapshot.data() == null);
+                for (var teacher in snapshot.docs) {
+                  // FirebaseFirestore.instance.collection("etudeTimes").
+                }
+                // // DocumentSnapshot snapshot = await FirebaseFirestore.instance
+                // //     .collection("syllabus")
+                // //     .doc("auth.currentUser.uid")
+                // //     .get();
+
+                // // print(snapshot.data() == null);
 
                 // QuerySnapshot snapshot = await FirebaseFirestore.instance
                 //     .collection("user")
@@ -71,26 +78,33 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
                 //       .collection("syllabus")
                 //       .doc(teacher.id)
                 //       .set({
+                //     // "uid": teacher.id,
+                //     // "lecture": teacher["lecture"],
+                //     // "displayName": teacher["displayName"],
                 //     "monday": {
-                //       "11-c": DateTime.now(),
+                //       "11-c": DateTime(2021, 11, 3, 11, 30),
                 //     },
                 //     "tuesday": {
-                //       "11-g": DateTime.now(),
+                //       "11-g": DateTime(2021, 11, 3, 12, 30),
+                //       "11-d": DateTime(2021, 11, 3, 14, 30),
+                //       "11-c": DateTime(2021, 11, 3, 16, 35),
                 //     },
                 //     "wednesday": {
-                //       "11-d": DateTime.now(),
+                //       "11-d": DateTime(2021, 11, 3, 13, 40),
                 //     },
                 //     "thursday": {
-                //       "11-f": DateTime.now(),
+                //       "11-f": DateTime(2021, 11, 3, 5, 30),
                 //     },
                 //     "friday": {
-                //       "11-d": DateTime.now(),
+                //       "11-d": DateTime(2021, 11, 3, 15, 30),
+                //       "11-c": DateTime(2021, 11, 3, 11, 30),
+                //       "11-g": DateTime(2021, 11, 3, 10, 30),
                 //     },
                 //     "saturday": {
-                //       "11-c": DateTime.now(),
+                //       "11-c": DateTime(2021, 11, 3, 11, 30),
                 //     },
                 //     "sunday": {
-                //       "11-g": DateTime.now(),
+                //       "11-g": DateTime(2021, 11, 3, 11, 30),
                 //     },
                 //   });
                 // }
