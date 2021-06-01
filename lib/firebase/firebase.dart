@@ -63,18 +63,24 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
                       .collection("etudeTimes")
                       .doc(teacher.id)
                       .set({
-                    "displayName": teacher["displayName"],
-                    "lecture": teacher["lecture"],
                     "ref": teacher.reference,
-                    "monday": {},
-                    "tuesday": {},
-                    "wednesday": {},
-                    "thursday": {},
-                    "friday": {},
-                    "saturday": {},
-                    "sunday": {},
+                    "lecture": teacher["lecture"],
+                    "displayName": teacher["displayName"],
+                    "monday": [
+                      DateTime(2021, 4, 26, 14, 30),
+                    ],
+                    "tuesday": [
+                      DateTime(2021, 4, 26, 14, 30),
+                    ],
+                    "wednesday": [
+                      DateTime(2021, 4, 26, 14, 30),
+                    ],
+                    "thursday": [
+                      DateTime(2021, 4, 26, 14, 30),
+                    ],
                   });
                 }
+
                 // // DocumentSnapshot snapshot = await FirebaseFirestore.instance
                 // //     .collection("syllabus")
                 // //     .doc("auth.currentUser.uid")
