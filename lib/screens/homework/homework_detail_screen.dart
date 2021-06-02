@@ -17,10 +17,6 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
   void _launchURL(_url) async => await canLaunch(_url)
       ? await launch(_url)
       : throw 'Could not launch $_url';
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +25,17 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
       appBar: AppBar(
         title:
             Text('${hw["teacher"]} ${hw["classFirst"]} - ${hw["classLast"]}'),
-        actions: [IconButton(icon: Icon(Icons.assignment), onPressed: () {})],
+        actions: [
+          IconButton(
+            icon: Icon(Icons.assignment),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(20),
           child: Column(
-            // mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -73,27 +73,6 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
                 onTap: hw["fileName"] == null
                     ? null
                     : () async {
-                        // ScaffoldMessenger.of(context).showSnackBar(
-                        //   SnackBar(
-                        //     action: SnackBarAction(
-                        //       label: "bas",
-                        //       onPressed: () async {
-                        //         final _url =
-                        //             await Provider.of<HomeWork>(context)
-                        //                 .getDownloadUrl(hw["fileRef"]);
-                        //         await canLaunch(_url)
-                        //             ? await launch(_url)
-                        //             : throw 'Could not launch $_url';
-                        //       },
-                        //     ),
-                        //     backgroundColor: Colors.amber,
-                        //     content: Text(
-                        //       "İndirme başlamadıysa tıkla",
-                        //       style: TextStyle(color: Colors.black),
-                        //     ),
-                        //   ),
-                        // );
-                        // return;
                         final url = await Provider.of<HomeWork>(context)
                             .getDownloadUrl(hw["fileRef"]);
                         if (kIsWeb) {
@@ -110,7 +89,6 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
                       : "İliştirilmiş dosya yok",
                 ),
               ),
-              SizedBox(height: 20),
             ],
           ),
         ),

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../../providers/homework.dart';
 import '../../screens/homework/homework_detail_screen.dart';
 import 'package:provider/provider.dart';
 
-class HomeworkPreviewItem extends StatelessWidget {
+class HomeworkItem extends StatelessWidget {
   final dynamic hw;
-  HomeworkPreviewItem(this.hw);
+  HomeworkItem(this.hw);
 
   @override
   Widget build(BuildContext context) {

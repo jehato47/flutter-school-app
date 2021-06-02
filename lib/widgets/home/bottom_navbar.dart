@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import '../../screens/home_screen.dart';
 import '../../screens/attendance/attendace_check_screen.dart';
 import '../../screens/timetable/teacher_timetable_screen.dart';
-import '../../screens/exam/add_exam_result_screen.dart';
 import '../../screens/etude/etude_requests_screen.dart';
-import '../../screens/exam/students_exam_list.dart';
 import '../../screens/exam/student_exam_screen.dart';
 
 class BottomNavbar extends StatefulWidget {

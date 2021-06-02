@@ -82,8 +82,8 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
       CollectionReference att = FirebaseFirestore.instance
           .collection('attendance/$currentClass/pieces');
 
-      // Todo : Kurumlara göre ayırdığın zaman bunları düzlenle
-      // Todo : referans beskalem/attendance/currentClass olsun
+      // ? TODO : Kurumlara göre ayırdığın zaman bunları düzlenle
+      // ? TODO : referans beskalem/attendance/currentClass olsun
 
       await att.doc(currentTime.toString()).set({
         "info": attendance,
@@ -100,7 +100,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    print(size);
+
     var args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     if (args != null) {
