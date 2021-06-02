@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:school2/screens/archive/teacher_archive_screen.dart';
+import 'package:provider/provider.dart';
+import '../../providers/auth.dart';
 
 class ArchivePreviewScreen extends StatefulWidget {
   static const url = "archive-preview";

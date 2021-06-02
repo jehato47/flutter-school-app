@@ -2,29 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class HomeWork extends ChangeNotifier {
-  Future<void> addHomeWork(dynamic homework, File file) async {
+  Future<void> addHomeWork(
+    dynamic homework,
+    dynamic file,
+  ) async {
     print(homework);
     homework["startDate"] = DateTime.now();
     homework["isSeen"] = [];
 
     CollectionReference homeworks =
         FirebaseFirestore.instance.collection('homework');
-
-    await homeworks.add(homework).then((value) async {
-      if (file != null) {
-        await FirebaseStorage.instance
-            .ref()
-            .child("homework")
-            .child(value.id)
-            .child(file.path.split("/").last)
-            .putFile(file)
-            .then((v) async {
-          value.update({"fileRef": v.ref.fullPath});
-        });
-      }
-    });
+    if (kIsWeb) {
+      await homeworks.add(homework).then((value) async {
+        if (file != null) {
+          await FirebaseStorage.instance
+              .ref()
+              .child("homework")
+              .child(value.id)
+              .child(homework["fileName"])
+              .putData(file)
+              .then((v) async {
+            value.update({"fileRef": v.ref.fullPath});
+          });
+        }
+      });
+    } else {
+      await homeworks.add(homework).then((value) async {
+        if (file != null) {
+          await FirebaseStorage.instance
+              .ref()
+              .child("homework")
+              .child(value.id)
+              .child(homework["fileName"])
+              .putFile(file)
+              .then((v) async {
+            value.update({"fileRef": v.ref.fullPath});
+          });
+        }
+      });
+    }
   }
 
   Future<String> getDownloadUrl(
