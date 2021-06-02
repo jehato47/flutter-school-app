@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 // import '../models/http_exceptions.dart';
 
 class Attendance extends ChangeNotifier {
+  FirebaseAuth auth = FirebaseAuth.instance;
   dynamic _classes;
   Map _oldAttendance;
   String _currentClass;
@@ -69,10 +71,19 @@ class Attendance extends ChangeNotifier {
       classLast = classTimetable.split("-").last;
       if (old.exists) attendance = old["info"];
     } else {
-      CollectionReference syllabus =
-          FirebaseFirestore.instance.collection('syllabus');
-      QuerySnapshot response = await syllabus.get();
-      QueryDocumentSnapshot syl = response.docs[0];
+      DocumentSnapshot syllabus = await FirebaseFirestore.instance
+          .collection('syllabus')
+          // TODO : Production
+          // .doc(auth.currentUser.uid)
+          .doc("mF1uyNyCqLaXDf88zB47ZZqSuWh2")
+          .get();
+      if (syllabus.data() == null) {
+        // Eğer ders programı yoksa
+        // TODO : Buraya bak
+        attendance = {};
+        return;
+      }
+      dynamic syl = syllabus;
       Map<Duration, String> map = {};
       List<Duration> liste = [];
       DateTime date = DateTime.now();
@@ -130,7 +141,8 @@ class Attendance extends ChangeNotifier {
       }
     }
     QuerySnapshot students = await FirebaseFirestore.instance
-        .collection("students")
+        .collection("user")
+        .where("role", isEqualTo: "student")
         .where('classFirst', isEqualTo: classFirst)
         .where("classLast", isEqualTo: classLast)
         .get();

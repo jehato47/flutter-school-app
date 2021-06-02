@@ -43,20 +43,20 @@ class Timetable extends ChangeNotifier {
   Map<String, dynamic> studentData;
 
   /* Statik Fonksiyonlar  */
-  Future<void> setTeacherTimetables() async {
-    // TODO : Tek bir kez çalışmasını sağla
-    CollectionReference syllabus =
-        FirebaseFirestore.instance.collection("syllabus");
-    QuerySnapshot snapshot = await syllabus.get();
-    teacherData = snapshot.docs[0].data();
-  }
+  // Future<void> setTeacherTimetables() async {
+  //   // TODO : Tek bir kez çalışmasını sağla
+  //   CollectionReference syllabus =
+  //       FirebaseFirestore.instance.collection("syllabus");
+  //   QuerySnapshot snapshot = await syllabus.get();
+  //   teacherData = snapshot.docs[0].data();
+  // }
 
-  Future<void> setStudentTimetables() async {
-    CollectionReference studentsyl =
-        FirebaseFirestore.instance.collection("studentsyllabus");
-    QuerySnapshot snapshotst = await studentsyl.get();
-    studentData = snapshotst.docs[0].data();
-  }
+  // Future<void> setStudentTimetables() async {
+  //   CollectionReference studentsyl =
+  //       FirebaseFirestore.instance.collection("studentsyllabus");
+  //   QuerySnapshot snapshotst = await studentsyl.get();
+  //   studentData = snapshotst.docs[0].data();
+  // }
 
   void createStudentTimeTable() {
     studentData.forEach((day, value) {
@@ -72,6 +72,7 @@ class Timetable extends ChangeNotifier {
   }
 
   Future<void> createTeacherTimeTable() async {
+    print(teacherData);
     teacherData.forEach((day, value) {
       value.forEach((clss, timestamp) {
         addRecursiveAppointment(
@@ -94,11 +95,12 @@ class Timetable extends ChangeNotifier {
     //   "etüt",
     //   WeekDays.friday,
     // );
+
     if (isTeacher)
       createTeacherTimeTable();
-    else {
+    else
       createStudentTimeTable();
-    }
+
     return _appointments;
   }
 

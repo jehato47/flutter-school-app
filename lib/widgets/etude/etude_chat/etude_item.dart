@@ -60,7 +60,7 @@ class _EtudeItemState extends State<EtudeItem> {
                         "displayName": auth.currentUser.displayName,
                         "eRequestid": etudeRequest.id,
                         "note":
-                            "Saat ${etude["date"].toDate().toString()} için etüdünüz oluşturuldu",
+                            "Etüdünüz ${etude["date"].toDate().toString()} tarihi için oluşturuldu",
                         "uid": auth.currentUser.uid,
                       });
                     } else {

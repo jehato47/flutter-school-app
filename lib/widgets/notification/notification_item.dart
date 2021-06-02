@@ -11,8 +11,12 @@ import 'package:url_launcher/url_launcher.dart';
 class NotificationItem extends StatefulWidget {
   final ref;
   final notification;
-  final user;
-  NotificationItem(this.ref, this.notification, this.user);
+  // final user;
+  NotificationItem(
+    this.ref,
+    this.notification,
+    // this.user,
+  );
   @override
   _NotificationItemState createState() => _NotificationItemState();
 }
@@ -39,7 +43,7 @@ class _NotificationItemState extends State<NotificationItem> {
   Widget build(BuildContext context) {
     ref = widget.ref;
     notification = widget.notification;
-    user = widget.user;
+    // user = widget.user;
 
     NotificationP notificationP =
         Provider.of<NotificationP>(context, listen: false);

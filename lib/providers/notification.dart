@@ -3,6 +3,7 @@ import '../helpers/envs.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class NotificationP extends ChangeNotifier {
   final baseUrl = Envs.baseUrl;
@@ -10,30 +11,52 @@ class NotificationP extends ChangeNotifier {
   Future<void> addNotification(
     String creator,
     String content,
-    File file,
+    dynamic file,
+    String fileName,
     String to,
   ) async {
     CollectionReference notifications =
         FirebaseFirestore.instance.collection('notification');
-    String filename = file != null ? file.path.split("/").last : null;
-    notifications.add({
-      "to": to,
-      "creator": creator,
-      "text": content,
-      "isSeen": [],
-      "added": DateTime.now(),
-      "fileName": filename
-    }).then((value) async {
-      if (file != null) {
-        await FirebaseStorage.instance
-            .ref()
-            .child("notification")
-            .child(value.id)
-            .child(file.path.split("/").last)
-            .putFile(file);
-        // e.g, e.code == 'canceled'
-      }
-    });
+
+    if (kIsWeb) {
+      notifications.add({
+        "to": to,
+        "creator": creator,
+        "text": content,
+        "isSeen": [],
+        "added": DateTime.now(),
+        "fileName": fileName
+      }).then((value) async {
+        if (file != null) {
+          await FirebaseStorage.instance
+              .ref()
+              .child("notification")
+              .child(value.id)
+              .child(fileName)
+              // Different part from bottom is putData
+              // Because in web it brings files as bytes
+              .putData(file);
+        }
+      });
+    } else {
+      notifications.add({
+        "to": to,
+        "creator": creator,
+        "text": content,
+        "isSeen": [],
+        "added": DateTime.now(),
+        "fileName": fileName
+      }).then((value) async {
+        if (file != null) {
+          await FirebaseStorage.instance
+              .ref()
+              .child("notification")
+              .child(value.id)
+              .child(file.path.split("/").last)
+              .putFile(file);
+        }
+      });
+    }
   }
 
   Future<void> deleteNotification(

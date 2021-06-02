@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:intl/intl.dart';
@@ -29,17 +30,17 @@ import 'screens/attendance/attendace_check_screen.dart';
 import 'screens/homework/give_homework_screen.dart';
 import 'screens/timetable/student_timetable_screen.dart';
 import 'screens/exam/add_exam_result_screen.dart';
-import 'screens/etude/give_etude_screen.dart';
-import 'screens/etude/student_etude_detail_screen.dart';
-import 'screens/etude/student_etude_screen.dart';
-import 'screens/etude/student_etude_form.dart';
-import 'screens/etude/etudes.dart';
+import 'screens/etude/etude_requests_screen.dart';
+import 'screens/etude/select_lecture_screen.dart';
+import 'screens/etude/etude_form_screen.dart';
 import 'screens/etude/my_etudes_screen.dart';
 import 'screens/etude/etude_chat_screen.dart';
 import 'helpers/download/download_helper_provider.dart';
 import 'screens/exam/students_exam_list.dart';
+import 'screens/archive/teacher_archive_screen.dart';
 import 'widgets/home/bottom_navbar.dart';
 import 'screens/login_screen2.dart';
+import 'screens/archive/archive_preview_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -128,6 +129,7 @@ class MyApp extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               }
+<<<<<<< HEAD
               if (FirebaseAuth.instance.currentUser != null)
                 return HomeScreen();
               return LoginScreen2();
@@ -152,6 +154,40 @@ class MyApp extends StatelessWidget {
               //     return LoginScreen2();
               //   },
               // );
+=======
+              return StreamBuilder(
+                // TODO: login, logout, signup yapıldıgında bu stream değişecek
+                // TODO: onAuthstateChanged -> authStateChanges
+                stream: FirebaseAuth.instance.authStateChanges(),
+                builder: (ctx, snapshot) {
+                  // FirebaseAuth.instance.signOut();
+                  // * TODO : Login Form da setState hatası veriyor bak
+                  if (snapshot.connectionState == ConnectionState.waiting)
+                    return Center(child: CircularProgressIndicator());
+                  if (snapshot.hasData) {
+                    User user = snapshot.data;
+                    // ? todo : Sınav cevap kağıdını göstermeyi hallet
+
+                    return FutureBuilder(
+                        future: FirebaseFirestore.instance
+                            .collection("user")
+                            .doc(user.uid)
+                            .get(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting)
+                            return Center(child: CircularProgressIndicator());
+                          DocumentSnapshot documentSnapshot = snapshot.data;
+                          Provider.of<Auth>(context, listen: false).userInfo =
+                              documentSnapshot.data();
+
+                          return HomeScreen();
+                        });
+                  }
+                  return LoginScreen();
+                },
+              );
+>>>>>>> improvements
             },
           ),
         ),
@@ -167,16 +203,15 @@ class MyApp extends StatelessWidget {
           StudentTimetableScreen.url: (ctx) => StudentTimetableScreen(),
           AddExamResultScreen.url: (ctx) => AddExamResultScreen(),
           StudentExamScreen.url: (ctx) => StudentExamScreen(),
-          GiveEtudeScreen.url: (ctx) => GiveEtudeScreen(),
+          EtudeRequestsScreen.url: (ctx) => EtudeRequestsScreen(),
           NotificationScreen.url: (ctx) => NotificationScreen(),
           StudentsExamList.url: (ctx) => StudentsExamList(),
-          StudentEtudeDetailScreen.url: (ctx) => StudentEtudeDetailScreen(),
-          // EtudesScreen.url: (ctx) => EtudesScreen(),
-          StudentEtudeScreen.url: (ctx) => StudentEtudeScreen(),
+          SelectLectureScreen.url: (ctx) => SelectLectureScreen(),
           MyEtudesScreen.url: (ctx) => MyEtudesScreen(),
           EtudeChatScreen.url: (ctx) => EtudeChatScreen(),
-          StudentEtudeForm.url: (ctx) => StudentEtudeForm(),
-          EtudesScreen.url: (ctx) => EtudesScreen(),
+          EtudeFormScreen.url: (ctx) => EtudeFormScreen(),
+          TeacherArchiveScreen.url: (ctx) => TeacherArchiveScreen(),
+          ArchivePreviewScreen.url: (ctx) => ArchivePreviewScreen(),
         },
       ),
     );
