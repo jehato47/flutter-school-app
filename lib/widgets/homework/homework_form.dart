@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:io';
@@ -23,7 +24,7 @@ class _HomeworkFormState extends State<HomeworkForm> {
 
   String token;
 
-  File file;
+  dynamic file;
 
   DateTime date;
 
@@ -58,11 +59,18 @@ class _HomeworkFormState extends State<HomeworkForm> {
   Future<void> pickFile() async {
     FilePickerResult result = await FilePicker.platform.pickFiles();
     if (result == null) return;
-
-    setState(() {
-      file = File(result.files.single.path);
-      hw["fileName"] = file.path.split("/").last;
-    });
+    if (kIsWeb) {
+      setState(() {
+        file = result.files.first.bytes;
+        hw["fileName"] = result.files.first.name;
+      });
+    } else {
+      setState(() {
+        file = File(result.files.single.path);
+        // TODO : Burayı 2 defa yazmaya gerek yok
+        hw["fileName"] = result.files.first.name;
+      });
+    }
   }
 
   Future<void> sendHomework() async {
@@ -120,7 +128,7 @@ class _HomeworkFormState extends State<HomeworkForm> {
           child: OutlinedButton(
             onPressed: pickFile,
             child: Text(
-              file != null ? file.path.split("/").last : "Dosya ekle",
+              file != null ? hw["fileName"] : "Dosya ekle",
             ),
           ),
         ),

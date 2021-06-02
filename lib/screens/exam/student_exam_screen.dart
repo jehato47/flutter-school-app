@@ -121,61 +121,56 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
             ),
           ),
           context: context,
-          builder: (context) => BottomSheet(
-            backgroundColor: Colors.transparent,
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            onClosing: () {},
-            builder: (context) => Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(25),
-                  topRight: Radius.circular(25),
+          builder: (context) => Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(25),
+                topRight: Radius.circular(25),
+              ),
+            ),
+            padding: EdgeInsets.symmetric(vertical: 20),
+            child: ListView(
+              // mainAxisAlignment: MainAxisAlignment.start,
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ListTile(
+                  leading: Icon(
+                    Icons.done,
+                    color: Colors.green,
+                  ),
+                  title: Text("Sınıf ort"),
+                  subtitle: Text(snapshot["branchMean"].toStringAsFixed(2)),
+                  trailing: Text("Benim notum $examScore"),
                 ),
-              ),
-              padding: EdgeInsets.symmetric(vertical: 20),
-              child: ListView(
-                // mainAxisAlignment: MainAxisAlignment.start,
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ListTile(
-                    leading: Icon(
-                      Icons.done,
-                      color: Colors.green,
-                    ),
-                    title: Text("Sınıf ort"),
-                    subtitle: Text(snapshot["branchMean"].toStringAsFixed(2)),
-                    trailing: Text("Benim notum $examScore"),
+                ListTile(
+                  leading: Icon(
+                    Icons.done,
+                    color: Colors.red,
                   ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.done,
-                      color: Colors.red,
-                    ),
-                    title: Text("Okul ort"),
-                    subtitle: Text(snapshot["gradeMean"].toStringAsFixed(2)),
-                    trailing: Text("Benim notum $examScore"),
+                  title: Text("Okul ort"),
+                  subtitle: Text(snapshot["gradeMean"].toStringAsFixed(2)),
+                  trailing: Text("Benim notum $examScore"),
+                ),
+                Divider(thickness: 1),
+                Center(
+                  // padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: Text(
+                    "En başarılı öğrenciler",
+                    style: TextStyle(fontSize: 20),
                   ),
-                  Divider(thickness: 1),
-                  Center(
-                    // padding: EdgeInsets.symmetric(horizontal: 30),
-                    child: Text(
-                      "En başarılı öğrenciler",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ),
-                  ...snapshot["mostSuccessful"]
-                      .map((e) => ListTile(
-                            leading: Icon(
-                              Icons.done,
-                              color: Colors.blue,
-                            ),
-                            title: Text(e["displayName"]),
-                            trailing: Text("Aldığı Not : ${e["grade"]}"),
-                          ))
-                      .toList(),
-                ],
-              ),
+                ),
+                ...snapshot["mostSuccessful"]
+                    .map((e) => ListTile(
+                          leading: Icon(
+                            Icons.done,
+                            color: Colors.blue,
+                          ),
+                          title: Text(e["displayName"]),
+                          trailing: Text("Aldığı Not : ${e["grade"]}"),
+                        ))
+                    .toList(),
+              ],
             ),
           ),
         );

@@ -12,7 +12,7 @@ class Auth extends ChangeNotifier {
   // getStudentByNumber
   FirebaseAuth auth = FirebaseAuth.instance;
   String _userToken;
-  Map<String, dynamic> _userInfo;
+  dynamic userInfo;
 
   get isAuth {
     return _userToken != null;
@@ -23,12 +23,12 @@ class Auth extends ChangeNotifier {
     return null;
   }
 
-  get userInform {
-    if (isAuth) {
-      return _userInfo;
-    }
-    return null;
-  }
+  // get userInform {
+  //   if (isAuth) {
+  //     return userInfo;
+  //   }
+  //   return null;
+  // }
 
   Future<void> signStudentUp(
     String email,
@@ -43,7 +43,7 @@ class Auth extends ChangeNotifier {
     File file,
   ) async {
     String photoUrl =
-        "https://firebasestorage.googleapis.com/v0/b/school-f162e.appspot.com/o/default.jpg?alt=media&token=98ab15cf-2ea9-43db-a725-970650e5df5f";
+        "https://firebasestorage.googleapis.com/v0/b/school-f162e.appspot.com/o/default.jpg?alt=media&token=516883de-679b-4624-90ef-72ecbd7b518d";
 
     UserCredential userCredential = await auth.createUserWithEmailAndPassword(
       email: email,
@@ -51,7 +51,7 @@ class Auth extends ChangeNotifier {
     );
 
     CollectionReference students =
-        FirebaseFirestore.instance.collection('students');
+        FirebaseFirestore.instance.collection('user');
 
     if (file != null)
       await FirebaseStorage.instance
@@ -64,6 +64,7 @@ class Auth extends ChangeNotifier {
       });
 
     await students.doc(userCredential.user.uid).set({
+      "role": "student",
       "email": userCredential.user.email,
       "photoUrl": photoUrl,
       "username": username,
@@ -93,14 +94,14 @@ class Auth extends ChangeNotifier {
     File file,
   ) async {
     String photoUrl =
-        "https://firebasestorage.googleapis.com/v0/b/school-f162e.appspot.com/o/default.jpg?alt=media&token=98ab15cf-2ea9-43db-a725-970650e5df5f";
+        "https://firebasestorage.googleapis.com/v0/b/school-f162e.appspot.com/o/default.jpg?alt=media&token=516883de-679b-4624-90ef-72ecbd7b518d";
     UserCredential userCredential = await auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
 
     CollectionReference teachers =
-        FirebaseFirestore.instance.collection('teacher');
+        FirebaseFirestore.instance.collection('user');
     if (file != null)
       await FirebaseStorage.instance
           .ref()
@@ -112,6 +113,7 @@ class Auth extends ChangeNotifier {
       });
 
     await teachers.doc(userCredential.user.uid).set({
+      "role": "teacher",
       "email": userCredential.user.email,
       "displayName": name + " " + surname,
       "lecture": lecture,
@@ -130,10 +132,17 @@ class Auth extends ChangeNotifier {
 
   Future<void> login(String username, String password) async {
     try {
-      await auth.signInWithEmailAndPassword(
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
         email: username,
         password: password,
       );
+
+      userInfo = await FirebaseFirestore.instance
+          .collection("user")
+          .doc(userCredential.user.uid)
+          .get();
+
+      print(122);
     } catch (err) {
       print(err);
     }
