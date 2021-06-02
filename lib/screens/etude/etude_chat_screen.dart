@@ -19,11 +19,11 @@ class _EtudeChatScreenState extends State<EtudeChatScreen> {
     QueryDocumentSnapshot doc =
         ModalRoute.of(context).settings.arguments as dynamic;
 
-    void _showBottomSheet(dynamic docsnap) {
+    void _showBottomSheet() {
       showModalBottomSheet(
         context: context,
         builder: (context) {
-          return GiveEtudeBottomSheet(doc, docsnap);
+          return GiveEtudeBottomSheet(doc);
         },
       );
     }
@@ -34,7 +34,7 @@ class _EtudeChatScreenState extends State<EtudeChatScreen> {
           IconButton(
             icon: Icon(Icons.assignment),
             onPressed: () {
-              _showBottomSheet(doc);
+              _showBottomSheet();
               return;
             },
           )

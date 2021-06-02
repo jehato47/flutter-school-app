@@ -3,12 +3,9 @@ import 'etude_item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class GiveEtudeBottomSheet extends StatefulWidget {
-  // const GiveEtudeBottomSheet({Key key}) : super(key: key);
   final dynamic doc;
-  final dynamic docsnap;
   GiveEtudeBottomSheet(
     this.doc,
-    this.docsnap,
   );
 
   @override
@@ -19,8 +16,8 @@ class _GiveEtudeBottomSheetState extends State<GiveEtudeBottomSheet> {
   @override
   Widget build(BuildContext context) {
     dynamic doc = widget.doc;
-    dynamic docsnap = widget.docsnap;
     final theme = Theme.of(context);
+
     return Column(
       children: [
         ListTile(
@@ -54,7 +51,7 @@ class _GiveEtudeBottomSheetState extends State<GiveEtudeBottomSheet> {
                   onTap: () {},
                   child: EtudeItem(
                     docs[index],
-                    docsnap,
+                    doc,
                   ),
                 ),
               );
