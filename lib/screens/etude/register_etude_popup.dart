@@ -93,7 +93,7 @@ class _RegisterEtudePopUpState extends State<RegisterEtudePopUp> {
   Widget build(BuildContext context) {
     createStudentChips();
     final token = Provider.of<Auth>(context, listen: false).token;
-    final info = Provider.of<Auth>(context, listen: false).userInform;
+    final info = Provider.of<Auth>(context, listen: false).userInfo;
     String hour = widget.appointment.startTime.hour.toString();
 
     return Scaffold(

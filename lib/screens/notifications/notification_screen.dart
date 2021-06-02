@@ -42,13 +42,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
     notificationP = Provider.of<NotificationP>(context, listen: false);
-    user = Provider.of<Auth>(context, listen: false).userInform;
-=======
-    notificationP = Provider.of<NotificationP>(context);
-    // user = Provider.of<Auth>(context).userInform;
->>>>>>> improvements
+    user = Provider.of<Auth>(context, listen: false).userInfo;
 
     return Scaffold(
       appBar: AppBar(

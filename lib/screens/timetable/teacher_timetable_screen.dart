@@ -29,23 +29,8 @@ class TeacherTimetableScreen extends StatelessWidget {
             return Center(
               child: CircularProgressIndicator(),
             );
-<<<<<<< HEAD
           Provider.of<Timetable>(context, listen: false).teacherData =
               snapshot.data.docs[0].data();
-=======
-          // print(snapshot.data.data());
-          if (snapshot.data.data() == null)
-            return Center(
-              child: Text(
-                "Ders programınız bulunmamaktadır\nyöneticinizden eklemesini isteyin.",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            );
->>>>>>> improvements
 
           Provider.of<Timetable>(context).teacherData = snapshot.data.data();
           return TimetableCalendar(isTeacher: true);

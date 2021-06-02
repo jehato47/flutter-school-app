@@ -136,17 +136,7 @@ class Auth extends ChangeNotifier {
         email: username,
         password: password,
       );
-<<<<<<< HEAD
       return null;
-=======
-
-      userInfo = await FirebaseFirestore.instance
-          .collection("user")
-          .doc(userCredential.user.uid)
-          .get();
-
-      print(122);
->>>>>>> improvements
     } catch (err) {
       return err.toString();
     }

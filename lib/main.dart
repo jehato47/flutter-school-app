@@ -129,7 +129,6 @@ class MyApp extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               }
-<<<<<<< HEAD
               if (FirebaseAuth.instance.currentUser != null)
                 return HomeScreen();
               return LoginScreen2();
@@ -154,40 +153,6 @@ class MyApp extends StatelessWidget {
               //     return LoginScreen2();
               //   },
               // );
-=======
-              return StreamBuilder(
-                // TODO: login, logout, signup yapıldıgında bu stream değişecek
-                // TODO: onAuthstateChanged -> authStateChanges
-                stream: FirebaseAuth.instance.authStateChanges(),
-                builder: (ctx, snapshot) {
-                  // FirebaseAuth.instance.signOut();
-                  // * TODO : Login Form da setState hatası veriyor bak
-                  if (snapshot.connectionState == ConnectionState.waiting)
-                    return Center(child: CircularProgressIndicator());
-                  if (snapshot.hasData) {
-                    User user = snapshot.data;
-                    // ? todo : Sınav cevap kağıdını göstermeyi hallet
-
-                    return FutureBuilder(
-                        future: FirebaseFirestore.instance
-                            .collection("user")
-                            .doc(user.uid)
-                            .get(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting)
-                            return Center(child: CircularProgressIndicator());
-                          DocumentSnapshot documentSnapshot = snapshot.data;
-                          Provider.of<Auth>(context, listen: false).userInfo =
-                              documentSnapshot.data();
-
-                          return HomeScreen();
-                        });
-                  }
-                  return LoginScreen();
-                },
-              );
->>>>>>> improvements
             },
           ),
         ),
