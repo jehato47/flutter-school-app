@@ -22,8 +22,8 @@ import 'screens/exam/student_exam_screen.dart';
 import 'screens/homework/homework_detail_screen.dart';
 import 'screens/homework/homework_preview_screen.dart';
 import 'screens/timetable/teacher_timetable_screen.dart';
-import 'screens/home_screen.dart';
-import 'screens/login_screen.dart';
+import 'screens/home/home_screen.dart';
+import 'screens/login/login_screen.dart';
 import 'screens/attendance/attendance_detail_screen.dart';
 import 'screens/attendance/attendance_preview_screen.dart';
 import 'screens/attendance/attendace_check_screen.dart';
@@ -36,10 +36,10 @@ import 'screens/etude/etude_form_screen.dart';
 import 'screens/etude/my_etudes_screen.dart';
 import 'screens/etude/etude_chat_screen.dart';
 import 'helpers/download/download_helper_provider.dart';
-import 'screens/exam/students_exam_list.dart';
+import 'screens/exam/exams_list_screen.dart';
 import 'screens/archive/teacher_archive_screen.dart';
 import 'widgets/home/bottom_navbar.dart';
-import 'screens/login_screen2.dart';
+import 'screens/login/login_screen2.dart';
 import 'screens/archive/archive_preview_screen.dart';
 
 void main() async {
@@ -178,7 +178,7 @@ class MyApp extends StatelessWidget {
           StudentExamScreen.url: (ctx) => StudentExamScreen(),
           EtudeRequestsScreen.url: (ctx) => EtudeRequestsScreen(),
           NotificationScreen.url: (ctx) => NotificationScreen(),
-          StudentsExamList.url: (ctx) => StudentsExamList(),
+          ExamsListScreen.url: (ctx) => ExamsListScreen(),
           SelectLectureScreen.url: (ctx) => SelectLectureScreen(),
           MyEtudesScreen.url: (ctx) => MyEtudesScreen(),
           EtudeChatScreen.url: (ctx) => EtudeChatScreen(),

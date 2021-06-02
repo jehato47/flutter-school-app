@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../screens/home_screen.dart';
+import '../../screens/home/home_screen.dart';
 import '../../screens/attendance/attendace_check_screen.dart';
 import '../../screens/timetable/teacher_timetable_screen.dart';
 import '../../screens/etude/etude_requests_screen.dart';

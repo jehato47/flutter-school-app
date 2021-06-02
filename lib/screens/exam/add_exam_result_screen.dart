@@ -21,15 +21,13 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
   bool isInit = true;
   dynamic args;
   dynamic examData;
-  showPickerModal(BuildContext context) async {
-    // final att = FirebaseFirestore.instance.collection('attendance');
 
-    // QuerySnapshot attendance = await att.get();
-    // final classes = attendance.docs.map((e) => e.id).toList();
+  showPickerModal(BuildContext context) async {
     final students = ids.map((e) => e["displayName"]).toList();
-    // return;
     FocusScope.of(context).unfocus();
+
     await Future.delayed(Duration(milliseconds: 10));
+
     new Picker(
         adapter: PickerDataAdapter<String>(pickerdata: students),
         changeToFirst: true,

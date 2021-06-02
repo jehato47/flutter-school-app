@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/login/login_form.dart';
+import '../../widgets/login/login_form.dart';
 
 class LoginScreen extends StatelessWidget {
   static const url = "/login";
