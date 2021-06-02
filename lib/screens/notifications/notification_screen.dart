@@ -21,10 +21,10 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   dynamic classes;
   String to;
-
+  String fileName;
   FirebaseAuth auth = FirebaseAuth.instance;
   NotificationP notificationP;
-  File file;
+  dynamic file;
   dynamic user;
   TextEditingController mesaj = TextEditingController();
   final FocusNode focusNode = FocusNode();
@@ -43,7 +43,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     notificationP = Provider.of<NotificationP>(context);
-    user = Provider.of<Auth>(context).userInform;
+    // user = Provider.of<Auth>(context).userInform;
 
     return Scaffold(
       appBar: AppBar(
@@ -87,7 +87,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
                         return Column(
                           children: [
-                            NotificationItem(ref, notification, user),
+                            NotificationItem(
+                              ref,
+                              notification,
+                              // user,
+                            ),
                             Divider(
                               thickness: 1.2,
                             ),
@@ -103,14 +107,22 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Future<void> pickFile() async {
     file = null;
     FilePickerResult result = await FilePicker.platform.pickFiles();
-    if (result == null) return;
 
-    setState(() {
-      file = File(result.files.single.path);
-    });
+    if (result == null) return;
+    fileName = result.files.first.name;
+
+    if (kIsWeb) {
+      setState(() {
+        file = result.files.first.bytes;
+      });
+    } else {
+      setState(() {
+        file = File(result.files.single.path);
+      });
+    }
   }
 
-  void addNotification() {
+  void addNotification() async {
     mesaj.text = "";
     showDialog(
       context: context,
@@ -154,6 +166,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     auth.currentUser.displayName,
                     mesaj.text.trim(),
                     file,
+                    fileName,
                     // TODO : production
                     "11-a",
                   );
