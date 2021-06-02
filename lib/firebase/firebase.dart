@@ -52,116 +52,82 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
             child: ElevatedButton(
               child: Text("send"),
               onPressed: () async {
+                // return;
                 FirebaseAuth auth = FirebaseAuth.instance;
+                // QuerySnapshot snapshot2 = await FirebaseFirestore.instance
+                //     .collection("etude/TXWUtv8s9bZnMfGZNpkrJLDKRmE3/pieces")
+                //     .where(
+                //       "date",
+                //       isGreaterThanOrEqualTo: DateTime.now(),
+                //     )
+                //     .get();
+                // List<QueryDocumentSnapshot> docs2 = snapshot2.docs;
+                // print(docs2);
+
+                // return;
                 QuerySnapshot snapshot = await FirebaseFirestore.instance
-                    .collection("user")
-                    .where("role", isEqualTo: "teacher")
+                    .collection("etudeTimes")
+                    .where("lecture", isEqualTo: "biyoloji")
                     .get();
 
-                for (var teacher in snapshot.docs) {
-                  await FirebaseFirestore.instance
-                      .collection("etudeTimes")
-                      .doc(teacher.id)
-                      .set({
-                    "ref": teacher.reference,
-                    "lecture": teacher["lecture"],
-                    "displayName": teacher["displayName"],
-                    "monday": [
-                      DateTime(2021, 4, 26, 14, 30),
-                    ],
-                    "tuesday": [
-                      DateTime(2021, 4, 26, 14, 30),
-                    ],
-                    "wednesday": [
-                      DateTime(2021, 4, 26, 14, 30),
-                    ],
-                    "thursday": [
-                      DateTime(2021, 4, 26, 14, 30),
-                    ],
+                List<QueryDocumentSnapshot> docs = snapshot.docs;
+
+                for (int i = 0; i < 15; i++) {
+                  DateTime now = DateTime.now().add(Duration(days: i));
+                  Intl.defaultLocale = "en_EN";
+                  String day = DateFormat("EEEE").format(now).toLowerCase();
+                  Intl.defaultLocale = "tr_TR";
+
+                  docs.forEach((doc) async {
+                    dynamic etudesofday = doc.data()[day];
+                    if (!doc.data().containsKey(day)) return;
+
+                    await etudesofday.forEach((e) async {
+                      DateTime oldDate = e.toDate();
+
+                      DateTime newTime = DateTime(
+                        now.year,
+                        now.month,
+                        now.day,
+                        oldDate.hour,
+                        oldDate.minute,
+                      );
+                      // print("$day $newTime");
+                      QuerySnapshot dSnapshot = await FirebaseFirestore.instance
+                          .collection("etude")
+                          .where("uid", isEqualTo: doc.id)
+                          .where("date", isEqualTo: newTime)
+                          .get();
+
+                      if (dSnapshot.docs.isEmpty)
+                        await FirebaseFirestore.instance.collection("etude")
+                            // .doc(newTime.toString())
+                            .add({
+                          "date": newTime,
+                          "lecture": doc["lecture"],
+                          "notParticipate": [],
+                          "registered": [],
+                          "subject": "Düzgün Doğrusal Hareket",
+                          "teacherName": doc["displayName"],
+                          "uid": doc.id,
+                        });
+                      // else if (dSnapshot.docs.length == 1)
+                      //   await FirebaseFirestore.instance
+                      //       .collection("etude")
+                      //       // .doc(newTime.toString())
+                      //       .doc(dSnapshot.docs[0].id)
+                      //       .update({
+                      //     "date": newTime,
+                      //     "lecture": doc["lecture"],
+                      //     "notParticipate": [],
+                      //     "registered": [1, 1, 3, 2],
+                      //     "subject": "Düzgün Doğrusal Hareket",
+                      //     "teacherName": doc["displayName"],
+                      //     "uid": doc.id,
+                      //   });
+                    });
                   });
                 }
-
-                // // DocumentSnapshot snapshot = await FirebaseFirestore.instance
-                // //     .collection("syllabus")
-                // //     .doc("auth.currentUser.uid")
-                // //     .get();
-
-                // // print(snapshot.data() == null);
-
-                // QuerySnapshot snapshot = await FirebaseFirestore.instance
-                //     .collection("user")
-                //     .where("role", isEqualTo: "teacher")
-                //     .get();
-
-                // for (var teacher in snapshot.docs) {
-                //   FirebaseFirestore.instance
-                //       .collection("syllabus")
-                //       .doc(teacher.id)
-                //       .set({
-                //     // "uid": teacher.id,
-                //     // "lecture": teacher["lecture"],
-                //     // "displayName": teacher["displayName"],
-                //     "monday": {
-                //       "11-c": DateTime(2021, 11, 3, 11, 30),
-                //     },
-                //     "tuesday": {
-                //       "11-g": DateTime(2021, 11, 3, 12, 30),
-                //       "11-d": DateTime(2021, 11, 3, 14, 30),
-                //       "11-c": DateTime(2021, 11, 3, 16, 35),
-                //     },
-                //     "wednesday": {
-                //       "11-d": DateTime(2021, 11, 3, 13, 40),
-                //     },
-                //     "thursday": {
-                //       "11-f": DateTime(2021, 11, 3, 5, 30),
-                //     },
-                //     "friday": {
-                //       "11-d": DateTime(2021, 11, 3, 15, 30),
-                //       "11-c": DateTime(2021, 11, 3, 11, 30),
-                //       "11-g": DateTime(2021, 11, 3, 10, 30),
-                //     },
-                //     "saturday": {
-                //       "11-c": DateTime(2021, 11, 3, 11, 30),
-                //     },
-                //     "sunday": {
-                //       "11-g": DateTime(2021, 11, 3, 11, 30),
-                //     },
-                //   });
-                // }
-
-                // FirebaseAuth auth = FirebaseAuth.instance;
-                // // auth.signInWithCustomToken();
-                // QuerySnapshot snapshot = await FirebaseFirestore.instance
-                //     .collection("teacher")
-                //     .get();
-
-                // List<QueryDocumentSnapshot> items = snapshot.docs;
-
-                // for (var item in items) {
-                //   await FirebaseAuth.instance.signInWithEmailAndPassword(
-                //       email: item["email"], password: "123465789");
-                //   await FirebaseAuth.instance.currentUser.delete();
-                //   await Provider.of<Auth>(context).signTeacherUp(
-                //     item["email"],
-                //     item["password"],
-                //     item["name"],
-                //     item["surname"],
-                //     item["phoneNumber"],
-                //     item["lecture"],
-                //     null,
-                //   );
-                // }
-
-                // await Provider.of<Auth>(context).signTeacherUp(
-                //   "mcanakay@hotmail.com",
-                //   "123465789",
-                //   "Mehmetcan",
-                //   "Akay",
-                //   "05366639292",
-                //   "fizik",
-                //   null,
-                // );
-
                 return;
               },
             ),
