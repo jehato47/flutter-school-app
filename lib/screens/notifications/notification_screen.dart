@@ -3,6 +3,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import '../../widgets/notification/add_notification_button.dart';
 import '../../widgets/notification/notifications_list.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:provider/provider.dart';
+import '../../providers/auth.dart';
 
 class NotificationScreen extends StatefulWidget {
   static const url = "/notification";
@@ -24,10 +26,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userInfo = Provider.of<Auth>(context, listen: false).userInfo;
+    bool isTeacher = userInfo["role"] == "teacher";
     return Scaffold(
       appBar: AppBar(
         actions: [
-          AddNotificationButton(),
+          if (isTeacher) AddNotificationButton(),
         ],
         title: Text("Bildirimler"),
       ),

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:school2/widgets/home/teacher_home_screen.dart';
 import '../../screens/archive/teacher_archive_screen.dart';
 import '../../screens/archive/archive_preview_screen.dart';
 import 'bottom_navbar.dart';
+
 import '../../screens/home/home_screen.dart';
+import '../../widgets/home/student_home_screen.dart';
 import '../../firebase/firebase.dart';
 
 class SideDrawer extends StatefulWidget {
@@ -79,12 +82,30 @@ class _SideDrawerState extends State<SideDrawer> {
             ),
             ListTile(
               leading: Icon(Icons.grid_view),
-              title: Text("navbar"),
+              title: Text("öğretmen"),
               onTap: () {
                 // body = BottomNavbar();
 
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) => BottomNavbar()));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => TeacherHomeScreen(),
+                  ),
+                );
+
+                // Navigator.of(context).pop();
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.grid_view),
+              title: Text("öğrenci"),
+              onTap: () {
+                // body = BottomNavbar();
+
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => StudentHomeScreen(),
+                  ),
+                );
 
                 // Navigator.of(context).pop();
               },

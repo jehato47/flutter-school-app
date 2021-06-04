@@ -13,20 +13,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  dynamic body = PagesGrid();
+  // dynamic body = PagesGrid();
+  dynamic body = Placeholder();
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideDrawer(),
-      appBar: AppBar(
-        actions: [
-          RingBell(),
-          HomeworkButton(),
-        ],
-        title: Text(auth.currentUser.displayName),
-      ),
+      // drawer: SideDrawer(),
+      // appBar: AppBar(
+      //   actions: [
+      //     RingBell(),
+      //     HomeworkButton(),
+      //   ],
+      //   title: Text(auth.currentUser.displayName),
+      // ),
       body: body,
     );
   }

@@ -7,6 +7,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:school2/firebase/firebase.dart';
+import 'package:school2/widgets/home/student_home_screen.dart';
+import 'package:school2/widgets/home/teacher_home_screen.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 import 'package:provider/provider.dart';
 import 'providers/notification.dart';
@@ -154,8 +156,9 @@ class MyApp extends StatelessWidget {
                           DocumentSnapshot documentSnapshot = snapshot.data;
                           Provider.of<Auth>(context, listen: false).userInfo =
                               documentSnapshot.data();
-
-                          return HomeScreen();
+                          if (documentSnapshot["role"] == "teacher")
+                            return TeacherHomeScreen();
+                          return StudentHomeScreen();
                         });
                   }
                   return LoginScreen();
