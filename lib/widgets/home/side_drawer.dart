@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../screens/archive/teacher_archive_screen.dart';
 import '../../screens/archive/archive_preview_screen.dart';
-import 'bottom_navbar.dart';
+import 'teacher_home_screen.dart';
 import '../../screens/home/home_screen.dart';
 import '../../firebase/firebase.dart';
 
@@ -84,7 +84,7 @@ class _SideDrawerState extends State<SideDrawer> {
                 // body = BottomNavbar();
 
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) => BottomNavbar()));
+                    builder: (BuildContext context) => TeacherHome()));
 
                 // Navigator.of(context).pop();
               },

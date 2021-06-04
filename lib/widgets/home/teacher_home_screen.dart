@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:school2/screens/exam/add_exam_result_screen.dart';
+import 'package:school2/screens/exam/exams_list_screen.dart';
 import '../../screens/home/home_screen.dart';
 import '../../screens/attendance/attendace_check_screen.dart';
 import '../../screens/timetable/teacher_timetable_screen.dart';
 import '../../screens/etude/etude_requests_screen.dart';
 import '../../screens/exam/student_exam_screen.dart';
 
-class BottomNavbar extends StatefulWidget {
+class TeacherHome extends StatefulWidget {
   @override
-  _BottomNavbarState createState() => _BottomNavbarState();
+  _TeacherHomeState createState() => _TeacherHomeState();
 }
 
-class _BottomNavbarState extends State<BottomNavbar> {
+class _TeacherHomeState extends State<TeacherHome> {
   dynamic body = HomeScreen();
   int index = 0;
   @override
@@ -41,7 +43,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
           } else if (value == 3) {
             setState(() {
               index = value;
-              body = StudentExamScreen();
+              body = ExamsListScreen();
             });
           } else if (value == 4) {
             setState(() {

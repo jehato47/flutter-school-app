@@ -16,7 +16,7 @@ class _RingBellState extends State<RingBell> {
         stream:
             FirebaseFirestore.instance.collection("notification").snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting)
+          if (!snapshot.hasData)
             return Center(
               child: CircularProgressIndicator(),
             );

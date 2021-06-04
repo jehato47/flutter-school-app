@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class Messages extends StatefulWidget {
   final dynamic doc;
-  ScrollController scrollController;
+  final ScrollController scrollController;
   Messages(this.doc, this.scrollController);
 
   @override

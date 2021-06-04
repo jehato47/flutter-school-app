@@ -72,7 +72,7 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
 
                 List<QueryDocumentSnapshot> docs = snapshot.docs;
 
-                for (int i = 0; i < 15; i++) {
+                for (int i = 0; i < 10; i++) {
                   DateTime now = DateTime.now().add(Duration(days: i));
                   Intl.defaultLocale = "en_EN";
                   String day = DateFormat("EEEE").format(now).toLowerCase();
@@ -105,6 +105,7 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
                             .add({
                           "date": newTime,
                           "lecture": doc["lecture"],
+                          "requests": [],
                           "notParticipate": [],
                           "registered": [],
                           "subject": "Düzgün Doğrusal Hareket",

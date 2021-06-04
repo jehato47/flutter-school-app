@@ -38,7 +38,7 @@ import 'screens/etude/etude_chat_screen.dart';
 import 'helpers/download/download_helper_provider.dart';
 import 'screens/exam/exams_list_screen.dart';
 import 'screens/archive/teacher_archive_screen.dart';
-import 'widgets/home/bottom_navbar.dart';
+import 'widgets/home/teacher_home_screen.dart';
 import 'screens/login/login_screen2.dart';
 import 'screens/archive/archive_preview_screen.dart';
 

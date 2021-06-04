@@ -12,12 +12,99 @@ class EtudeItem extends StatefulWidget {
 }
 
 class _EtudeItemState extends State<EtudeItem> {
+  FirebaseAuth auth = FirebaseAuth.instance;
+  dynamic etude;
+  dynamic etudeRequest;
+
+  Future<void> notRegisteredCase() async {
+    List registered = etude["registered"];
+    List requests = etude["requests"];
+
+    registered.add(etudeRequest["uid"]);
+    requests.add(etudeRequest.id);
+    String note =
+        "${DateFormat("d MMMM EEEE").format(etude["date"].toDate()) + "\nsaat " + DateFormat("HH:mm").format(etude["date"].toDate())} için etüdünüz oluşturuldu";
+
+    await FirebaseFirestore.instance.collection("etudeChat").add({
+      "created": true,
+      "date": DateTime.now(),
+      "displayName": auth.currentUser.displayName,
+      "eRequestid": etudeRequest.id,
+      "note": note,
+      "uid": auth.currentUser.uid,
+    });
+
+    await FirebaseFirestore.instance.collection("etude").doc(etude.id).update({
+      "registered": registered,
+      "requests": requests,
+    });
+
+    await FirebaseFirestore.instance
+        .collection("etudeRequest")
+        .doc(etudeRequest.id)
+        .update({"state": "done", "ref": etude.reference});
+
+    Navigator.of(context).pop(true);
+  }
+
+  Future<void> stillRegisteredCase() async {
+    List registered = etude["registered"];
+    List requests = etude["requests"];
+
+    registered.removeWhere((element) => element == etudeRequest["uid"]);
+    requests.removeWhere((element) => element == etudeRequest.id);
+
+    await FirebaseFirestore.instance
+        .collection("etude")
+        .doc(etude.id)
+        .update({"registered": registered, "requests": requests});
+
+    await FirebaseFirestore.instance
+        .collection("etudeRequest")
+        .doc(etudeRequest.id)
+        .update({"state": "waiting", "ref": null});
+
+    // Oluşturuldu mesajını siler
+    final x = await FirebaseFirestore.instance
+        .collection("etudeChat")
+        .where("created", isEqualTo: true)
+        .where("eRequestid", isEqualTo: etudeRequest.id)
+        .get();
+
+    await FirebaseFirestore.instance
+        .collection("etudeChat")
+        .doc(x.docs[0].id)
+        .delete();
+
+    Navigator.of(context).pop(false);
+  }
+
+  Future<void> pressed() async {
+    List registered = etude["registered"];
+    List requests = etude["requests"];
+
+    if (!registered.contains(etudeRequest["uid"]) ||
+        !requests.contains(etudeRequest.id))
+      await notRegisteredCase();
+    else
+      await stillRegisteredCase();
+
+    // DocumentSnapshot snapshot = await FirebaseFirestore.instance
+    //     .collection("etudeRequest")
+    //     .doc(etudeRequest.id)
+    //     .get();
+
+    // etudeRequest = snapshot;
+
+    // print(snapshot["state"]);
+  }
+
   @override
   Widget build(BuildContext context) {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    dynamic etude = widget.etude;
-    dynamic etudeRequest = widget.etudeRequest;
-    // if (!etude["registered"].contains(etudeRequest["uid"])) return Container();
+    etude = widget.etude;
+    etudeRequest = widget.etudeRequest;
+
+    bool isSaved = etude["requests"].contains(etudeRequest.id);
 
     return Container(
         width: 150,
@@ -32,70 +119,37 @@ class _EtudeItemState extends State<EtudeItem> {
           title: Text(etude["teacherName"]),
           subtitle:
               Text(DateFormat("dd MMMM HH:mm").format(etude["date"].toDate())),
-          trailing: ElevatedButton(
-            onPressed: etudeRequest["state"] == "done" &&
-                    etude.reference != etudeRequest["ref"]
-                ? null
-                : () async {
-                    List registered = etude["registered"];
-                    if (!registered.contains(etudeRequest["uid"])) {
-                      registered.add(etudeRequest["uid"]);
+          trailing: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection("etudeRequest")
+                  .doc(etudeRequest.id)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData)
+                  return ElevatedButton(
+                    child: Text(""),
+                    onPressed: () {},
+                  );
 
-                      await FirebaseFirestore.instance
-                          .collection("etude")
-                          .doc(etude.id)
-                          .update({"registered": registered});
+                // bool isSaved2 = snapshot.data["ref"] == etude.reference;
+                bool isDone = snapshot.data["state"] == "done";
+                bool isThis = snapshot.data["ref"] == etude.reference;
 
-                      await FirebaseFirestore.instance
-                          .collection("etudeRequest")
-                          .doc(etudeRequest.id)
-                          .update({"state": "done", "ref": etude.reference});
-
-                      // TODO : düzenle burayı
-                      await FirebaseFirestore.instance
-                          .collection("etudeChat")
-                          .add({
-                        "created": true,
-                        "date": DateTime.now(),
-                        "displayName": auth.currentUser.displayName,
-                        "eRequestid": etudeRequest.id,
-                        "note":
-                            "Etüdünüz ${etude["date"].toDate().toString()} tarihi için oluşturuldu",
-                        "uid": auth.currentUser.uid,
-                      });
-                    } else {
-                      registered.removeWhere(
-                          (element) => element == etudeRequest["uid"]);
-
-                      await FirebaseFirestore.instance
-                          .collection("etude")
-                          .doc(etude.id)
-                          .update({"registered": registered});
-
-                      await FirebaseFirestore.instance
-                          .collection("etudeRequest")
-                          .doc(etudeRequest.id)
-                          .update({"state": "waiting", "ref": null});
-
-                      // TODO : düzenle burayı
-                      final x = await FirebaseFirestore.instance
-                          .collection("etudeChat")
-                          .where("created", isEqualTo: true)
-                          .where("eRequestid", isEqualTo: etudeRequest.id)
-                          .get();
-
-                      await FirebaseFirestore.instance
-                          .collection("etudeChat")
-                          .doc(x.docs[0].id)
-                          .delete();
-                    }
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
-                  },
-            child: Text(etude["registered"].contains(etudeRequest["uid"])
-                ? "Geri Al"
-                : "kaydet"),
-          ),
+                return ElevatedButton(
+                  // style: ButtonStyle(textStyle: ),
+                  style: ElevatedButton.styleFrom(
+                    primary: isThis ? Colors.deepPurple : Colors.indigo,
+                    // padding:
+                    //     EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                    // textStyle:
+                    //     TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: isDone && !isThis ? null : pressed,
+                  child: Text(
+                    isThis ? "geri al" : "kaydet",
+                  ),
+                );
+              }),
         ));
   }
 }

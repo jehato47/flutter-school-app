@@ -16,6 +16,7 @@ class _GiveEtudeBottomSheetState extends State<GiveEtudeBottomSheet> {
   @override
   Widget build(BuildContext context) {
     dynamic doc = widget.doc;
+
     final theme = Theme.of(context);
 
     return Column(

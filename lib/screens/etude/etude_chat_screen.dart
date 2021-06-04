@@ -13,28 +13,39 @@ class EtudeChatScreen extends StatefulWidget {
 
 class _EtudeChatScreenState extends State<EtudeChatScreen> {
   ScrollController _scrollController = new ScrollController();
-
+  bool isSaved = false;
+  bool isInit = false;
   @override
   Widget build(BuildContext context) {
     QueryDocumentSnapshot doc =
         ModalRoute.of(context).settings.arguments as dynamic;
+    if (!isInit) {
+      isSaved = doc["ref"] != null;
+      isInit = true;
+    }
 
-    void _showBottomSheet() {
-      showModalBottomSheet(
+    Future<void> _showBottomSheet() async {
+      final result = await showModalBottomSheet(
         context: context,
         builder: (context) {
           return GiveEtudeBottomSheet(doc);
         },
       );
+
+      setState(() {
+        if (result != null) isSaved = result;
+      });
     }
 
     return Scaffold(
       appBar: AppBar(
         actions: [
+          if (isSaved)
+            IconButton(onPressed: () {}, icon: Icon(Icons.web_outlined)),
           IconButton(
             icon: Icon(Icons.assignment),
-            onPressed: () {
-              _showBottomSheet();
+            onPressed: () async {
+              await _showBottomSheet();
               return;
             },
           )
