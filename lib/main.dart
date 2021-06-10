@@ -46,6 +46,7 @@ import 'screens/archive/archive_preview_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   if (!kIsWeb)
     await FlutterDownloader.initialize(
         debug: true // optional: set false to disable printing logs to console

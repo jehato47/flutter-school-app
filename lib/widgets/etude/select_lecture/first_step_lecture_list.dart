@@ -13,7 +13,7 @@ class _FirstStepLectureListState extends State<FirstStepLectureList> {
     return StreamBuilder(
       stream: FirebaseFirestore.instance.collection("etudeTimes").snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting)
+        if (!snapshot.hasData)
           return Center(
             child: CircularProgressIndicator(),
           );

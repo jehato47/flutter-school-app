@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:school2/screens/attendance/attendance_preview_screen.dart';
 import 'package:school2/widgets/home/teacher_home_screen.dart';
 import '../../screens/archive/teacher_archive_screen.dart';
 import '../../screens/archive/archive_preview_screen.dart';
@@ -112,15 +113,11 @@ class _SideDrawerState extends State<SideDrawer> {
             ),
             ListTile(
               leading: Icon(Icons.grid_view),
-              title: Text("home screen"),
+              title: Text("Yoklamalar"),
               onTap: () {
                 // body = BottomNavbar();
 
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => HomeScreen(),
-                  ),
-                );
+                Navigator.of(context).pushNamed(AttendancePreviewScreen.url);
 
                 // Navigator.of(context).pop();
               },

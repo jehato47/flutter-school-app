@@ -18,7 +18,7 @@ class _ExamsListState extends State<ExamsList> {
       // .get(),
 
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting)
+        if (!snapshot.hasData)
           return Center(child: CircularProgressIndicator());
 
         data = snapshot.data.docs;

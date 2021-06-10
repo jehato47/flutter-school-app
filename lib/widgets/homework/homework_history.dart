@@ -22,7 +22,7 @@ class _HomeworkHistoryState extends State<HomeworkHistory> {
             .orderBy("startDate")
             .snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting)
+          if (!snapshot.hasData)
             return Center(child: CircularProgressIndicator());
           final hws = snapshot.data.docs;
           return ListView.builder(

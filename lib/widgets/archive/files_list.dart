@@ -26,7 +26,7 @@ class _FilesListState extends State<FilesList> {
             .where("folderName", isEqualTo: folderName)
             .snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting)
+          if (!snapshot.hasData)
             return Center(
               child: CircularProgressIndicator(),
             );

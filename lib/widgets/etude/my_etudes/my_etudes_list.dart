@@ -19,7 +19,7 @@ class _MyEtudesListState extends State<MyEtudesList> {
           .where("uid", isEqualTo: auth.currentUser.uid)
           .snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting)
+        if (!snapshot.hasData)
           return Center(
             child: CircularProgressIndicator(),
           );

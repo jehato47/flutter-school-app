@@ -53,6 +53,7 @@ dependencies:
   
   
 dev_dependencies:
+  logger: ^1.0.0
   flutter_test:
     sdk: flutter
 

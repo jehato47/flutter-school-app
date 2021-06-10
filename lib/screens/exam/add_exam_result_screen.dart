@@ -131,8 +131,9 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
                 await reference.doc(key).update(value);
               });
               await Provider.of<Exam>(context).setDetails(lecture);
+
               Navigator.of(context).pop();
-              Navigator.of(context).pop();
+              // Navigator.of(context).pop();
             },
           ),
         ],

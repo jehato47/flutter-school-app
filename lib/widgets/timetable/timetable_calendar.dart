@@ -48,7 +48,7 @@ class _TimetableCalendarState extends State<TimetableCalendar> {
               element.subject.contains("-")) {
             Appointment apt = calendarTapDetails.appointments[0];
             // return;
-            Navigator.of(context).pushReplacementNamed(
+            Navigator.of(context).pushNamed(
               AttendanceCheckScreen.url,
               arguments: {
                 "class": element.subject,

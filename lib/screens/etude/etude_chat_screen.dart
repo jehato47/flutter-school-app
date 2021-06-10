@@ -4,6 +4,8 @@ import 'package:school2/widgets/etude/etude_chat/message_input.dart';
 import 'package:intl/intl.dart';
 import '../../widgets/etude/etude_chat/give_etude_bottomsheet.dart';
 import '../../widgets/etude/etude_chat/messages.dart';
+import 'package:provider/provider.dart';
+import '../../providers/auth.dart';
 
 class EtudeChatScreen extends StatefulWidget {
   static const url = "etude-chat";
@@ -16,6 +18,9 @@ class _EtudeChatScreenState extends State<EtudeChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userInfo = Provider.of<Auth>(context, listen: false).userInfo;
+    bool isTeacher = userInfo["role"] == "teacher";
+
     QueryDocumentSnapshot doc =
         ModalRoute.of(context).settings.arguments as dynamic;
 
@@ -31,13 +36,14 @@ class _EtudeChatScreenState extends State<EtudeChatScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(
-            icon: Icon(Icons.assignment),
-            onPressed: () {
-              _showBottomSheet();
-              return;
-            },
-          )
+          if (isTeacher)
+            IconButton(
+              icon: Icon(Icons.assignment),
+              onPressed: () {
+                _showBottomSheet();
+                return;
+              },
+            )
         ],
         title: Text(doc["lecture"]),
       ),

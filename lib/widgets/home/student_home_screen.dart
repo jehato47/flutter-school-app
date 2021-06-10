@@ -1,18 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:school2/screens/etude/my_etudes_screen.dart';
-import 'package:school2/screens/exam/add_exam_result_screen.dart';
-import 'package:school2/screens/exam/exams_list_screen.dart';
 import 'package:school2/screens/homework/homework_preview_screen.dart';
+import 'package:school2/screens/timetable/student_timetable_screen.dart';
 import 'package:school2/widgets/home/side_drawer.dart';
 import '../../screens/home/home_screen.dart';
-import '../../screens/attendance/attendace_check_screen.dart';
 import '../../screens/timetable/teacher_timetable_screen.dart';
-import '../../screens/etude/etude_requests_screen.dart';
 import '../../screens/exam/student_exam_screen.dart';
 import '../../widgets/home/ring_bell.dart';
-import '../../widgets/home/homework_button.dart';
-import '../../screens/archive/archive_preview_screen.dart';
 import '../../widgets/home/archive_button.dart';
 
 class StudentHomeScreen extends StatefulWidget {
@@ -59,7 +54,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
           } else if (value == 2) {
             setState(() {
               index = value;
-              body = TeacherTimetableScreen();
+              body = StudentTimetableScreen();
             });
           } else if (value == 3) {
             setState(() {

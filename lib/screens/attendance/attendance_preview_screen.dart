@@ -103,7 +103,7 @@ class _AttendancePreviewScreenState extends State<AttendancePreviewScreen> {
                     .orderBy("date", descending: true)
                     .snapshots(),
                 builder: (context, attendance) {
-                  if (attendance.connectionState == ConnectionState.waiting)
+                  if (!attendance.hasData)
                     return Center(child: CircularProgressIndicator());
 
                   List<dynamic> data;

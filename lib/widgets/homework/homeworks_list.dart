@@ -22,7 +22,7 @@ class _HomeworksListState extends State<HomeworksList> {
         if (snapshot.hasError) {
           return Center(child: Text("Birşeyler Ters Gitti..."));
         }
-        if (snapshot.connectionState == ConnectionState.waiting)
+        if (!snapshot.hasData)
           return Center(
             child: CircularProgressIndicator(),
           );

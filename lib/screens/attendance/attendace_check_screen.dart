@@ -71,7 +71,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
   }
 
   Future<void> sendAttendance() async {
-    if (!isSent) {
+    if (true) {
       isSent = true;
 
       await FirebaseFirestore.instance
@@ -93,7 +93,14 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
         // TODO : production
         "lecture": "matematik",
       });
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Yoklama alındı"),
+          backgroundColor: Colors.green,
+          duration: Duration(milliseconds: 500),
+        ),
+      );
     }
   }
 

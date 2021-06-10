@@ -13,7 +13,7 @@ class _ArchiveListByTeachersState extends State<ArchiveListByTeachers> {
     return StreamBuilder(
         stream: FirebaseFirestore.instance.collection("archive").snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting)
+          if (!snapshot.hasData)
             return Center(
               child: CircularProgressIndicator(),
             );

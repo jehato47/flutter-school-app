@@ -19,7 +19,7 @@ class _EtudeRequestListState extends State<EtudeRequestList> {
           .orderBy("date", descending: true)
           .snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting)
+        if (!snapshot.hasData)
           return Center(child: CircularProgressIndicator());
         final requests = snapshot.data.docs;
         if (requests.length == 0)
