@@ -81,6 +81,7 @@ class _SideDrawerState extends State<SideDrawer> {
                 );
               },
             ),
+            Divider(),
             ListTile(
               leading: Icon(Icons.grid_view),
               title: Text("öğretmen"),
@@ -111,6 +112,7 @@ class _SideDrawerState extends State<SideDrawer> {
                 // Navigator.of(context).pop();
               },
             ),
+            Divider(),
             ListTile(
               leading: Icon(Icons.grid_view),
               title: Text("Yoklamalar"),
@@ -137,6 +139,7 @@ class _SideDrawerState extends State<SideDrawer> {
                 // Navigator.of(context).pop();
               },
             ),
+            Divider(),
             ListTile(
               leading: Icon(Icons.logout),
               title: Text("Çıkış Yap"),

@@ -20,6 +20,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
   String currentClass = "";
   DateTime currentTime;
   dynamic attendance;
+  bool showCalendarButton = true;
 
   // Başta herkes gelmeyen olarak işaretleniyor daha sonra listelere dağılıyor
   // Öğrenci numarasını diğer tüm listelerden çıkartıp istenen listeye koyar
@@ -111,9 +112,13 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
     var args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     if (args != null) {
+      // Program - Yoklama - Program döngüsüne girmemesi için
+      // sadece yoklama sayfasında buton gözükecek
+      showCalendarButton = false;
       currentTime = args["date"];
       currentClass = args["class"];
     }
+
     return FutureBuilder(
         future: Provider.of<Attendance>(context).getAttendance(
           currentClass,
@@ -157,13 +162,14 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
                     " ${currentClass.toUpperCase()}",
               ),
               actions: [
-                IconButton(
-                  icon: Icon(Icons.calendar_today_outlined),
-                  onPressed: () {
-                    Navigator.of(context)
-                        .pushReplacementNamed(TeacherTimetableScreen.url);
-                  },
-                ),
+                if (showCalendarButton)
+                  IconButton(
+                    icon: Icon(Icons.calendar_today_outlined),
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamed(TeacherTimetableScreen.url);
+                    },
+                  ),
                 IconButton(
                   icon: Icon(Icons.done),
                   onPressed: sendAttendance,
