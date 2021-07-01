@@ -31,7 +31,9 @@ class _RingBellState extends State<RingBell> {
             children: [
               IconButton(
                 tooltip: "Bildirimler",
-                icon: Icon(Icons.notifications),
+                icon: length != 0
+                    ? Icon(Icons.notifications_active)
+                    : Icon(Icons.notifications),
                 onPressed: () {
                   Navigator.of(context).pushNamed(NotificationScreen.url);
                 },

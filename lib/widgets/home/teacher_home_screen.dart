@@ -31,7 +31,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
               ],
               title: Text(auth.currentUser.displayName),
             ),
-      drawer: SideDrawer(),
+      drawer: index == 0 ? SideDrawer() : null,
       body: body,
       bottomNavigationBar: BottomNavigationBar(
         // showSelectedLabels: false,
@@ -40,6 +40,8 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
         currentIndex: index,
         type: BottomNavigationBarType.fixed,
         onTap: (value) {
+          if (index == value) return;
+
           if (value == 0) {
             setState(() {
               index = value;

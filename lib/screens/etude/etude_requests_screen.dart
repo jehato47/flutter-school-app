@@ -15,7 +15,7 @@ class _EtudeRequestsScreenState extends State<EtudeRequestsScreen> {
         title: Text("Etüt"),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(0),
         child: EtudeRequestList(),
       ),
     );

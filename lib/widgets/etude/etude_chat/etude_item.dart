@@ -12,6 +12,7 @@ class EtudeItem extends StatefulWidget {
 }
 
 class _EtudeItemState extends State<EtudeItem> {
+  bool clicked = false;
   FirebaseAuth auth = FirebaseAuth.instance;
   dynamic etude;
   dynamic etudeRequest;
@@ -71,15 +72,22 @@ class _EtudeItemState extends State<EtudeItem> {
         .where("eRequestid", isEqualTo: etudeRequest.id)
         .get();
 
-    await FirebaseFirestore.instance
-        .collection("etudeChat")
-        .doc(x.docs[0].id)
-        .delete();
+    x.docs.forEach((messg) async {
+      await FirebaseFirestore.instance
+          .collection("etudeChat")
+          .doc(messg.id)
+          .delete();
+    });
+    // await FirebaseFirestore.instance
+    //     .collection("etudeChat")
+    //     .doc(x.docs[0].id)
+    //     .delete();
 
     Navigator.of(context).pop(false);
   }
 
   Future<void> pressed() async {
+    clicked = true;
     List registered = etude["registered"];
     List requests = etude["requests"];
 

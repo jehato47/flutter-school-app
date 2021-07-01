@@ -17,6 +17,7 @@ class _MyEtudesListState extends State<MyEtudesList> {
       stream: FirebaseFirestore.instance
           .collection("etudeRequest")
           .where("uid", isEqualTo: auth.currentUser.uid)
+          .orderBy("date", descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
@@ -27,7 +28,9 @@ class _MyEtudesListState extends State<MyEtudesList> {
         if (data.length == 0)
           return Center(
             child: Text(
-                "Etüt istekleriniz burada görünür. Henüz etüt isteğiniz yok."),
+              "Etüt istekleriniz burada görünür. Henüz etüt isteğiniz yok.",
+              textAlign: TextAlign.center,
+            ),
           );
         return ListView.builder(
           itemCount: data.length,
@@ -41,17 +44,26 @@ class _MyEtudesListState extends State<MyEtudesList> {
             else
               color = Colors.amber;
 
-            return ListTile(
-              onTap: () {
-                Navigator.of(context).pushNamed(
-                  EtudeChatScreen.url,
-                  arguments: data[index],
-                );
-              },
-              tileColor: color,
-              title: Text(data[index]["note"]),
-              subtitle: Text(data[index]["lecture"]),
-              trailing: Icon(isDone ? Icons.done : Icons.hourglass_bottom),
+            return Container(
+              margin: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                border: Border.all(color: color, width: 2),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: ListTile(
+                onTap: () {
+                  Navigator.of(context).pushNamed(
+                    EtudeChatScreen.url,
+                    arguments: data[index],
+                  );
+                },
+                title: Text(data[index]["note"]),
+                subtitle: Text(data[index]["lecture"]),
+                trailing: Icon(
+                  isDone ? Icons.done : Icons.hourglass_bottom,
+                  color: color,
+                ),
+              ),
             );
           },
         );

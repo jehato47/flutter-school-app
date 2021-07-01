@@ -22,13 +22,25 @@ class _AddFilesButtonState extends State<AddFilesButton> {
     String folderName = widget.folderName;
 
     return IconButton(
-      icon: Icon(Icons.add),
+      icon: Icon(Icons.upload_file_outlined),
       onPressed: () async {
         FilePickerResult result =
             await FilePicker.platform.pickFiles(allowMultiple: true);
 
         if (result != null && kIsWeb) {
           for (var file in result.files) {
+            dynamic size = file.size;
+
+            if (size / 1000000 > 10) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    "10 mb üstünde dosya yükleyemezsiniz",
+                  ),
+                ),
+              );
+              return;
+            }
             dynamic fileBytes = file.bytes;
             String fileName = file.name;
 
@@ -50,6 +62,19 @@ class _AddFilesButtonState extends State<AddFilesButton> {
         } else if (result != null && !kIsWeb) {
           List<File> files = result.paths.map((path) => File(path)).toList();
           for (var file in files) {
+            dynamic size = await file.length();
+
+            if (size / 1000000 > 10) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    "10 mb üstünde dosya yükleyemezsiniz",
+                  ),
+                ),
+              );
+              return;
+            }
+
             String fileName = file.path.split("/").last;
             await FirebaseStorage.instance
                 .ref('${auth.currentUser.uid}/$folderName/$fileName')

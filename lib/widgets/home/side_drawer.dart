@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:school2/screens/attendance/attendance_preview_screen.dart';
+import 'package:school2/screens/myclass/my_friends_screen.dart';
 import 'package:school2/widgets/home/teacher_home_screen.dart';
 import '../../screens/archive/teacher_archive_screen.dart';
 import '../../screens/archive/archive_preview_screen.dart';
 import 'bottom_navbar.dart';
-
+import 'package:provider/provider.dart';
+import '../../providers/auth.dart';
 import '../../screens/home/home_screen.dart';
 import '../../widgets/home/student_home_screen.dart';
 import '../../firebase/firebase.dart';
@@ -20,6 +22,9 @@ class _SideDrawerState extends State<SideDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    final userInfo = Provider.of<Auth>(context).userInfo;
+    bool isTeacher = userInfo["role"] == "teacher";
+
     return SafeArea(
       child: Drawer(
         child: ListView(
@@ -56,34 +61,39 @@ class _SideDrawerState extends State<SideDrawer> {
                 ),
               ),
             ),
+            if (isTeacher)
+              ListTile(
+                leading: Icon(
+                  Icons.archive,
+                  color: Colors.indigo,
+                ),
+                title: Text("arşiv"),
+                onTap: () {
+                  Navigator.of(context).pushNamed(
+                    TeacherArchiveScreen.url,
+                    arguments: auth.currentUser.uid,
+                  );
+                },
+              ),
+            if (isTeacher)
+              ListTile(
+                leading: Icon(
+                  Icons.source,
+                  color: Colors.indigo,
+                ),
+                title: Text("kaynaklar"),
+                onTap: () {
+                  Navigator.of(context).pushNamed(
+                    ArchivePreviewScreen.url,
+                  );
+                },
+              ),
+            if (isTeacher) Divider(),
             ListTile(
               leading: Icon(
-                Icons.archive,
+                Icons.person,
                 color: Colors.indigo,
               ),
-              title: Text("arşiv"),
-              onTap: () {
-                Navigator.of(context).pushNamed(
-                  TeacherArchiveScreen.url,
-                  arguments: auth.currentUser.uid,
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.source,
-                color: Colors.indigo,
-              ),
-              title: Text("kaynaklar"),
-              onTap: () {
-                Navigator.of(context).pushNamed(
-                  ArchivePreviewScreen.url,
-                );
-              },
-            ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.grid_view),
               title: Text("öğretmen"),
               onTap: () {
                 // body = BottomNavbar();
@@ -98,7 +108,10 @@ class _SideDrawerState extends State<SideDrawer> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.grid_view),
+              leading: Icon(
+                Icons.person,
+                color: Colors.indigo,
+              ),
               title: Text("öğrenci"),
               onTap: () {
                 // body = BottomNavbar();
@@ -113,8 +126,23 @@ class _SideDrawerState extends State<SideDrawer> {
               },
             ),
             Divider(),
+            // TODO : Öğretmene de sınıf olayını ekle
+            if (!isTeacher)
+              ListTile(
+                leading: Icon(
+                  Icons.groups,
+                  color: Colors.indigo,
+                ),
+                title: Text("sınıfım"),
+                onTap: () {
+                  Navigator.of(context).pushNamed(MyFriendsScreen.url);
+                },
+              ),
             ListTile(
-              leading: Icon(Icons.grid_view),
+              leading: Icon(
+                Icons.reorder,
+                color: Colors.indigo,
+              ),
               title: Text("Yoklamalar"),
               onTap: () {
                 // body = BottomNavbar();
@@ -125,7 +153,10 @@ class _SideDrawerState extends State<SideDrawer> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.grid_view),
+              leading: Icon(
+                Icons.grid_view,
+                color: Colors.indigo,
+              ),
               title: Text("firebasetryscreen"),
               onTap: () {
                 // body = BottomNavbar();
@@ -141,7 +172,10 @@ class _SideDrawerState extends State<SideDrawer> {
             ),
             Divider(),
             ListTile(
-              leading: Icon(Icons.logout),
+              leading: Icon(
+                Icons.logout,
+                // color: Colors.indigo,
+              ),
               title: Text("Çıkış Yap"),
               onTap: () async {
                 // await Navigator.of(context).push(

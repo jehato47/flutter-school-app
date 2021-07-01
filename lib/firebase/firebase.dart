@@ -52,6 +52,17 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
             child: ElevatedButton(
               child: Text("send"),
               onPressed: () async {
+                // await Provider.of<Auth>(context).signStudentUp(
+                //     "pksyats@hotmail.com",
+                //     "123465789",
+                //     "pksyats",
+                //     "Paksoy",
+                //     "Ateş",
+                //     152,
+                //     "11",
+                //     "c",
+                //     "05366639292",
+                //     null);
                 // return;
                 FirebaseAuth auth = FirebaseAuth.instance;
                 // QuerySnapshot snapshot2 = await FirebaseFirestore.instance
@@ -67,7 +78,7 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
                 // return;
                 QuerySnapshot snapshot = await FirebaseFirestore.instance
                     .collection("etudeTimes")
-                    .where("lecture", isEqualTo: "fizik")
+                    .where("lecture", isEqualTo: "kimya")
                     .get();
 
                 List<QueryDocumentSnapshot> docs = snapshot.docs;
@@ -107,6 +118,7 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
                           "lecture": doc["lecture"],
                           "notParticipate": [],
                           "registered": [],
+                          "requests": [],
                           "subject": "Düzgün Doğrusal Hareket",
                           "teacherName": doc["displayName"],
                           "uid": doc.id,

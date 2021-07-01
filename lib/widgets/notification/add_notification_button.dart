@@ -72,6 +72,7 @@ class _AddNotificationButtonState extends State<AddNotificationButton> {
             Text("Duyuru"),
             SizedBox(height: 20),
             TextField(
+              maxLength: 500,
               focusNode: focusNode,
               controller: mesaj,
               decoration: InputDecoration(labelText: "Mesajı girin"),

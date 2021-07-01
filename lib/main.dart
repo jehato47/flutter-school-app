@@ -43,6 +43,7 @@ import 'screens/archive/teacher_archive_screen.dart';
 import 'widgets/home/bottom_navbar.dart';
 import 'screens/login/login_screen2.dart';
 import 'screens/archive/archive_preview_screen.dart';
+import 'screens/myclass/my_friends_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -189,6 +190,7 @@ class MyApp extends StatelessWidget {
           EtudeFormScreen.url: (ctx) => EtudeFormScreen(),
           TeacherArchiveScreen.url: (ctx) => TeacherArchiveScreen(),
           ArchivePreviewScreen.url: (ctx) => ArchivePreviewScreen(),
+          MyFriendsScreen.url: (ctx) => MyFriendsScreen(),
         },
       ),
     );

@@ -14,7 +14,7 @@ class _AddFolderButtonState extends State<AddFolderButton> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.add),
+      icon: Icon(Icons.create_new_folder_outlined),
       onPressed: () {
         showDialog(
           context: context,
