@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:school2/screens/attendance/attendance_preview_screen.dart';
+import 'package:school2/screens/etude/teacher_etude_screen.dart';
 import 'package:school2/screens/myclass/my_friends_screen.dart';
 import 'package:school2/widgets/home/teacher_home_screen.dart';
 import '../../screens/archive/teacher_archive_screen.dart';
@@ -164,6 +165,24 @@ class _SideDrawerState extends State<SideDrawer> {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (BuildContext context) => FireBaseTryScreen(),
+                  ),
+                );
+
+                // Navigator.of(context).pop();
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.grid_view,
+                color: Colors.indigo,
+              ),
+              title: Text("teacher etüt"),
+              onTap: () {
+                // body = BottomNavbar();
+
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => TeacherEtudeScreen(),
                   ),
                 );
 

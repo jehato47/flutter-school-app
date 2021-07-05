@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:school2/screens/etude/in_etude_chat_screen.dart';
 import 'package:school2/widgets/etude/etude_chat/message_input.dart';
 import 'package:intl/intl.dart';
 import '../../widgets/etude/etude_chat/give_etude_bottomsheet.dart';
@@ -20,6 +21,7 @@ class _EtudeChatScreenState extends State<EtudeChatScreen> {
   Widget build(BuildContext context) {
     final userInfo = Provider.of<Auth>(context, listen: false).userInfo;
     bool isTeacher = userInfo["role"] == "teacher";
+    bool isStudent = userInfo["role"] == "student";
 
     QueryDocumentSnapshot doc =
         ModalRoute.of(context).settings.arguments as dynamic;
@@ -36,6 +38,15 @@ class _EtudeChatScreenState extends State<EtudeChatScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          if (isStudent && doc["state"] == "done")
+            IconButton(
+              onPressed: () {
+                print(doc["ref"].id);
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => InEtudeChatScreen(doc["ref"].id)));
+              },
+              icon: Icon(Icons.chat),
+            ),
           if (isTeacher)
             IconButton(
               icon: Icon(Icons.assignment),

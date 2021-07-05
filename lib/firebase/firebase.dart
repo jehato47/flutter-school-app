@@ -52,6 +52,33 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
             child: ElevatedButton(
               child: Text("send"),
               onPressed: () async {
+                print(122);
+                // List<String> liste = [];
+                // QuerySnapshot snapshot = await FirebaseFirestore.instance
+                //     .collection("syllabus")
+                //     .get();
+
+                // for (var element in snapshot.docs) {
+                //   dynamic data = element.data();
+
+                //   data.forEach((e, j) {
+                //     dynamic data2 = j;
+                //     data2.forEach((k, l) {
+                //       liste.add(k);
+                //       // print(k);
+                //     });
+                //   });
+
+                //   await FirebaseFirestore.instance
+                //       .collection("user")
+                //       .doc(element.id)
+                //       .update({"classes": liste.toSet().toList()});
+                // }
+
+                // // print(liste.toSet().toList());
+
+                // return;
+
                 // await Provider.of<Auth>(context).signStudentUp(
                 //     "pksyats@hotmail.com",
                 //     "123465789",
@@ -64,7 +91,7 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
                 //     "05366639292",
                 //     null);
                 // return;
-                FirebaseAuth auth = FirebaseAuth.instance;
+                // FirebaseAuth auth = FirebaseAuth.instance;
                 // QuerySnapshot snapshot2 = await FirebaseFirestore.instance
                 //     .collection("etude/TXWUtv8s9bZnMfGZNpkrJLDKRmE3/pieces")
                 //     .where(
@@ -78,7 +105,7 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
                 // return;
                 QuerySnapshot snapshot = await FirebaseFirestore.instance
                     .collection("etudeTimes")
-                    .where("lecture", isEqualTo: "kimya")
+                    .where("lecture", isEqualTo: "matematik")
                     .get();
 
                 List<QueryDocumentSnapshot> docs = snapshot.docs;
@@ -123,20 +150,20 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
                           "teacherName": doc["displayName"],
                           "uid": doc.id,
                         });
-                      // else if (dSnapshot.docs.length == 1)
-                      //   await FirebaseFirestore.instance
-                      //       .collection("etude")
-                      //       // .doc(newTime.toString())
-                      //       .doc(dSnapshot.docs[0].id)
-                      //       .update({
-                      //     "date": newTime,
-                      //     "lecture": doc["lecture"],
-                      //     "notParticipate": [],
-                      //     "registered": [1, 1, 3, 2],
-                      //     "subject": "Düzgün Doğrusal Hareket",
-                      //     "teacherName": doc["displayName"],
-                      //     "uid": doc.id,
-                      //   });
+                      else if (dSnapshot.docs.length == 1)
+                        await FirebaseFirestore.instance
+                            .collection("etude")
+                            // .doc(newTime.toString())
+                            .doc(dSnapshot.docs[0].id)
+                            .update({
+                          "date": newTime,
+                          "lecture": doc["lecture"],
+                          "notParticipate": [],
+                          "registered": [1, 1, 3, 2],
+                          "subject": "Düzgün Doğrusal Hareket",
+                          "teacherName": doc["displayName"],
+                          "uid": doc.id,
+                        });
                     });
                   });
                 }
@@ -144,38 +171,38 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
               },
             ),
           ),
-          Expanded(
-            child: StreamBuilder(
-              stream:
-                  FirebaseFirestore.instance.collection("etude").snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting)
-                  return Center(child: CircularProgressIndicator());
-                List<QueryDocumentSnapshot> docs = snapshot.data.docs;
+          // Expanded(
+          //   child: StreamBuilder(
+          //     stream:
+          //         FirebaseFirestore.instance.collection("etude").snapshots(),
+          //     builder: (context, snapshot) {
+          //       if (snapshot.connectionState == ConnectionState.waiting)
+          //         return Center(child: CircularProgressIndicator());
+          //       List<QueryDocumentSnapshot> docs = snapshot.data.docs;
 
-                return ListView.builder(
-                  itemCount: docs.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      onTap: () async {
-                        print(docs[index].id);
-                        // return;
-                        await FirebaseFirestore.instance
-                            .collection("etude")
-                            .doc(docs[index].id)
-                            .update({
-                          "notParticipate": [1, 2, 3, 4]
-                        });
-                      },
-                      title: Text(
-                        docs[index]["lecture"],
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-          )
+          //       return ListView.builder(
+          //         itemCount: docs.length,
+          //         itemBuilder: (context, index) {
+          //           return ListTile(
+          //             onTap: () async {
+          //               print(docs[index].id);
+          //               // return;
+          //               await FirebaseFirestore.instance
+          //                   .collection("etude")
+          //                   .doc(docs[index].id)
+          //                   .update({
+          //                 "notParticipate": [1, 2, 3, 4]
+          //               });
+          //             },
+          //             title: Text(
+          //               docs[index]["lecture"],
+          //             ),
+          //           );
+          //         },
+          //       );
+          //     },
+          //   ),
+          // )
         ],
       ),
     );

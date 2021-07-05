@@ -130,7 +130,7 @@ class Auth extends ChangeNotifier {
     print(userCredential.user.displayName);
   }
 
-  Future<void> login(String username, String password) async {
+  Future<String> login(String username, String password) async {
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
         email: username,
@@ -143,8 +143,14 @@ class Auth extends ChangeNotifier {
           .get();
 
       print(122);
+      return null;
     } catch (err) {
-      print(err);
+      if (err.code == "invalid-email")
+        return "Hatalı mail formatı girdiniz.";
+      else if (err.code == "wrong-password") return "Hatalı parola girdiniz.";
+
+      print(err.code);
+      return err.toString();
     }
   }
 

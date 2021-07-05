@@ -16,6 +16,7 @@ class AttendanceCheckScreen extends StatefulWidget {
 }
 
 class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
+  dynamic args;
   bool isSent = false;
   String currentClass = "";
   DateTime currentTime;
@@ -95,8 +96,13 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
         "lecture": "matematik",
       });
       // Navigator.of(context).pop();
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          margin: args != null
+              ? null
+              : EdgeInsets.only(bottom: 70, left: 10, right: 10),
+          behavior: SnackBarBehavior.floating,
           content: Text("Yoklama alındı"),
           backgroundColor: Colors.green,
           duration: Duration(milliseconds: 500),
@@ -109,8 +115,8 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    var args =
-        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    // ! TODO : Tehlike
+    args = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     if (args != null) {
       // Program - Yoklama - Program döngüsüne girmemesi için
       // sadece yoklama sayfasında buton gözükecek

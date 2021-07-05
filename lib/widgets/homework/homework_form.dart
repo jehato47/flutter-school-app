@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:school2/providers/auth.dart';
 import '../../providers/homework.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_picker/Picker.dart';
@@ -29,8 +31,8 @@ class _HomeworkFormState extends State<HomeworkForm> {
   DateTime date;
 
   Map<String, dynamic> hw = {
-    "classFirst": "11",
-    "classLast": "a",
+    "classFirst": null,
+    "classLast": null,
     "homework": null,
     "title": null,
     "dueDate": null,
@@ -77,31 +79,37 @@ class _HomeworkFormState extends State<HomeworkForm> {
     bool isValid = _form.currentState.validate();
 
     if (!isValid || date == null) return;
-
     _form.currentState.save();
-    _form.currentState.reset();
 
     date = null;
 
     hw["teacher"] = auth.currentUser.displayName;
     hw["teacherImage"] = auth.currentUser.photoURL;
     hw["uid"] = auth.currentUser.uid;
-    hw["to"] = "11-a";
+    hw["to"] = hw["classFirst"] + "-" + hw["classLast"];
+
+    // return;
     setState(() {
       isLoading = true;
     });
     await Provider.of<HomeWork>(context).addHomeWork(hw, file);
 
     setState(() {
+      _form.currentState.reset();
+
       isLoading = false;
       file = null;
+      hw["classFirst"] = null;
+      hw["classLast"] = null;
     });
   }
 
   showPickerModal(BuildContext context) async {
     FocusScope.of(context).requestFocus(new FocusNode());
+    final userInfo = Provider.of<Auth>(context).userInfo;
+    print(userInfo["classes"]);
 
-    final allClasses = [];
+    final allClasses = userInfo["classes"];
 
     new Picker(
         adapter: PickerDataAdapter<String>(pickerdata: allClasses),

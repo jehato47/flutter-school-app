@@ -17,7 +17,47 @@ class StudentHomeScreen extends StatefulWidget {
 
 class _StudentHomeScreenState extends State<StudentHomeScreen> {
   FirebaseAuth auth = FirebaseAuth.instance;
-  dynamic body = HomeScreen();
+  // dynamic body = HomeScreen();
+  dynamic body;
+
+  void setIndex(value) {
+    if (index == value) return;
+
+    if (value == 0) {
+      setState(() {
+        index = value;
+        body = HomeScreen(setIndex);
+      });
+    } else if (value == 1) {
+      setState(() {
+        index = value;
+        body = HomeworkPreviewScreen();
+      });
+    } else if (value == 2) {
+      setState(() {
+        index = value;
+        body = StudentTimetableScreen();
+      });
+    } else if (value == 3) {
+      setState(() {
+        index = value;
+        body = StudentExamScreen();
+      });
+    } else if (value == 4) {
+      setState(() {
+        index = value;
+        body = MyEtudesScreen();
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    body = HomeScreen(setIndex);
+
+    super.initState();
+  }
+
   int index = 0;
 
   @override
@@ -40,36 +80,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
 
         currentIndex: index,
         type: BottomNavigationBarType.fixed,
-        onTap: (value) {
-          if (index == value) return;
-
-          if (value == 0) {
-            setState(() {
-              index = value;
-              body = HomeScreen();
-            });
-          } else if (value == 1) {
-            setState(() {
-              index = value;
-              body = HomeworkPreviewScreen();
-            });
-          } else if (value == 2) {
-            setState(() {
-              index = value;
-              body = StudentTimetableScreen();
-            });
-          } else if (value == 3) {
-            setState(() {
-              index = value;
-              body = StudentExamScreen();
-            });
-          } else if (value == 4) {
-            setState(() {
-              index = value;
-              body = MyEtudesScreen();
-            });
-          }
-        },
+        onTap: setIndex,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

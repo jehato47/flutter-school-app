@@ -34,10 +34,12 @@ class _EtudeItemState extends State<EtudeItem> {
       "note": note,
       "uid": auth.currentUser.uid,
     });
-
+    // TODO : Bak
+    bool onSaved = registered.length != 0;
     await FirebaseFirestore.instance.collection("etude").doc(etude.id).update({
       "registered": registered,
       "requests": requests,
+      "onSaved": onSaved,
     });
 
     await FirebaseFirestore.instance
@@ -55,10 +57,12 @@ class _EtudeItemState extends State<EtudeItem> {
     registered.removeWhere((element) => element == etudeRequest["uid"]);
     requests.removeWhere((element) => element == etudeRequest.id);
 
-    await FirebaseFirestore.instance
-        .collection("etude")
-        .doc(etude.id)
-        .update({"registered": registered, "requests": requests});
+    bool onSaved = registered.length != 0;
+    await FirebaseFirestore.instance.collection("etude").doc(etude.id).update({
+      "registered": registered,
+      "requests": requests,
+      "onSaved": onSaved,
+    });
 
     await FirebaseFirestore.instance
         .collection("etudeRequest")

@@ -36,6 +36,7 @@ import 'screens/etude/etude_requests_screen.dart';
 import 'screens/etude/select_lecture_screen.dart';
 import 'screens/etude/etude_form_screen.dart';
 import 'screens/etude/my_etudes_screen.dart';
+import 'screens/etude/teacher_etude_screen.dart';
 import 'screens/etude/etude_chat_screen.dart';
 import 'helpers/download/download_helper_provider.dart';
 import 'screens/exam/exams_list_screen.dart';
@@ -188,6 +189,7 @@ class MyApp extends StatelessWidget {
           MyEtudesScreen.url: (ctx) => MyEtudesScreen(),
           EtudeChatScreen.url: (ctx) => EtudeChatScreen(),
           EtudeFormScreen.url: (ctx) => EtudeFormScreen(),
+          TeacherEtudeScreen.url: (ctx) => TeacherEtudeScreen(),
           TeacherArchiveScreen.url: (ctx) => TeacherArchiveScreen(),
           ArchivePreviewScreen.url: (ctx) => ArchivePreviewScreen(),
           MyFriendsScreen.url: (ctx) => MyFriendsScreen(),

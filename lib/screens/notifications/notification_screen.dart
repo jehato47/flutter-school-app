@@ -19,7 +19,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     if (!kIsWeb) {
       fbm.requestPermission();
       // Todo : Production
-      fbm.subscribeToTopic("11-a");
+      fbm.subscribeToTopic("11-d");
     }
     super.initState();
   }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'homework_item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../notification/notification_empty.dart';
+import 'package:provider/provider.dart';
+import '../../providers/auth.dart';
 
 class HomeworksList extends StatefulWidget {
   @override
@@ -11,6 +13,11 @@ class HomeworksList extends StatefulWidget {
 class _HomeworksListState extends State<HomeworksList> {
   @override
   Widget build(BuildContext context) {
+    final userInfo = Provider.of<Auth>(context).userInfo;
+    // TODO : Production
+    String classFirst = userInfo["classFirst"];
+    String classLast = userInfo["classLast"];
+
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection("homework")

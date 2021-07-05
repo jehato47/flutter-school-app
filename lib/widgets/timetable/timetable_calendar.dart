@@ -5,6 +5,7 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../providers/timetable.dart';
 import '../../helpers/timetable/timetable_helpers.dart';
 import '../../screens/attendance/attendace_check_screen.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class TimetableCalendar extends StatefulWidget {
   final bool isTeacher;

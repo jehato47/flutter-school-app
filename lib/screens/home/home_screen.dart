@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/rendering.dart';
+import 'package:school2/screens/etude/teacher_etude_screen.dart';
 import '../../widgets/home/pages_grid.dart';
 import '../../widgets/home/side_drawer.dart';
 import '../../widgets/home/homework_button.dart';
@@ -8,81 +9,95 @@ import '../../widgets/home/ring_bell.dart';
 
 class HomeScreen extends StatefulWidget {
   static const url = "home";
+  final Function setIndex;
+  HomeScreen(this.setIndex);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Function setIndex;
   // dynamic body = PagesGrid();
   dynamic body = Placeholder();
   final FirebaseAuth auth = FirebaseAuth.instance;
 
+  Widget buildCard(String title, String subtitle, String fText, Function fFunc,
+      String sText, Function sFunc) {
+    return Center(
+      child: Card(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              leading: Icon(
+                Icons.album,
+                // color: Colors.teal,
+              ),
+              title: Text(title),
+              subtitle: Text(subtitle),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                TextButton(
+                  child: Text(fText),
+                  onPressed: fFunc,
+                ),
+                const SizedBox(width: 8),
+                TextButton(
+                  child: Text(sText),
+                  onPressed: sFunc,
+                ),
+                const SizedBox(width: 8),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget buildBody() {
     return Padding(
-      padding: const EdgeInsets.all(15),
-      child: Column(
+      padding: EdgeInsets.all(10),
+      child: ListView(
         children: [
-          Expanded(
-            flex: 1,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 5,
-              itemBuilder: (context, index) => Row(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(width: 2, color: Colors.red),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Center(
-                      child: Text(
-                        "etüt",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ),
-                    width: 200,
-                    height: 200,
-                  ),
-                  SizedBox(width: 10),
-                ],
-              ),
-            ),
+          buildCard(
+            "Alınmamış bir yoklamanız var",
+            "Sınıf: 11-C  Saat: 11-40",
+            "Al",
+            () {},
+            "Tamam",
+            () {},
           ),
-          SizedBox(
-            height: 20,
+          buildCard(
+            "Saat 12 de etüdünüz var",
+            "Gelenler : Ahmet - Büşra - Mehmet",
+            "Iptal Et",
+            () {},
+            "Incele",
+            () {
+              setIndex(4);
+            },
           ),
-          Expanded(
-            flex: 4,
-            child: ListView.builder(
-              itemCount: 3,
-              itemBuilder: (context, index) => Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(width: 2, color: Colors.indigo),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Center(
-                      child: Text(
-                        "ödev",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ),
-                    width: double.infinity,
-                    height: 200,
-                  ),
-                  SizedBox(height: 10),
-                ],
-              ),
-            ),
+          buildCard(
+            "Bugün son gün olan 2 ödev var.",
+            "11-C 11-D 11-F",
+            "",
+            () {},
+            "Tamam",
+            () {},
           ),
         ],
-        mainAxisSize: MainAxisSize.min,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    setIndex = widget.setIndex;
+
     return Scaffold(
       // drawer: SideDrawer(),
       // appBar: AppBar(

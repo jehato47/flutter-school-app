@@ -19,7 +19,7 @@ class _HomeworkHistoryState extends State<HomeworkHistory> {
         stream: FirebaseFirestore.instance
             .collection("homework")
             .where("uid", isEqualTo: auth.currentUser.uid)
-            .orderBy("startDate")
+            .orderBy("startDate", descending: true)
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData)
