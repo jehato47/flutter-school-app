@@ -10,6 +10,8 @@ import '../../widgets/home/ring_bell.dart';
 import '../../widgets/home/homework_button.dart';
 
 class TeacherHomeScreen extends StatefulWidget {
+  static const url = "teacher-home";
+
   @override
   _TeacherHomeScreenState createState() => _TeacherHomeScreenState();
 }
@@ -21,9 +23,8 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
 
   @override
   void initState() {
-    body = HomeScreen(setIndex);
-
     super.initState();
+    body = HomeScreen(setIndex);
   }
 
   void setIndex(value) {
@@ -59,49 +60,47 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) => Scaffold(
-        appBar: index != 0
-            ? null
-            : AppBar(
-                actions: [
-                  RingBell(),
-                  HomeworkButton(),
-                ],
-                title: Text(auth.currentUser.displayName),
-              ),
-        drawer: index == 0 ? SideDrawer() : null,
-        body: body,
-        bottomNavigationBar: BottomNavigationBar(
-          // showSelectedLabels: false,
-          // showUnselectedLabels: false,
+    return Scaffold(
+      appBar: index != 0
+          ? null
+          : AppBar(
+              actions: [
+                RingBell(),
+                HomeworkButton(),
+              ],
+              title: Text(auth.currentUser.displayName),
+            ),
+      drawer: index == 0 ? SideDrawer() : null,
+      body: body,
+      bottomNavigationBar: BottomNavigationBar(
+        // showSelectedLabels: false,
+        // showUnselectedLabels: false,
 
-          currentIndex: index,
-          type: BottomNavigationBarType.fixed,
-          onTap: setIndex,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "Ana Sayfa",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.assignment),
-              label: "Yoklama",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today),
-              label: "Program",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.timeline),
-              label: "Sınavlar",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.class_),
-              label: "Etüt",
-            ),
-          ],
-        ),
+        currentIndex: index,
+        type: BottomNavigationBarType.fixed,
+        onTap: setIndex,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Ana Sayfa",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.assignment),
+            label: "Yoklama",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            label: "Program",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.timeline),
+            label: "Sınavlar",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.class_),
+            label: "Etüt",
+          ),
+        ],
       ),
     );
   }

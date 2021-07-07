@@ -92,7 +92,7 @@ class _HomeworkFormState extends State<HomeworkForm> {
     setState(() {
       isLoading = true;
     });
-    await Provider.of<HomeWork>(context).addHomeWork(hw, file);
+    await Provider.of<HomeWork>(context, listen: false).addHomeWork(hw, file);
 
     setState(() {
       _form.currentState.reset();
@@ -106,7 +106,7 @@ class _HomeworkFormState extends State<HomeworkForm> {
 
   showPickerModal(BuildContext context) async {
     FocusScope.of(context).requestFocus(new FocusNode());
-    final userInfo = Provider.of<Auth>(context).userInfo;
+    final userInfo = Provider.of<Auth>(context, listen: false).userInfo;
     print(userInfo["classes"]);
 
     final allClasses = userInfo["classes"];

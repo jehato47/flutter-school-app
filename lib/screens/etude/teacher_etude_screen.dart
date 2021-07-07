@@ -11,6 +11,8 @@ class TeacherEtudeScreen extends StatefulWidget {
 }
 
 class _TeacherEtudeScreenState extends State<TeacherEtudeScreen> {
+  ScrollController _scrollController = new ScrollController();
+
   FirebaseAuth auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
@@ -25,17 +27,17 @@ class _TeacherEtudeScreenState extends State<TeacherEtudeScreen> {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting)
-            return CircularProgressIndicator();
-          print("${snapshot.data == null}");
+            return Center(child: CircularProgressIndicator());
           List<QueryDocumentSnapshot> data = snapshot.data.docs;
-          print(data);
 
           return ListView.builder(
+              controller: _scrollController,
               itemCount: data.length,
               itemBuilder: (context, index) {
                 var subject = data[index]["subject"] == null
                     ? "Henüz konu belirlenmedi"
                     : data[index]["subject"];
+
                 return Container(
                   margin: EdgeInsets.all(5),
                   decoration: BoxDecoration(

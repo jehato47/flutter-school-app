@@ -22,7 +22,8 @@ class _LoginFormState extends State<LoginForm> {
       isLoading = true;
     });
     _form.currentState.save();
-    final result = await Provider.of<Auth>(context).login(email, password);
+    final result =
+        await Provider.of<Auth>(context, listen: false).login(email, password);
     if (result != null) {
       ScaffoldMessenger.of(context).removeCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

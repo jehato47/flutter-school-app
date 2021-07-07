@@ -135,18 +135,13 @@ class MyApp extends StatelessWidget {
                 return Center(child: CircularProgressIndicator());
               }
               return StreamBuilder(
-                // TODO: login, logout, signup yapıldıgında bu stream değişecek
-                // TODO: onAuthstateChanged -> authStateChanges
                 stream: FirebaseAuth.instance.authStateChanges(),
                 builder: (ctx, snapshot) {
-                  // FirebaseAuth.instance.signOut();
                   // * TODO : Login Form da setState hatası veriyor bak
                   if (snapshot.connectionState == ConnectionState.waiting)
                     return Center(child: CircularProgressIndicator());
                   if (snapshot.hasData) {
                     User user = snapshot.data;
-                    // ? todo : Sınav cevap kağıdını göstermeyi hallet
-
                     return FutureBuilder(
                         future: FirebaseFirestore.instance
                             .collection("user")
@@ -159,8 +154,9 @@ class MyApp extends StatelessWidget {
                           DocumentSnapshot documentSnapshot = snapshot.data;
                           Provider.of<Auth>(context, listen: false).userInfo =
                               documentSnapshot.data();
-                          if (documentSnapshot["role"] == "teacher")
+                          if (documentSnapshot["role"] == "teacher") {
                             return TeacherHomeScreen();
+                          }
                           return StudentHomeScreen();
                         });
                   }
@@ -172,6 +168,7 @@ class MyApp extends StatelessWidget {
         ),
         routes: {
           LoginScreen.url: (ctx) => LoginScreen(),
+          TeacherHomeScreen.url: (ctx) => TeacherHomeScreen(),
           AttendanceCheckScreen.url: (ctx) => AttendanceCheckScreen(),
           AttendancePreviewScreen.url: (ctx) => AttendancePreviewScreen(),
           AttendanceDetailScreen.url: (ctx) => AttendanceDetailScreen(),
