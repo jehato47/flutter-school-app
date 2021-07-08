@@ -78,6 +78,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
 
         currentIndex: index,
         type: BottomNavigationBarType.fixed,
+
         onTap: setIndex,
         items: [
           BottomNavigationBarItem(

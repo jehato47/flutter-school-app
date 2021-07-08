@@ -23,6 +23,7 @@ import 'screens/notifications/notification_screen.dart';
 import 'screens/exam/student_exam_screen.dart';
 import 'screens/homework/homework_detail_screen.dart';
 import 'screens/homework/homework_preview_screen.dart';
+import 'screens/homework/filter_screen.dart';
 import 'screens/timetable/teacher_timetable_screen.dart';
 import 'screens/home/home_screen.dart';
 import 'screens/login/login_screen.dart';
@@ -190,6 +191,7 @@ class MyApp extends StatelessWidget {
           TeacherArchiveScreen.url: (ctx) => TeacherArchiveScreen(),
           ArchivePreviewScreen.url: (ctx) => ArchivePreviewScreen(),
           MyFriendsScreen.url: (ctx) => MyFriendsScreen(),
+          HomeworkFilterScreen.url: (ctx) => HomeworkFilterScreen(),
         },
       ),
     );

@@ -23,8 +23,8 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
     final hw = ModalRoute.of(context).settings.arguments as dynamic;
     return Scaffold(
       appBar: AppBar(
-        title:
-            Text('${hw["teacher"]} ${hw["classFirst"]} - ${hw["classLast"]}'),
+        title: Text(
+            '${hw["teacher"]} ${hw["classFirst"]} - ${hw["classLast"].toUpperCase()}'),
         actions: [
           IconButton(
             icon: Icon(Icons.assignment),

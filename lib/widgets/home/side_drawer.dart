@@ -89,25 +89,25 @@ class _SideDrawerState extends State<SideDrawer> {
                   );
                 },
               ),
-            // if (isTeacher) Divider(),
-            // ListTile(
-            //   leading: Icon(
-            //     Icons.person,
-            //     color: Colors.indigo,
-            //   ),
-            //   title: Text("öğretmen"),
-            //   onTap: () {
-            //     // body = BottomNavbar();
+            if (isTeacher) Divider(),
+            ListTile(
+              leading: Icon(
+                Icons.person,
+                color: Colors.indigo,
+              ),
+              title: Text("öğretmen"),
+              onTap: () {
+                // body = BottomNavbar();
 
-            //     Navigator.of(context).pushReplacement(
-            //       MaterialPageRoute(
-            //         builder: (BuildContext context) => TeacherHomeScreen(),
-            //       ),
-            //     );
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => TeacherHomeScreen(),
+                  ),
+                );
 
-            //     // Navigator.of(context).pop();
-            //   },
-            // ),
+                // Navigator.of(context).pop();
+              },
+            ),
             // ListTile(
             //   leading: Icon(
             //     Icons.person,
@@ -126,7 +126,7 @@ class _SideDrawerState extends State<SideDrawer> {
             //     // Navigator.of(context).pop();
             //   },
             // ),
-            Divider(),
+            if (isTeacher) Divider(),
             // TODO : Öğretmene de sınıf olayını ekle
             if (!isTeacher)
               ListTile(

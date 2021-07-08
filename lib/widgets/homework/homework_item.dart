@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school2/screens/homework/filter_screen.dart';
 import '../../providers/homework.dart';
 import '../../screens/homework/homework_detail_screen.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +35,30 @@ class HomeworkItem extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            subtitle: Text(hw["homework"]),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "${hw["homework"]}",
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                      HomeworkFilterScreen.url,
+                      arguments: hw["lecture"],
+                    );
+                  },
+                  child: Text(
+                    "#${hw["lecture"]}",
+                    style: TextStyle(
+                      color:
+                          hw["lecture"] == "türkçe" ? Colors.red : Colors.blue,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
             trailing: Text(
               hw["dueDate"].toDate().difference(DateTime.now()).inDays <= 0
                   ? "Bitti"

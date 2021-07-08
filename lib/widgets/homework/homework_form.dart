@@ -16,6 +16,7 @@ class HomeworkForm extends StatefulWidget {
 }
 
 class _HomeworkFormState extends State<HomeworkForm> {
+  dynamic userInfo;
   FirebaseAuth auth = FirebaseAuth.instance;
 
   bool isLoading = false;
@@ -31,6 +32,7 @@ class _HomeworkFormState extends State<HomeworkForm> {
   DateTime date;
 
   Map<String, dynamic> hw = {
+    "lecture": null,
     "classFirst": null,
     "classLast": null,
     "homework": null,
@@ -87,8 +89,9 @@ class _HomeworkFormState extends State<HomeworkForm> {
     hw["teacherImage"] = auth.currentUser.photoURL;
     hw["uid"] = auth.currentUser.uid;
     hw["to"] = hw["classFirst"] + "-" + hw["classLast"];
-
+    hw["lecture"] = userInfo["lecture"]; // TODO : 22
     // return;
+
     setState(() {
       isLoading = true;
     });
@@ -106,8 +109,6 @@ class _HomeworkFormState extends State<HomeworkForm> {
 
   showPickerModal(BuildContext context) async {
     FocusScope.of(context).requestFocus(new FocusNode());
-    final userInfo = Provider.of<Auth>(context, listen: false).userInfo;
-    print(userInfo["classes"]);
 
     final allClasses = userInfo["classes"];
 
@@ -182,6 +183,7 @@ class _HomeworkFormState extends State<HomeworkForm> {
 
   @override
   Widget build(BuildContext context) {
+    userInfo = Provider.of<Auth>(context, listen: false).userInfo;
     return Form(
       key: _form,
       child: Column(
