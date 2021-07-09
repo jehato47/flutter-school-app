@@ -45,7 +45,7 @@ class _HomeworkHistoryState extends State<HomeworkHistory> {
               ],
               child: InkWell(
                 onLongPress: () async {
-                  await Provider.of<HomeWork>(context)
+                  await Provider.of<HomeWork>(context, listen: false)
                       .deleteHomework(hws[index]);
                 },
                 borderRadius: BorderRadius.circular(4),

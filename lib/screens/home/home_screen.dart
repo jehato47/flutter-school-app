@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/rendering.dart';
@@ -6,6 +7,9 @@ import '../../widgets/home/pages_grid.dart';
 import '../../widgets/home/side_drawer.dart';
 import '../../widgets/home/homework_button.dart';
 import '../../widgets/home/ring_bell.dart';
+import 'package:flutter_card_swipper/flutter_card_swiper.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import '../../widgets/notification/notification_item.dart';
 
 class HomeScreen extends StatefulWidget {
   static const url = "home";
@@ -59,38 +63,74 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildBody() {
-    return Padding(
-      padding: EdgeInsets.all(10),
-      child: ListView(
-        children: [
-          buildCard(
-            "Alınmamış bir yoklamanız var",
-            "Sınıf: 11-C  Saat: 11-40",
-            "Al",
-            () {},
-            "Tamam",
-            () {},
-          ),
-          buildCard(
-            "Saat 12 de etüdünüz var",
-            "Gelenler : Ahmet - Büşra - Mehmet",
-            "Iptal Et",
-            () {},
-            "Incele",
-            () {
-              setIndex(4);
-            },
-          ),
-          buildCard(
-            "Bugün son gün olan 2 ödev var.",
-            "11-C 11-D 11-F",
-            "",
-            () {},
-            "Tamam",
-            () {},
-          ),
-        ],
-      ),
+    CollectionReference ref =
+        FirebaseFirestore.instance.collection("notification");
+
+    return Column(
+      children: [
+        Container(
+          alignment: Alignment.topCenter,
+          padding: EdgeInsets.symmetric(vertical: 10),
+          height: 200,
+          width: kIsWeb ? 400 : double.infinity,
+          child: FutureBuilder(
+              future: FirebaseFirestore.instance.collection("slides").get(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting)
+                  return Center(child: CircularProgressIndicator());
+
+                List<QueryDocumentSnapshot> data = snapshot.data.docs;
+
+                return Swiper(
+                  // autoplay: true,
+
+                  itemBuilder: (BuildContext context, int index) {
+                    return Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        new Image.network(
+                          data[index]["image"],
+                          fit: BoxFit.fill,
+                        ),
+                        Text(
+                          data[index]["text"].toUpperCase(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                  itemCount: data.length,
+
+                  viewportFraction: 0.8,
+                  scale: 0.9,
+                  // itemCount: 3,
+                  pagination: new SwiperPagination(),
+                  control: new SwiperControl(),
+                );
+              }),
+        ),
+        Divider(),
+        Expanded(
+            child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("notification")
+                    .orderBy("added", descending: true)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData)
+                    return Center(child: CircularProgressIndicator());
+                  List<QueryDocumentSnapshot> data = snapshot.data.docs;
+                  return ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (context, index) =>
+                        NotificationItem(ref, data[index]),
+                  );
+                }))
+      ],
     );
   }
 
