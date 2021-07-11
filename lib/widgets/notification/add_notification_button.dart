@@ -39,7 +39,9 @@ class _AddNotificationButtonState extends State<AddNotificationButton> {
     final att = FirebaseFirestore.instance.collection('attendance');
 
     QuerySnapshot attendance = await att.get();
+
     classes = attendance.docs.map((e) => e.id).toList();
+    classes.insert(0, "genel");
     new Picker(
         adapter: PickerDataAdapter<String>(pickerdata: classes),
         changeToFirst: true,
@@ -52,8 +54,6 @@ class _AddNotificationButtonState extends State<AddNotificationButton> {
         onConfirm: (Picker picker, List value) {
           setState(() {
             to = picker.getSelectedValues().first;
-            // filteredDocs = [];
-            print(to);
           });
           // print(picker.getSelectedValues().last);
         }).showModal(this.context);
@@ -75,7 +75,9 @@ class _AddNotificationButtonState extends State<AddNotificationButton> {
               maxLength: 500,
               focusNode: focusNode,
               controller: mesaj,
-              decoration: InputDecoration(labelText: "Mesajı girin"),
+              decoration: InputDecoration(
+                labelText: "Mesajı girin",
+              ),
               minLines: 3,
               maxLines: 4,
             ),
@@ -100,15 +102,29 @@ class _AddNotificationButtonState extends State<AddNotificationButton> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
+                  print(to);
+                  if (to == null) {
+                    // Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        duration: Duration(milliseconds: 1000),
+                        content: Text("Hedef kitleyi seçin"),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                    return;
+                  }
                   notificationP.addNotification(
                     auth.currentUser.displayName,
                     mesaj.text.trim(),
                     file,
                     fileName,
                     // TODO : production
-                    "11-a",
+                    // "11-a",
+                    to,
                   );
                   file = null;
+                  to = null;
                   Navigator.of(context).pop();
                 },
                 child: Text("Gönder"),

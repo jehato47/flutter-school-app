@@ -223,6 +223,7 @@ class _HomeworkFormState extends State<HomeworkForm> {
           ),
           SizedBox(height: 40),
           helperButtons(context),
+          if (kIsWeb) SizedBox(height: 20),
           sendButton(),
         ],
       ),

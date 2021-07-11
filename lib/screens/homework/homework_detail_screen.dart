@@ -73,15 +73,19 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
                 onTap: hw["fileName"] == null
                     ? null
                     : () async {
-                        final url = await Provider.of<HomeWork>(context)
-                            .getDownloadUrl(hw["fileRef"]);
+                        final url =
+                            await Provider.of<HomeWork>(context, listen: false)
+                                .getDownloadUrl(hw["fileRef"]);
                         if (kIsWeb) {
                           _launchURL(url);
                         } else
-                          Provider.of<Download>(context).downloadFile(
-                            url,
-                            hw["fileName"],
-                          );
+                          _launchURL(url);
+
+                        // Provider.of<Download>(context, listen: false)
+                        //     .downloadFile(
+                        //   url,
+                        //   hw["fileName"],
+                        // );
                       },
                 child: Text(
                   hw["fileName"] != null

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/homework/homework_item.dart';
+import '../../providers/auth.dart';
+import 'package:provider/provider.dart';
 
 class HomeworkFilterScreen extends StatefulWidget {
   static const url = "hw-filter";
@@ -12,6 +14,11 @@ class _HomeworkFilterScreenState extends State<HomeworkFilterScreen> {
   @override
   Widget build(BuildContext context) {
     final lecture = ModalRoute.of(context).settings.arguments;
+    final userInfo = Provider.of<Auth>(context).userInfo;
+
+    // TODO : PRODUCTION
+    String classFirst = userInfo["classFirst"];
+    String classLast = userInfo["classLast"];
 
     return Scaffold(
       appBar: AppBar(
@@ -22,6 +29,8 @@ class _HomeworkFilterScreenState extends State<HomeworkFilterScreen> {
         child: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection("homework")
+                .where("classFirst", isEqualTo: "11")
+                .where("classLast", isEqualTo: "a")
                 .where("lecture", isEqualTo: lecture)
                 .snapshots(),
             builder: (context, snapshot) {

@@ -22,6 +22,21 @@ class NotificationItem extends StatefulWidget {
 }
 
 class _NotificationItemState extends State<NotificationItem> {
+  NotificationP notificationP;
+  void download() async {
+    if (notification["fileName"] == null) return;
+    final url = await notificationP.getDownloadUrl(notification);
+    if (!kIsWeb) {
+      _launchURL(url);
+    } else {
+      _launchURL(url);
+    }
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("indiriliyor"),
+      backgroundColor: Colors.green,
+    ));
+  }
+
   void _launchURL(_url) async => await canLaunch(_url)
       ? await launch(_url)
       : throw 'Could not launch $_url';
@@ -45,56 +60,60 @@ class _NotificationItemState extends State<NotificationItem> {
     notification = widget.notification;
     // user = widget.user;
 
-    NotificationP notificationP = Provider.of<NotificationP>(context);
+    notificationP = Provider.of<NotificationP>(context);
 
-    return ListTile(
-      onLongPress: () {
-        // TODO : Productionda bunu ekle
-        // if (user["position"] == "admin")
-        notificationP.deleteNotification(
-          ref,
-          notification,
-        );
-      },
-      selected: !notification["isSeen"].contains(auth.currentUser.uid),
-      leading: notification["isSeen"].contains(auth.currentUser.uid)
-          ? Icon(Icons.assignment)
-          : Icon(Icons.notification_important),
-      title: Text(
-        //* ?TODO : Eğer text
-        //* ?TODO : çok uzun olursa truncate etmeye bak
-        notification["text"],
-        style: TextStyle(fontFamily: "source-sans"),
-      ),
-      subtitle: Text(
-        DateFormat("d MMMM yyyy").format(
-          notification["added"].toDate(),
+    return Tooltip(
+      message: notification["fileName"] != null
+          ? notification["fileName"]
+          : "dosya eklenmedi",
+      child: ListTile(
+        onLongPress: () {
+          addToSeen(ref, notification);
+          // download();
+        },
+
+        // onLongPress: () {
+        //   // TODO : Productionda bunu ekle
+        //   // if (user["position"] == "admin")
+        //   notificationP.deleteNotification(
+        //     ref,
+        //     notification,
+        //   );
+        // },
+        selected: !notification["isSeen"].contains(auth.currentUser.uid),
+        trailing: notification["isSeen"].contains(auth.currentUser.uid)
+            ? Text(
+                notification["to"],
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: notification["to"] == "genel" ? Colors.teal : null,
+                ),
+              )
+            : Icon(Icons.notification_important),
+        title: Text(
+          //* ?TODO : Eğer text
+          //* ?TODO : çok uzun olursa truncate etmeye bak
+          notification["text"],
+          style: TextStyle(fontFamily: "source-sans"),
         ),
-        style: TextStyle(fontFamily: "source-sans"),
-      ),
-      onTap: () {
-        // Görenlere ekliyor
-        addToSeen(ref, notification);
-      },
-      trailing: notification["fileName"] == null
-          ? null
-          : IconButton(
-              tooltip: notification["fileName"],
-              icon: Icon(
+        subtitle: Text(
+          DateFormat("d MMMM yyyy HH-mm").format(
+            notification["added"].toDate(),
+          ),
+          style: TextStyle(fontFamily: "source-sans"),
+        ),
+        onTap: () {
+          // Görenlere ekliyor
+          // download();
+          addToSeen(ref, notification);
+        },
+        leading: notification["fileName"] == null
+            ? null
+            : Icon(
                 Icons.file_present,
+                // size: 35,
               ),
-              onPressed: () async {
-                final url = await notificationP.getDownloadUrl(notification);
-                if (!kIsWeb) {
-                  await Provider.of<Download>(context).downloadFile(
-                    url,
-                    notification["fileName"],
-                  );
-                } else {
-                  _launchURL(url);
-                }
-              },
-            ),
+      ),
     );
   }
 }

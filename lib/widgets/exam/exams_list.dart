@@ -3,6 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../screens/exam/add_exam_result_screen.dart';
 
 class ExamsList extends StatefulWidget {
+  final String clss;
+  ExamsList(this.clss);
+
   @override
   _ExamsListState createState() => _ExamsListState();
 }
@@ -11,12 +14,19 @@ class _ExamsListState extends State<ExamsList> {
   dynamic data;
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection("exam").snapshots(),
-      // .where("classFirst", isEqualTo: "11")
-      // .where("classLast", isEqualTo: "c")
-      // .get(),
+    if (widget.clss == null)
+      return Center(
+        child: Text("Henüz sınıf seçmediniz veya sınav bulunmamakta"),
+      );
 
+    String classFirst = widget.clss.split("-").first;
+    String classLast = widget.clss.split("-").last;
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance
+          .collection("exam")
+          .where("classFirst", isEqualTo: classFirst)
+          .where("classLast", isEqualTo: classLast)
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
           return Center(child: CircularProgressIndicator());

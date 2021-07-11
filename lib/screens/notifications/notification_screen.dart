@@ -20,6 +20,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       fbm.requestPermission();
       // Todo : Production
       fbm.subscribeToTopic("11-d");
+      fbm.subscribeToTopic("genel");
     }
     super.initState();
   }

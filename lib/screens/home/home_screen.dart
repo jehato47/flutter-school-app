@@ -72,9 +72,12 @@ class _HomeScreenState extends State<HomeScreen> {
           alignment: Alignment.topCenter,
           padding: EdgeInsets.symmetric(vertical: 10),
           height: 200,
-          width: kIsWeb ? 400 : double.infinity,
+          width: double.infinity,
           child: FutureBuilder(
-              future: FirebaseFirestore.instance.collection("slides").get(),
+              future: FirebaseFirestore.instance
+                  .collection("slides")
+                  .orderBy("date")
+                  .get(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting)
                   return Center(child: CircularProgressIndicator());
@@ -86,17 +89,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   itemBuilder: (BuildContext context, int index) {
                     return Stack(
-                      alignment: Alignment.bottomCenter,
+                      alignment: Alignment.center,
                       children: [
-                        new Image.network(
-                          data[index]["image"],
-                          fit: BoxFit.fill,
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.network(
+                            data[index]["image"],
+
+                            // "images/April.png",
+                            fit: BoxFit.fill,
+                          ),
                         ),
                         Text(
                           data[index]["text"].toUpperCase(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 15,
                             color: Colors.black,
                           ),
                         ),
@@ -114,10 +122,18 @@ class _HomeScreenState extends State<HomeScreen> {
               }),
         ),
         Divider(),
+        SizedBox(
+          height: 20,
+          child: Text(
+            "Genel Duyurular",
+            style: TextStyle(fontSize: 16),
+          ),
+        ),
         Expanded(
             child: StreamBuilder(
                 stream: FirebaseFirestore.instance
                     .collection("notification")
+                    .where("to", isEqualTo: "genel")
                     .orderBy("added", descending: true)
                     .snapshots(),
                 builder: (context, snapshot) {

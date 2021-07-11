@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/homework/homework_history.dart';
 import '../../widgets/homework/homework_form.dart';
@@ -17,12 +18,20 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
         title: Text("Ödev Ver"),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(children: [
-            HomeworkForm(),
-            HomeworkHistory(),
-          ]),
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(20),
+            child: Container(
+              width: kIsWeb ? 600 : null,
+              child: Column(
+                children: [
+                  HomeworkForm(),
+                  if (kIsWeb) SizedBox(height: 20),
+                  HomeworkHistory(),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
