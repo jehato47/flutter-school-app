@@ -3,14 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:school2/screens/attendance/attendance_preview_screen.dart';
 import 'package:school2/screens/etude/teacher_etude_screen.dart';
 import 'package:school2/screens/myclass/my_friends_screen.dart';
-import 'package:school2/widgets/home/teacher_home_screen.dart';
+import 'package:school2/screens/home/teacher_home_screen.dart';
 import '../../screens/archive/teacher_archive_screen.dart';
 import '../../screens/archive/archive_preview_screen.dart';
 import 'bottom_navbar.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth.dart';
 import '../../screens/home/home_screen.dart';
-import '../../widgets/home/student_home_screen.dart';
+import '../../screens/home/student_home_screen.dart';
 import '../../firebase/firebase.dart';
 
 class SideDrawer extends StatefulWidget {

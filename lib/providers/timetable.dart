@@ -72,7 +72,7 @@ class Timetable extends ChangeNotifier {
   }
 
   Future<void> createTeacherTimeTable() async {
-    print(teacherData);
+    // print(teacherData);
     teacherData.forEach((day, value) {
       value.forEach((clss, timestamp) {
         addRecursiveAppointment(

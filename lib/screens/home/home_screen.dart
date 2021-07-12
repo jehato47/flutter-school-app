@@ -10,6 +10,7 @@ import '../../widgets/home/ring_bell.dart';
 import 'package:flutter_card_swipper/flutter_card_swiper.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import '../../widgets/notification/notification_item.dart';
+import 'dart:math';
 
 class HomeScreen extends StatefulWidget {
   static const url = "home";
@@ -20,7 +21,22 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
+final Random random = Random();
+
 class _HomeScreenState extends State<HomeScreen> {
+  List<Color> colorCollection = [
+    const Color(0xFF0F8644),
+    const Color(0xFF8B1FA9),
+    const Color(0xFFD20100),
+    const Color(0xFFFC571D),
+    const Color(0xFF36B37B),
+    const Color(0xFF01A1EF),
+    const Color(0xFF3D4FB5),
+    const Color(0xFFE47C73),
+    const Color(0xFF636363),
+    const Color(0xFF0A8043),
+  ];
+
   Function setIndex;
   // dynamic body = PagesGrid();
   dynamic body = Placeholder();
@@ -75,8 +91,9 @@ class _HomeScreenState extends State<HomeScreen> {
           width: double.infinity,
           child: FutureBuilder(
               future: FirebaseFirestore.instance
-                  .collection("slides")
-                  .orderBy("date")
+                  .collection("notification")
+                  .where("to", isEqualTo: "genel")
+                  .orderBy("added", descending: true)
                   .get(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting)
@@ -85,30 +102,36 @@ class _HomeScreenState extends State<HomeScreen> {
                 List<QueryDocumentSnapshot> data = snapshot.data.docs;
 
                 return Swiper(
-                  // autoplay: true,
+                  loop: data.length > 1 ? true : false,
+                  autoplay: true,
+                  duration: 1500,
 
+                  autoplayDelay: 4000,
+                  onTap: (index) {
+                    print(index);
+                  },
                   itemBuilder: (BuildContext context, int index) {
-                    return Stack(
+                    return Container(
+                      padding: EdgeInsets.all(10),
                       alignment: Alignment.center,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.network(
-                            data[index]["image"],
-
-                            // "images/April.png",
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                        Text(
-                          data[index]["text"].toUpperCase(),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
+                      decoration: BoxDecoration(
+                        // gradient: LinearGradient(
+                        //     begin: Alignment.bottomLeft,
+                        //     end: Alignment.topRight,
+                        //     colors: [
+                        //       ...colorCollection.getRange(
+                        //         index % 9,
+                        //         index % 9 + 2,
+                        //       )
+                        //     ]),
+                        color: colorCollection[index % 9],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        data[index]["text"],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
                     );
                   },
                   itemCount: data.length,

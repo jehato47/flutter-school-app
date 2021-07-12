@@ -15,6 +15,12 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         title: Text("Ödev Ver"),
       ),
       body: SingleChildScrollView(

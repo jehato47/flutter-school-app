@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 // import 'package:school2/screens/home_screen.dart';
-import '../../widgets/home/teacher_home_screen.dart';
+import '../../screens/home/teacher_home_screen.dart';
 // import 'dashboard_screen.dart';
 import '../../providers/auth.dart';
 import 'package:provider/provider.dart';

@@ -69,7 +69,7 @@ class _NotificationItemState extends State<NotificationItem> {
       child: ListTile(
         onLongPress: () {
           addToSeen(ref, notification);
-          // download();
+          download();
         },
 
         // onLongPress: () {
