@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:school2/screens/homework/homework_detail_screen.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../providers/timetable.dart';
 import '../../helpers/timetable/timetable_helpers.dart';
@@ -34,9 +36,10 @@ class _TimetableCalendarState extends State<TimetableCalendar> {
       firstDayOfWeek: 1,
       allowedViews:
           widget.isTeacher ? _allowedViewsTeacher : _allowedViewsStudent,
-      onTap: (calendarTapDetails) {
+      onTap: (calendarTapDetails) async {
         if (calendarTapDetails.appointments == null) return;
-        calendarTapDetails.appointments.forEach((element) {
+
+        for (var element in calendarTapDetails.appointments) {
           // print(element.startTime);
           // print(DateTime.now());
           // print(calendarTapDetails.targetElement);
@@ -46,7 +49,7 @@ class _TimetableCalendarState extends State<TimetableCalendar> {
 
           if (widget.isTeacher &&
               calendarTapDetails.targetElement == CalendarElement.appointment &&
-              element.subject.contains("-")) {
+              element.notes == "teachertimetable") {
             Appointment apt = calendarTapDetails.appointments[0];
             // return;
             Navigator.of(context).pushNamed(
@@ -62,8 +65,17 @@ class _TimetableCalendarState extends State<TimetableCalendar> {
                 ),
               },
             );
+          } else if (calendarTapDetails.targetElement ==
+                  CalendarElement.appointment &&
+              element.notes.startsWith("homework")) {
+            // print(122);
+            final doc =
+                await FirebaseFirestore.instance.doc(element.notes).get();
+            // print(doc.data());
+            Navigator.of(context)
+                .pushNamed(HomeWorkDetailScreen.url, arguments: doc);
           }
-        });
+        }
       },
       scheduleViewMonthHeaderBuilder: scheduleViewBuilder,
       showNavigationArrow: true,
@@ -84,11 +96,14 @@ class _TimetableCalendarState extends State<TimetableCalendar> {
         Provider.of<Timetable>(context, listen: false)
             .createAppointments(widget.isTeacher),
       ),
+      appointmentTimeTextFormat: "HH:mm",
       monthViewSettings: MonthViewSettings(
+        // showTrailingAndLeadingDates: false,
         // appointmentDisplayMode: MonthAppointmentDisplayMode.indicator,
         // navigationDirection: MonthNavigationDirection.horizontal,
+        // dayFormat: "E",
 
-        monthCellStyle: MonthCellStyle(),
+        // monthCellStyle: MonthCellStyle(),
         numberOfWeeksInView: 6,
         showAgenda: true,
         // appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,

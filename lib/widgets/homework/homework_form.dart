@@ -79,10 +79,49 @@ class _HomeworkFormState extends State<HomeworkForm> {
 
   Future<void> sendHomework() async {
     bool isValid = _form.currentState.validate();
+    if (date == null) print(12212222);
 
-    if (!isValid || date == null) return;
+    if (!isValid || date == null || hw["classFirst"] == null) return;
     _form.currentState.save();
 
+    // await showDialog(
+    //   context: context,
+    //   builder: (context) => AlertDialog(
+    //     content: Column(
+    //       mainAxisSize: MainAxisSize.min,
+    //       children: [
+    //         Wrap(
+    //           children: [
+    //             Chip(
+    //               label: Text("Önemli"),
+    //             ),
+    //             Chip(
+    //               label: Text("Önemli"),
+    //             ),
+    //             Chip(
+    //               label: Text("Önemli"),
+    //             ),
+    //           ],
+    //         ),
+    //         Divider(),
+    //         Wrap(
+    //           children: [
+    //             Chip(
+    //               label: Text("Önemli"),
+    //             ),
+    //             Chip(
+    //               label: Text("Önemli"),
+    //             ),
+    //             Chip(
+    //               label: Text("Önemli"),
+    //             ),
+    //           ],
+    //         )
+    //       ],
+    //     ),
+    //   ),
+    // );
+    // return;
     date = null;
 
     hw["teacher"] = auth.currentUser.displayName;
@@ -105,6 +144,7 @@ class _HomeworkFormState extends State<HomeworkForm> {
       hw["classFirst"] = null;
       hw["classLast"] = null;
     });
+    Navigator.of(context).pop();
   }
 
   showPickerModal(BuildContext context) async {

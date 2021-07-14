@@ -14,7 +14,8 @@ class HomeworkItem extends StatelessWidget {
       children: [
         InkWell(
           onLongPress: () async {
-            await Provider.of<HomeWork>(context).deleteHomework(hw);
+            await Provider.of<HomeWork>(context, listen: false)
+                .deleteHomework(hw);
           },
           borderRadius: BorderRadius.circular(4),
           onTap: () {

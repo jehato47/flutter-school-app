@@ -14,28 +14,30 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () async {
+          await showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              content: HomeworkForm(),
+            ),
+          );
+        },
+      ),
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.close),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
         title: Text("Ödev Ver"),
       ),
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Container(
-              width: kIsWeb ? 600 : null,
-              child: Column(
-                children: [
-                  HomeworkForm(),
-                  if (kIsWeb) SizedBox(height: 20),
-                  HomeworkHistory(),
-                ],
-              ),
+            padding: EdgeInsets.all(10),
+            child: Column(
+              children: [
+                // HomeworkForm(),
+                // if (kIsWeb) SizedBox(height: 20),
+                HomeworkHistory(),
+              ],
             ),
           ),
         ),
