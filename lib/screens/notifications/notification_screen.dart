@@ -30,9 +30,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
     final userInfo = Provider.of<Auth>(context, listen: false).userInfo;
     bool isTeacher = userInfo["role"] == "teacher";
     return Scaffold(
+      floatingActionButton: !isTeacher
+          ? null
+          : FloatingActionButton(
+              child: AddNotificationButton(),
+              onPressed: () {},
+            ),
       appBar: AppBar(
         actions: [
-          if (isTeacher) AddNotificationButton(),
+          // if (isTeacher) AddNotificationButton(),
         ],
         title: Text("Bildirimler"),
       ),
