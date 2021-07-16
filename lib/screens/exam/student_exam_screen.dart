@@ -123,7 +123,7 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
           context: context,
           builder: (context) => Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              // color: Colors.white,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(25),
                 topRight: Radius.circular(25),

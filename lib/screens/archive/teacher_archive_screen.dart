@@ -26,9 +26,15 @@ class _TeacherArchiveScreenState extends State<TeacherArchiveScreen> {
     bool isMe = auth.currentUser.uid == uid;
 
     return Scaffold(
+      floatingActionButton: !(isTeacher && isMe)
+          ? null
+          : FloatingActionButton(
+              child: AddFolderButton(),
+              onPressed: () {},
+            ),
       appBar: AppBar(
         actions: [
-          if (isTeacher && isMe) AddFolderButton(),
+          // if (isTeacher && isMe) AddFolderButton(),
         ],
         title: Text("Arşiv"),
       ),

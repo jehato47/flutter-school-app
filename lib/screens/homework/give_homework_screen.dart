@@ -29,18 +29,7 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
         title: Text("Ödev Ver"),
       ),
       body: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              children: [
-                // HomeworkForm(),
-                // if (kIsWeb) SizedBox(height: 20),
-                HomeworkHistory(),
-              ],
-            ),
-          ),
-        ),
+        child: HomeworkHistory(),
       ),
     );
   }

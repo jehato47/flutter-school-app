@@ -40,12 +40,38 @@ class _EtudeItemState extends State<EtudeItem> {
       "registered": registered,
       "requests": requests,
       "onSaved": onSaved,
+      "note": "etude",
     });
 
     await FirebaseFirestore.instance
         .collection("etudeRequest")
         .doc(etudeRequest.id)
         .update({"state": "done", "ref": etude.reference});
+
+    final e = await FirebaseFirestore.instance
+        .collection("timetable")
+        .doc(etude.id)
+        .get();
+    QueryDocumentSnapshot doc;
+    // doc.reference.path
+    if (!e.exists)
+      await FirebaseFirestore.instance
+          .collection("timetable")
+          .doc(etude.id)
+          .set({
+        "subject": "${etude["lecture"]} Etüt",
+        "date": etude["date"],
+        "isRecursive": false,
+        "uids": [etude["uid"], ...registered],
+        "note": etude.reference.path,
+      });
+    else
+      await FirebaseFirestore.instance
+          .collection("timetable")
+          .doc(etude.id)
+          .update({
+        "uids": [etude["uid"], ...registered]
+      });
 
     Navigator.of(context).pop(true);
   }
@@ -86,6 +112,19 @@ class _EtudeItemState extends State<EtudeItem> {
     //     .collection("etudeChat")
     //     .doc(x.docs[0].id)
     //     .delete();
+    if (registered.length == 0) {
+      await FirebaseFirestore.instance
+          .collection("timetable")
+          .doc(etude.id)
+          .delete();
+      print(123123);
+    } else
+      await FirebaseFirestore.instance
+          .collection("timetable")
+          .doc(etude.id)
+          .update({
+        "uids": [etude["uid"], ...registered]
+      });
 
     Navigator.of(context).pop(false);
   }
@@ -124,6 +163,7 @@ class _EtudeItemState extends State<EtudeItem> {
         color: Colors.black12,
         // padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         child: ListTile(
+          onTap: () {},
           leading: CircleAvatar(
             backgroundColor: Colors.indigo,
             child: Text(etude["registered"].length.toString()),

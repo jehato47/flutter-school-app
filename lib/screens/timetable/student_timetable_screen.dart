@@ -21,7 +21,7 @@ class StudentTimetableScreen extends StatelessWidget {
         stream: FirebaseFirestore.instance
             .collection("timetable")
             .where("uids", arrayContainsAny: [
-          "FaU7l4kwjUe8wBbqVEBA",
+          "jlc9EUKfpmcTXKFopVfbc1B0edD2",
           "11-a",
         ])
 

@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:school2/providers/attendance.dart';
+import 'package:school2/widgets/homework/homework_form.dart';
 import '../providers/auth.dart';
 import './item.dart';
 import 'dart:math';
@@ -73,6 +74,10 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: HomeworkForm(),
+          ),
           // Expanded(
           //   child: StreamBuilder(
           //     stream: FirebaseFirestore.instance
@@ -97,7 +102,7 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
           //     },
           //   ),
           // )
-          centerButton()
+          // centerButton()
           // Expanded(
           //   child: ListView.builder(
           //     itemCount: chipList.length,

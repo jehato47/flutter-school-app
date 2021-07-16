@@ -161,6 +161,20 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
           currentTime = Provider.of<Attendance>(context).currentTime;
 
           return Scaffold(
+            // floatingActionButtonLocation:
+            //     FloatingActionButtonLocation.miniEndFloat,
+            floatingActionButton: !showCalendarButton
+                ? null
+                : FloatingActionButton(
+                    child: IconButton(
+                      icon: Icon(Icons.calendar_today_outlined),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(TeacherTimetableScreen.url);
+                      },
+                    ),
+                    onPressed: () {},
+                  ),
             appBar: AppBar(
               // centerTitle: true,
               title: Text(
@@ -168,14 +182,14 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
                     " ${currentClass.toUpperCase()}",
               ),
               actions: [
-                if (showCalendarButton)
-                  IconButton(
-                    icon: Icon(Icons.calendar_today_outlined),
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pushNamed(TeacherTimetableScreen.url);
-                    },
-                  ),
+                // if (showCalendarButton)
+                //   IconButton(
+                //     icon: Icon(Icons.calendar_today_outlined),
+                //     onPressed: () {
+                //       Navigator.of(context)
+                //           .pushNamed(TeacherTimetableScreen.url);
+                //     },
+                //   ),
                 IconButton(
                   icon: Icon(Icons.done),
                   onPressed: sendAttendance,

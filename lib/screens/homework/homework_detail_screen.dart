@@ -26,10 +26,10 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
         title: Text(
             '${hw["teacher"]} ${hw["classFirst"]} - ${hw["classLast"].toUpperCase()}'),
         actions: [
-          IconButton(
-            icon: Icon(Icons.assignment),
-            onPressed: () {},
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.assignment),
+          //   onPressed: () {},
+          // ),
         ],
       ),
       body: SingleChildScrollView(

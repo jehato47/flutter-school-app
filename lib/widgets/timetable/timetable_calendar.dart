@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:school2/screens/etude/etude_chat_screen.dart';
+import 'package:school2/screens/etude/in_etude_chat_screen.dart';
 import 'package:school2/screens/homework/homework_detail_screen.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../providers/timetable.dart';
@@ -74,6 +76,14 @@ class _TimetableCalendarState extends State<TimetableCalendar> {
             // print(doc.data());
             Navigator.of(context)
                 .pushNamed(HomeWorkDetailScreen.url, arguments: doc);
+          } else if (calendarTapDetails.targetElement ==
+                  CalendarElement.appointment &&
+              element.notes.startsWith("etude")) {
+            final id = element.notes.split("/").last;
+
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => InEtudeChatScreen(id),
+            ));
           }
         }
       },

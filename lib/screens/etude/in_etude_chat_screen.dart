@@ -20,7 +20,7 @@ class _InEtudeChatScreenState extends State<InEtudeChatScreen> {
   @override
   Widget build(BuildContext context) {
     dynamic etudeId = widget.id;
-    print(etudeId);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Etüt Grup Sohbeti"),

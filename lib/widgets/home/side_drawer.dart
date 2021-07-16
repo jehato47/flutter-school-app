@@ -32,7 +32,7 @@ class _SideDrawerState extends State<SideDrawer> {
           children: [
             UserAccountsDrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.indigo,
+                color: Colors.white,
                 backgroundBlendMode: BlendMode.colorDodge,
                 image: DecorationImage(
                   fit: BoxFit.cover,
@@ -66,7 +66,7 @@ class _SideDrawerState extends State<SideDrawer> {
               ListTile(
                 leading: Icon(
                   Icons.archive,
-                  color: Colors.indigo,
+                  color: Colors.white,
                 ),
                 title: Text("arşiv"),
                 onTap: () {
@@ -80,7 +80,7 @@ class _SideDrawerState extends State<SideDrawer> {
               ListTile(
                 leading: Icon(
                   Icons.source,
-                  color: Colors.indigo,
+                  color: Colors.white,
                 ),
                 title: Text("kaynaklar"),
                 onTap: () {
@@ -93,7 +93,7 @@ class _SideDrawerState extends State<SideDrawer> {
             ListTile(
               leading: Icon(
                 Icons.person,
-                color: Colors.indigo,
+                color: Colors.white,
               ),
               title: Text("öğretmen"),
               onTap: () {
@@ -111,7 +111,7 @@ class _SideDrawerState extends State<SideDrawer> {
             // ListTile(
             //   leading: Icon(
             //     Icons.person,
-            //     color: Colors.indigo,
+            //     color: Colors.white,
             //   ),
             //   title: Text("öğrenci"),
             //   onTap: () {
@@ -132,7 +132,7 @@ class _SideDrawerState extends State<SideDrawer> {
               ListTile(
                 leading: Icon(
                   Icons.groups,
-                  color: Colors.indigo,
+                  color: Colors.white,
                 ),
                 title: Text("sınıfım"),
                 onTap: () {
@@ -142,7 +142,7 @@ class _SideDrawerState extends State<SideDrawer> {
             ListTile(
               leading: Icon(
                 Icons.grid_view,
-                color: Colors.indigo,
+                color: Colors.white,
               ),
               title: Text("Etütlerim"),
               onTap: () {
@@ -160,7 +160,7 @@ class _SideDrawerState extends State<SideDrawer> {
             ListTile(
               leading: Icon(
                 Icons.reorder,
-                color: Colors.indigo,
+                color: Colors.white,
               ),
               title: Text("Yoklamalar"),
               onTap: () {
@@ -174,7 +174,7 @@ class _SideDrawerState extends State<SideDrawer> {
             ListTile(
               leading: Icon(
                 Icons.grid_view,
-                color: Colors.indigo,
+                color: Colors.white,
               ),
               title: Text("firebasetryscreen"),
               onTap: () {
@@ -194,7 +194,7 @@ class _SideDrawerState extends State<SideDrawer> {
             ListTile(
               leading: Icon(
                 Icons.logout,
-                // color: Colors.indigo,
+                // color: Colors.white,
               ),
               title: Text("Çıkış Yap"),
               onTap: () async {

@@ -23,8 +23,7 @@ class _EtudeChatScreenState extends State<EtudeChatScreen> {
     bool isTeacher = userInfo["role"] == "teacher";
     bool isStudent = userInfo["role"] == "student";
 
-    QueryDocumentSnapshot doc =
-        ModalRoute.of(context).settings.arguments as dynamic;
+    dynamic doc = ModalRoute.of(context).settings.arguments as dynamic;
 
     void _showBottomSheet() {
       showModalBottomSheet(

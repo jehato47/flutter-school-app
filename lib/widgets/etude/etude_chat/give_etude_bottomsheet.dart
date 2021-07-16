@@ -47,12 +47,9 @@ class _GiveEtudeBottomSheetState extends State<GiveEtudeBottomSheet> {
               return ListView.builder(
                 // scrollDirection: Axis.horizontal,
                 itemCount: docs.length,
-                itemBuilder: (context, index) => InkWell(
-                  onTap: () {},
-                  child: EtudeItem(
-                    docs[index],
-                    doc,
-                  ),
+                itemBuilder: (context, index) => EtudeItem(
+                  docs[index],
+                  doc,
                 ),
               );
             },

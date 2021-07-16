@@ -12,14 +12,20 @@ class _MyEtudesScreenState extends State<MyEtudesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.of(context).pushNamed(SelectLectureScreen.url);
+        },
+      ),
       appBar: AppBar(
         actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              Navigator.of(context).pushNamed(SelectLectureScreen.url);
-            },
-          )
+          // IconButton(
+          //   icon: Icon(Icons.add),
+          //   onPressed: () {
+          //     Navigator.of(context).pushNamed(SelectLectureScreen.url);
+          //   },
+          // )
         ],
         title: Text("Etütlerim"),
       ),

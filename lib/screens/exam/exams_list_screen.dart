@@ -47,16 +47,27 @@ class _ExamsListScreenState extends State<ExamsListScreen> {
     if (clss == null && classes.length != 0) clss = classes[0];
 
     return Scaffold(
+      floatingActionButton: !isTeacher
+          ? null
+          : FloatingActionButton(
+              child: IconButton(
+                onPressed: () async {
+                  await showPickerModal(context);
+                },
+                icon: Icon(Icons.filter_list),
+              ),
+              onPressed: () {},
+            ),
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         actions: [
-          if (isTeacher)
-            IconButton(
-              onPressed: () async {
-                await showPickerModal(context);
-              },
-              icon: Icon(Icons.filter_list),
-            ),
+          // if (isTeacher)
+          //   IconButton(
+          //     onPressed: () async {
+          //       await showPickerModal(context);
+          //     },
+          //     icon: Icon(Icons.filter_list),
+          //   ),
         ],
         title: Text("Sınav Sonucu ${clss.toUpperCase()}"),
       ),
