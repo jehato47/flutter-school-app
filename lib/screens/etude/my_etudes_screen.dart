@@ -14,8 +14,12 @@ class _MyEtudesScreenState extends State<MyEtudesScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.of(context).pushNamed(SelectLectureScreen.url);
+        onPressed: () async {
+          await showModalBottomSheet(
+            context: context,
+            builder: (context) => SelectLectureScreen(),
+          );
+          // Navigator.of(context).pushNamed(SelectLectureScreen.url);
         },
       ),
       appBar: AppBar(

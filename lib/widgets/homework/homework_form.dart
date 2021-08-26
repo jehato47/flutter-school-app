@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:school2/providers/auth.dart';
+import 'package:school2/providers/studentCheckBox/student_checkbox.dart';
 import '../../providers/homework.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_picker/Picker.dart';
@@ -18,7 +19,7 @@ class HomeworkForm extends StatefulWidget {
 class _HomeworkFormState extends State<HomeworkForm> {
   dynamic userInfo;
   FirebaseAuth auth = FirebaseAuth.instance;
-
+  bool isActive = false;
   bool isLoading = false;
 
   dynamic user;
@@ -77,7 +78,71 @@ class _HomeworkFormState extends State<HomeworkForm> {
     }
   }
 
+  List selecteds = [];
+  Map tags2 = {
+    "Önemli": Colors.green,
+    "Yapmasanız da Olur": Colors.amber,
+    "Kontrol Edilecek": Colors.orange,
+    "Kesin Bitsin": Colors.red,
+  };
   Future<void> sendHomework() async {
+    // List<String> tags = [
+    //   // "Türkçe",
+    //   "Önemli",
+    //   "Yapmasanız da Olur",
+    //   "Kontrol Edilecek",
+    //   "Kesin Bitsin"
+    // ];
+
+    // await showModalBottomSheet(
+    //   shape: RoundedRectangleBorder(
+    //     borderRadius: BorderRadius.vertical(
+    //       top: Radius.circular(20),
+    //     ),
+    //   ),
+    //   context: context,
+    //   builder: (context) => Container(
+    //     // color: Colors.indigo,
+    //     height: 300,
+    //     padding: EdgeInsets.all(30),
+    //     child: Wrap(
+    //       spacing: 10,
+    //       // runSpacing: 10,
+    //       children: [
+    //         ...tags2.entries.map((e) => ChangeNotifierProvider.value(
+    //             value: StudentCheckBox(),
+    //             child: Consumer<StudentCheckBox>(
+    //               builder: (context, checkbox, child) {
+    //                 // print(checkbox.isChecked);
+    //                 // checkbox.isChecked;
+    //                 return Chip(
+    //                   deleteIcon: !checkbox.isChecked ? Icon(Icons.done) : null,
+    //                   backgroundColor: checkbox.isChecked ? e.value : null,
+    //                   onDeleted: () {
+    //                     checkbox.change();
+
+    //                     if (!selecteds.contains(e.key) && checkbox.isChecked)
+    //                       selecteds.add(e.key);
+    //                     else
+    //                       selecteds.removeWhere((element) => element == e.key);
+    //                     print(selecteds);
+    //                   },
+    //                   label: Text(e.key),
+    //                 );
+    //               },
+    //             )))
+    //         // ...tags2.entries.map(
+    //         //   (entry) {
+    //         //     return Chip(
+    //         //       label: Text(entry.key),
+    //         //     );
+    //         //   },
+    //         // ).toList()
+    //       ],
+    //     ),
+    //   ),
+    // );
+    // return;
     bool isValid = _form.currentState.validate();
     if (date == null) print(12212222);
 
@@ -224,49 +289,101 @@ class _HomeworkFormState extends State<HomeworkForm> {
   @override
   Widget build(BuildContext context) {
     userInfo = Provider.of<Auth>(context, listen: false).userInfo;
-    return Form(
-      key: _form,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TextFormField(
-            // controller: hwController,
-            validator: (value) {
-              if (value.isEmpty) return "Ödev girmediniz";
-              return null;
-            },
-            onSaved: (newValue) {
-              hw["homework"] = newValue;
-            },
-            decoration: InputDecoration(
-              labelText: "Ödev",
-              // border: OutlineInputBorder(),
+    return SingleChildScrollView(
+      child: Form(
+        key: _form,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextFormField(
+              // controller: hwController,
+              validator: (value) {
+                if (value.isEmpty) return "Ödev girmediniz";
+                return null;
+              },
+              onSaved: (newValue) {
+                hw["homework"] = newValue;
+              },
+              decoration: InputDecoration(
+                labelText: "Ödev",
+                // border: OutlineInputBorder(),
+              ),
             ),
-          ),
-          TextFormField(
-            minLines: 2,
-            maxLines: 5,
-            validator: (value) {
-              if (value.isEmpty) return "Açıklama girmediniz";
-              return null;
-            },
-            onSaved: (newValue) {
-              hw["explanation"] = newValue;
-            },
-            decoration: InputDecoration(
-              labelText: "Açıklama",
-              alignLabelWithHint: true,
-              // border: OutlineInputBorder(),
+            TextFormField(
+              minLines: 2,
+              maxLines: 5,
+              validator: (value) {
+                if (value.isEmpty) return "Açıklama girmediniz";
+                return null;
+              },
+              onSaved: (newValue) {
+                hw["explanation"] = newValue;
+              },
+              decoration: InputDecoration(
+                labelText: "Açıklama",
+                alignLabelWithHint: true,
+                // border: OutlineInputBorder(),
+              ),
             ),
-          ),
-          SizedBox(height: 40),
-          helperButtons(context),
-          if (kIsWeb) SizedBox(height: 20),
-          sendButton(),
-        ],
+            SizedBox(height: 40),
+            buildWrap(),
+            SizedBox(height: 20),
+            helperButtons(context),
+            if (kIsWeb) SizedBox(height: 20),
+            sendButton(),
+          ],
+        ),
       ),
+    );
+  }
+
+  bool isOpen = true;
+  AnimatedContainer buildWrap() {
+    return AnimatedContainer(
+      // height: !isOpen ? 10 : 100,
+      duration: Duration(milliseconds: 300),
+      child: !isOpen
+          ? Container()
+          : Wrap(
+              spacing: 10,
+              // runSpacing: 10,
+              children: [
+                ...tags2.entries.map((e) => ChangeNotifierProvider.value(
+                    value: StudentCheckBox(),
+                    child: Consumer<StudentCheckBox>(
+                      builder: (context, checkbox, child) {
+                        // print(checkbox.isChecked);
+                        // checkbox.isChecked;
+                        return Chip(
+                          deleteIcon:
+                              !checkbox.isChecked ? Icon(Icons.done) : null,
+                          backgroundColor: checkbox.isChecked ? e.value : null,
+                          onDeleted: () {
+                            checkbox.change();
+
+                            if (!selecteds.contains(e.key) &&
+                                checkbox.isChecked)
+                              selecteds.add(e.key);
+                            else
+                              selecteds
+                                  .removeWhere((element) => element == e.key);
+                            print(selecteds);
+                          },
+                          label: Text(e.key),
+                        );
+                      },
+                    )))
+                // ...tags2.entries.map(
+                //   (entry) {
+                //     return Chip(
+                //       label: Text(entry.key),
+                //     );
+                //   },
+                // ).toList()
+              ],
+            ),
     );
   }
 }
