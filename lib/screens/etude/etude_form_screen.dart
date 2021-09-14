@@ -11,7 +11,7 @@ class EtudeFormScreen extends StatefulWidget {
 class _EtudeFormScreenState extends State<EtudeFormScreen> {
   @override
   Widget build(BuildContext context) {
-    final lecture = ModalRoute.of(context).settings.arguments;
+    final lecture = ModalRoute.of(context)!.settings.arguments;
 
     return Scaffold(
       appBar: AppBar(

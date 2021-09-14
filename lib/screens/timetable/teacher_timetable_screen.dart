@@ -24,7 +24,7 @@ class TeacherTimetableScreen extends StatelessWidget {
             .where("uids", arrayContainsAny: [auth.currentUser!.uid])
             // .doc(auth.currentUser.uid)
             .snapshots(),
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),

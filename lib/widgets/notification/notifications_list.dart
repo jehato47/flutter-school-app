@@ -16,7 +16,7 @@ class _NotificationsListState extends State<NotificationsList> {
             .collection("notification")
             .orderBy('added', descending: true)
             .snapshots(),
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
             print(snapshot.error);
             return const Center(child: Text("Birşeyler Ters Gitti..."));

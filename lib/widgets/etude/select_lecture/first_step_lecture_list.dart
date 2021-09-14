@@ -13,7 +13,7 @@ class _FirstStepLectureListState extends State<FirstStepLectureList> {
     return StreamBuilder(
       // TODO : Burayı etude collection a göre düzenle
       stream: FirebaseFirestore.instance.collection("etudeTimes").snapshots(),
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot snapshot) {
         if (!snapshot.hasData) {
           return const Center(
             child: CircularProgressIndicator(),

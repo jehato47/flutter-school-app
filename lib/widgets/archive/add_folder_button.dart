@@ -14,7 +14,7 @@ class _AddFolderButtonState extends State<AddFolderButton> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.create_new_folder_outlined),
+      icon: const Icon(Icons.create_new_folder_outlined),
       onPressed: () {
         showDialog(
           context: context,
@@ -24,15 +24,16 @@ class _AddFolderButtonState extends State<AddFolderButton> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Klasör oluştur"),
-                SizedBox(height: 20),
+                const Text("Klasör oluştur"),
+                const SizedBox(height: 20),
                 TextField(
                   controller: controller,
-                  decoration: InputDecoration(labelText: "Klasör ismini girin"),
+                  decoration:
+                      const InputDecoration(labelText: "Klasör ismini girin"),
                   minLines: 3,
                   maxLines: 4,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -41,15 +42,15 @@ class _AddFolderButtonState extends State<AddFolderButton> {
                           .collection("archive")
                           .add({
                         "date": DateTime.now(),
-                        "displayName": auth.currentUser.displayName,
+                        "displayName": auth.currentUser!.displayName,
                         "folderName": controller.text.trim(),
-                        "uid": auth.currentUser.uid,
+                        "uid": auth.currentUser!.uid,
                         "fileName": null,
                       });
                       controller.clear();
                       Navigator.of(context).pop();
                     },
-                    child: Text("Oluştur"),
+                    child: const Text("Oluştur"),
                   ),
                 ),
               ],

@@ -19,7 +19,7 @@ class _MyEtudesListState extends State<MyEtudesList> {
           .where("uid", isEqualTo: auth.currentUser!.uid)
           .orderBy("date", descending: true)
           .snapshots(),
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot snapshot) {
         if (!snapshot.hasData) {
           return const Center(
             child: CircularProgressIndicator(),

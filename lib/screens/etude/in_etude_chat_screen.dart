@@ -23,7 +23,7 @@ class _InEtudeChatScreenState extends State<InEtudeChatScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Etüt Grup Sohbeti"),
+        title: const Text("Etüt Grup Sohbeti"),
       ),
       body: Column(
         children: [
@@ -34,11 +34,12 @@ class _InEtudeChatScreenState extends State<InEtudeChatScreen> {
                   .where("id", isEqualTo: etudeId)
                   .orderBy("date")
                   .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting)
-                  return Center(
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
+                }
 
                 WidgetsBinding.instance!.addPostFrameCallback((_) {
                   if (_scrollController.hasClients) {
@@ -59,6 +60,7 @@ class _InEtudeChatScreenState extends State<InEtudeChatScreen> {
                       data[index]["displayName"],
                       isMe,
                       DateTime.now(),
+                      ValueKey(data[index].id),
                     );
                   },
                   itemCount: data.length,

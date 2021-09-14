@@ -33,7 +33,7 @@ class _HomeworkFilterScreenState extends State<HomeworkFilterScreen> {
                 .where("classLast", isEqualTo: "a")
                 .where("lecture", isEqualTo: lecture)
                 .snapshots(),
-            builder: (context, snapshot) {
+            builder: (context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               }

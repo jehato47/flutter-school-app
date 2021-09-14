@@ -15,7 +15,7 @@ class AddNotificationButton extends StatefulWidget {
 
 class _AddNotificationButtonState extends State<AddNotificationButton> {
   dynamic classes;
-  late String to;
+  late String? to;
   late String fileName;
   FirebaseAuth auth = FirebaseAuth.instance;
   late NotificationP notificationP;
@@ -30,7 +30,7 @@ class _AddNotificationButtonState extends State<AddNotificationButton> {
 
     return IconButton(
       tooltip: "Duyuru ekle",
-      icon: Icon(Icons.add),
+      icon: const Icon(Icons.add),
       onPressed: addNotification,
     );
   }
@@ -121,13 +121,13 @@ class _AddNotificationButtonState extends State<AddNotificationButton> {
                     fileName,
                     // TODO : production
                     // "11-a",
-                    to,
+                    to as String,
                   );
                   file = null;
                   to = null;
                   Navigator.of(context).pop();
                 },
-                child: Text("Gönder"),
+                child: const Text("Gönder"),
               ),
             ),
           ],

@@ -28,7 +28,7 @@ class StudentTimetableScreen extends StatelessWidget {
             // TODO : Production
             // .where("id", isEqualTo: "6mA6Bw7DIXrPwIaqGBS3")
             .snapshots(),
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }

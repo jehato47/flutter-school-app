@@ -25,7 +25,7 @@ class _FilesListState extends State<FilesList> {
             .where("uid", isEqualTo: uid)
             .where("folderName", isEqualTo: folderName)
             .snapshots(),
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
             return const Center(
               child: CircularProgressIndicator(),

@@ -25,14 +25,15 @@ class _HomeworksListState extends State<HomeworksList> {
           .where("classLast", isEqualTo: "a")
           .orderBy('startDate')
           .snapshots(),
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot snapshot) {
         if (snapshot.hasError) {
           return Center(child: Text("Birşeyler Ters Gitti..."));
         }
-        if (!snapshot.hasData)
+        if (!snapshot.hasData) {
           return const Center(
             child: CircularProgressIndicator(),
           );
+        }
 
         List docs = snapshot.data.docs;
         docs = List.from(docs.reversed);

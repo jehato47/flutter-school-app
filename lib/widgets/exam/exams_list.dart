@@ -27,7 +27,7 @@ class _ExamsListState extends State<ExamsList> {
           .where("classFirst", isEqualTo: classFirst)
           .where("classLast", isEqualTo: classLast)
           .snapshots(),
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot snapshot) {
         if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
         }

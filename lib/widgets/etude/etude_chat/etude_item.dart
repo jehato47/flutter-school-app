@@ -177,7 +177,7 @@ class _EtudeItemState extends State<EtudeItem> {
                   .collection("etudeRequest")
                   .doc(etudeRequest.id)
                   .snapshots(),
-              builder: (context, snapshot) {
+              builder: (context, AsyncSnapshot snapshot) {
                 if (!snapshot.hasData) {
                   return ElevatedButton(
                     child: const Text(""),

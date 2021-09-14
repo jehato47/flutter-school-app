@@ -13,7 +13,7 @@ class _ItemState extends State<Item> {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: widget.ref.get(),
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container();
         }

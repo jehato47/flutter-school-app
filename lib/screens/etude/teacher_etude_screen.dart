@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
-import 'package:school2/screens/etude/in_etude_chat_screen.dart';
+import '../../screens/etude/in_etude_chat_screen.dart';
 
 class TeacherEtudeScreen extends StatefulWidget {
   static const url = "teacher-etude";
@@ -17,17 +17,18 @@ class _TeacherEtudeScreenState extends State<TeacherEtudeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Etütleriniz")),
+      appBar: AppBar(title: const Text("Etütleriniz")),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("etude")
-            .where("uid", isEqualTo: auth.currentUser.uid)
+            .where("uid", isEqualTo: auth.currentUser!.uid)
             .where("onSaved", isEqualTo: true)
             .orderBy("date")
             .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting)
-            return Center(child: CircularProgressIndicator());
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
           List<QueryDocumentSnapshot> data = snapshot.data.docs;
 
           return ListView.builder(
@@ -39,7 +40,7 @@ class _TeacherEtudeScreenState extends State<TeacherEtudeScreen> {
                     : data[index]["subject"];
 
                 return Container(
-                  margin: EdgeInsets.all(5),
+                  margin: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.indigo, width: 2),
                     borderRadius: BorderRadius.circular(10),

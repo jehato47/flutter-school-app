@@ -148,14 +148,14 @@ class Auth extends ChangeNotifier {
 
       return null;
     } catch (err) {
-      if (err.code == "invalid-email")
-        throw "Hatalı mail formatı girdiniz.";
-      else if (err.code == "wrong-password")
-        return "Hatalı parola girdiniz.";
-      else if (err.code == "user-not-found") return "Kullanıcı bulunamadı.";
+      // if (err.code == "invalid-email")
+      //   throw "Hatalı mail formatı girdiniz.";
+      // else if (err.code == "wrong-password")
+      //   return "Hatalı parola girdiniz.";
+      // else if (err.code == "user-not-found") return "Kullanıcı bulunamadı.";
 
-      print(err.code);
-      return err.code.toString();
+      // print(err.code);
+      // return err.code.toString();
     }
   }
 

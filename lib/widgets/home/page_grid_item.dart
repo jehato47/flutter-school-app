@@ -19,7 +19,7 @@ class PageGridItem extends StatelessWidget {
           Navigator.of(context).pushNamed(page);
         },
         child: Container(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
           ),
@@ -27,17 +27,17 @@ class PageGridItem extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.leaderboard),
-              SizedBox(height: 30),
+              const Icon(Icons.leaderboard),
+              const SizedBox(height: 30),
               Text(
                 title,
-                style: TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 20),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Expanded(
                 child: Text(
                   subtitle,
-                  style: TextStyle(fontSize: 15),
+                  style: const TextStyle(fontSize: 15),
                 ),
               ),
             ],

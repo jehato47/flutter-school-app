@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "871560462522",
+    "firebase_url": "https://school-f162e-default-rtdb.firebaseio.com",
+    "project_id": "school-f162e",
+    "storage_bucket": "school-f162e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:871560462522:android:dd8f1225f70ea9f71a8283",
+        "android_client_info": {
+          "package_name": "com.example.school2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "871560462522-9m7ava988gvgr7f8ql2nf0csii3sc0cl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTDYf3tIIeypPch6HVqwSodasa6zBoQWM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "871560462522-9m7ava988gvgr7f8ql2nf0csii3sc0cl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "871560462522-rj1m0aa56ndd6avt9efo90lp3j999m40.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.school2"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:871560462522:android:fc90ca2d8df671c51a8283",
+        "android_client_info": {
+          "package_name": "com.example.school2d5"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "871560462522-9m7ava988gvgr7f8ql2nf0csii3sc0cl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTDYf3tIIeypPch6HVqwSodasa6zBoQWM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "871560462522-9m7ava988gvgr7f8ql2nf0csii3sc0cl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "871560462522-rj1m0aa56ndd6avt9efo90lp3j999m40.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.school2"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

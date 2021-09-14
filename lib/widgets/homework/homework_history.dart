@@ -21,9 +21,10 @@ class _HomeworkHistoryState extends State<HomeworkHistory> {
             .where("uid", isEqualTo: auth.currentUser!.uid)
             .orderBy("startDate", descending: true)
             .snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData)
-            return Center(child: CircularProgressIndicator());
+        builder: (context, AsyncSnapshot snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
           final hws = snapshot.data.docs;
           return ListView.builder(
             itemCount: hws.length,

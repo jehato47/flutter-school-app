@@ -19,7 +19,7 @@ class PagesGrid extends StatelessWidget {
     // print(size.width);
     double width = size.width;
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: GridView(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           childAspectRatio: 1,
@@ -27,7 +27,7 @@ class PagesGrid extends StatelessWidget {
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
         ),
-        children: [
+        children: const [
           PageGridItem(
             AttendanceCheckScreen.url,
             "Yoklama",

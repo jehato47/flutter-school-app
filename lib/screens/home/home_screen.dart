@@ -15,7 +15,7 @@ import 'dart:math';
 class HomeScreen extends StatefulWidget {
   static const url = "home";
   final Function setIndex;
-  HomeScreen(this.setIndex);
+  const HomeScreen(this.setIndex);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   late Function setIndex;
   // dynamic body = PagesGrid();
-  dynamic body = Placeholder();
+  dynamic body = const Placeholder();
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   Widget buildCard(String title, String subtitle, String fText,
@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         Container(
           alignment: Alignment.topCenter,
-          padding: EdgeInsets.symmetric(vertical: 10),
+          padding: const EdgeInsets.symmetric(vertical: 10),
           height: 200,
           width: double.infinity,
           child: FutureBuilder(
@@ -95,9 +95,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   .where("to", isEqualTo: "genel")
                   .orderBy("added", descending: true)
                   .get(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting)
-                  return Center(child: CircularProgressIndicator());
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
                 List<QueryDocumentSnapshot> data = snapshot.data.docs;
 
@@ -112,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         // gradient: LinearGradient(
@@ -130,7 +131,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Text(
                         data[index]["text"],
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 20),
                       ),
                     );
                   },
@@ -139,13 +141,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   viewportFraction: 0.8,
                   scale: 0.9,
                   // itemCount: 3,
-                  pagination: new SwiperPagination(),
-                  control: new SwiperControl(),
+                  pagination: const SwiperPagination(),
+                  control: const SwiperControl(),
                 );
               }),
         ),
-        Divider(),
-        SizedBox(
+        const Divider(),
+        const SizedBox(
           height: 20,
           child: Text(
             "Genel Duyurular",
@@ -159,9 +161,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     .where("to", isEqualTo: "genel")
                     .orderBy("added", descending: true)
                     .snapshots(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData)
-                    return Center(child: CircularProgressIndicator());
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
                   List<QueryDocumentSnapshot> data = snapshot.data.docs;
                   return ListView.builder(
                     itemCount: data.length,

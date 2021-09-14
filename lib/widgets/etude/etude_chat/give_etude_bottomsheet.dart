@@ -37,11 +37,12 @@ class _GiveEtudeBottomSheetState extends State<GiveEtudeBottomSheet> {
                 .orderBy("date")
                 .snapshots(),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting)
-                return Center(
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
-              QuerySnapshot snap = snapshot.data;
+              }
+              QuerySnapshot snap = snapshot.data as QuerySnapshot;
               List<QueryDocumentSnapshot> docs = snap.docs;
 
               return ListView.builder(

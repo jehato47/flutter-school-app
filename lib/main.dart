@@ -137,55 +137,55 @@ class MyApp extends StatelessWidget {
                 return const Center(child: CircularProgressIndicator());
               }
 
-              if (FirebaseAuth.instance.currentUser != null) {
-                User? user = FirebaseAuth.instance.currentUser;
-                return FutureBuilder(
-                    future: FirebaseFirestore.instance
-                        .collection("user")
-                        .doc(user!.uid)
-                        .get(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting)
-                        return Center(child: CircularProgressIndicator());
-                      Object? documentSnapshot = snapshot.data;
-                      Provider.of<Auth>(context, listen: false).userInfo =
-                          documentSnapshot.data();
-                      if (documentSnapshot["role"] == "teacher") {
-                        return TeacherHomeScreen();
-                      }
-                      return StudentHomeScreen();
-                    });
-              }
-              return LoginScreen2();
-              // return StreamBuilder(
-              //   stream: FirebaseAuth.instance.authStateChanges(),
-              //   builder: (ctx, snapshot) {
-              //     // * TODO : Login Form da setState hatası veriyor bak
-              //     if (snapshot.connectionState == ConnectionState.waiting)
-              //       return Center(child: CircularProgressIndicator());
-              //     if (snapshot.hasData) {
-              //       User user = snapshot.data;
-              //       return FutureBuilder(
-              //           future: FirebaseFirestore.instance
-              //               .collection("user")
-              //               .doc(user.uid)
-              //               .get(),
-              //           builder: (context, snapshot) {
-              //             if (snapshot.connectionState ==
-              //                 ConnectionState.waiting)
-              //               return Center(child: CircularProgressIndicator());
-              //             DocumentSnapshot documentSnapshot = snapshot.data;
-              //             Provider.of<Auth>(context, listen: false).userInfo =
-              //                 documentSnapshot.data();
-              //             if (documentSnapshot["role"] == "teacher") {
-              //               return TeacherHomeScreen();
-              //             }
-              //             return StudentHomeScreen();
-              //           });
-              //     }
-              //     return LoginScreen();
-              //   },
-              // );
+              // if (FirebaseAuth.instance.currentUser != null) {
+              //   User? user = FirebaseAuth.instance.currentUser;
+              //   return FutureBuilder(
+              //       future: FirebaseFirestore.instance
+              //           .collection("user")
+              //           .doc(user!.uid)
+              //           .get(),
+              //       builder: (context, snapshot) {
+              //         if (snapshot.connectionState == ConnectionState.waiting)
+              //           return Center(child: CircularProgressIndicator());
+              //         Object? documentSnapshot = snapshot.data;
+              //         Provider.of<Auth>(context, listen: false).userInfo =
+              //             documentSnapshot.data();
+              //         if (documentSnapshot["role"] == "teacher") {
+              //           return TeacherHomeScreen();
+              //         }
+              //         return StudentHomeScreen();
+              //       });
+              // }
+              // return LoginScreen2();
+              return StreamBuilder(
+                stream: FirebaseAuth.instance.authStateChanges(),
+                builder: (ctx, AsyncSnapshot snapshot) {
+                  // * TODO : Login Form da setState hatası veriyor bak
+                  if (snapshot.connectionState == ConnectionState.waiting)
+                    return Center(child: CircularProgressIndicator());
+                  if (snapshot.hasData) {
+                    User user = snapshot.data;
+                    return FutureBuilder(
+                        future: FirebaseFirestore.instance
+                            .collection("user")
+                            .doc(user.uid)
+                            .get(),
+                        builder: (context, AsyncSnapshot snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting)
+                            return Center(child: CircularProgressIndicator());
+                          DocumentSnapshot documentSnapshot = snapshot.data;
+                          Provider.of<Auth>(context, listen: false).userInfo =
+                              documentSnapshot.data();
+                          if (documentSnapshot["role"] == "teacher") {
+                            return TeacherHomeScreen();
+                          }
+                          return StudentHomeScreen();
+                        });
+                  }
+                  return LoginScreen();
+                },
+              );
             },
           ),
         ),

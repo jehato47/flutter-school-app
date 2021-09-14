@@ -27,13 +27,14 @@ class _MessagesState extends State<Messages> {
           )
           .orderBy("date")
           .snapshots(),
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot snapshot) {
         if (_scrollController.hasClients) {
           _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
         }
 
-        if (snapshot.connectionState == ConnectionState.waiting)
-          return Center(child: CircularProgressIndicator());
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
         List<QueryDocumentSnapshot> docs = snapshot.data.docs;
 
         return ListView.builder(

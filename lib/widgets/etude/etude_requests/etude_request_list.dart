@@ -18,9 +18,10 @@ class _EtudeRequestListState extends State<EtudeRequestList> {
           .collection("etudeRequest")
           .orderBy("date", descending: true)
           .snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData)
-          return Center(child: CircularProgressIndicator());
+      builder: (context, AsyncSnapshot snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
         final requests = snapshot.data.docs;
         if (requests.length == 0) {
           return const Center(

@@ -25,7 +25,7 @@ class MyFriendsScreen extends StatelessWidget {
             .where("classFirst", isEqualTo: userInfo["classFirst"])
             .where("classLast", isEqualTo: userInfo["classLast"])
             .snapshots(),
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
             return const Center(
               child: CircularProgressIndicator(),

@@ -15,7 +15,7 @@ class _RingBellState extends State<RingBell> {
     return StreamBuilder(
         stream:
             FirebaseFirestore.instance.collection("notification").snapshots(),
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot snapshot) {
           if (auth.currentUser == null) return Container();
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(

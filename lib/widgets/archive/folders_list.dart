@@ -21,7 +21,7 @@ class _FoldersListState extends State<FoldersList> {
             .where("uid", isEqualTo: uid)
             .orderBy("date", descending: true)
             .snapshots(),
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting)
             return Center(child: CircularProgressIndicator());
 

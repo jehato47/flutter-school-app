@@ -69,7 +69,7 @@ class _AttendancePreviewScreenState extends State<AttendancePreviewScreen> {
                 builder: (context) => SfDateRangePicker(
                   view: DateRangePickerView.month,
                   // controller: _controller,
-                  monthViewSettings: DateRangePickerMonthViewSettings(),
+                  monthViewSettings: const DateRangePickerMonthViewSettings(),
                   selectionMode: DateRangePickerSelectionMode.range,
                   onSelectionChanged:
                       (DateRangePickerSelectionChangedArgs args) {
@@ -102,7 +102,7 @@ class _AttendancePreviewScreenState extends State<AttendancePreviewScreen> {
                     )
                     .orderBy("date", descending: true)
                     .snapshots(),
-                builder: (context, attendance) {
+                builder: (context, AsyncSnapshot attendance) {
                   if (!attendance.hasData) {
                     return const Center(child: CircularProgressIndicator());
                   }
