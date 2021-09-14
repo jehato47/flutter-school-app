@@ -16,36 +16,38 @@ class _MyEtudesListState extends State<MyEtudesList> {
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection("etudeRequest")
-          .where("uid", isEqualTo: auth.currentUser.uid)
+          .where("uid", isEqualTo: auth.currentUser!.uid)
           .orderBy("date", descending: true)
           .snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData)
-          return Center(
+        if (!snapshot.hasData) {
+          return const Center(
             child: CircularProgressIndicator(),
           );
+        }
         var data = snapshot.data.docs;
-        if (data.length == 0)
-          return Center(
+        if (data.length == 0) {
+          return const Center(
             child: Text(
               "Etüt istekleriniz burada görünür. Henüz etüt isteğiniz yok.",
               textAlign: TextAlign.center,
             ),
           );
+        }
         return ListView.builder(
           itemCount: data.length,
           itemBuilder: (context, index) {
             bool isDone = data[index]["state"] != "waiting";
             Color color;
-            if (data[index]["state"] == "rejected")
+            if (data[index]["state"] == "rejected") {
               color = Colors.red;
-            else if (data[index]["state"] == "done")
+            } else if (data[index]["state"] == "done") {
               color = Colors.green;
-            else
+            } else {
               color = Colors.amber;
-
+            }
             return Container(
-              margin: EdgeInsets.all(5),
+              margin: const EdgeInsets.all(5),
               decoration: BoxDecoration(
                 border: Border.all(color: color, width: 2),
                 borderRadius: BorderRadius.circular(10),

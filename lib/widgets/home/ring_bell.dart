@@ -16,14 +16,17 @@ class _RingBellState extends State<RingBell> {
         stream:
             FirebaseFirestore.instance.collection("notification").snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting)
-            return Center(
+          if (auth.currentUser == null) return Container();
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
               child: CircularProgressIndicator(),
             );
+          }
+          if (snapshot == null) return Container();
           final docs = snapshot.data.docs;
           int length = 0;
           docs.forEach((element) {
-            if (!element["isSeen"].contains(auth.currentUser.uid)) length += 1;
+            if (!element["isSeen"].contains(auth.currentUser!.uid)) length += 1;
           });
 
           return Stack(
@@ -32,8 +35,8 @@ class _RingBellState extends State<RingBell> {
               IconButton(
                 tooltip: "Bildirimler",
                 icon: length != 0
-                    ? Icon(Icons.notifications_active)
-                    : Icon(Icons.notifications),
+                    ? const Icon(Icons.notifications_active)
+                    : const Icon(Icons.notifications),
                 onPressed: () {
                   Navigator.of(context).pushNamed(NotificationScreen.url);
                 },
@@ -50,7 +53,7 @@ class _RingBellState extends State<RingBell> {
                   ),
                   child: Text(
                     length.toString(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       // color: Colors.red,
                       // fontSize: 15,
                       fontWeight: FontWeight.bold,

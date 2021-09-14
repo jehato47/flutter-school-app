@@ -16,10 +16,10 @@ class _InArchiveFolderScreenState extends State<InArchiveFolderScreen> {
   @override
   Widget build(BuildContext context) {
     final isTeacher = Provider.of<Auth>(context).userInfo["role"] == "teacher";
-    final args = ModalRoute.of(context).settings.arguments as List;
+    final args = ModalRoute.of(context)!.settings.arguments as List;
     final folderName = args[0];
     final uid = args[1];
-    bool isMe = auth.currentUser.uid == uid;
+    bool isMe = auth.currentUser!.uid == uid;
 
     return Scaffold(
       appBar: AppBar(

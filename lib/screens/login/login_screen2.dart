@@ -44,7 +44,7 @@ class LoginScreen2 extends StatelessWidget {
   //   });
   // }
 
-  Future<String> _recoverPassword(String name) {
+  Future<String?> _recoverPassword(String name) {
     print('Name: $name');
     return Future.delayed(loginTime).then((_) {
       if (!users.containsKey(name)) {
@@ -57,6 +57,7 @@ class LoginScreen2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
+      theme: LoginTheme(textFieldStyle: TextStyle(color: Colors.white)),
       messages: LoginMessages(
         userHint: "Kullanıcı Adı",
         passwordHint: "Şifre",

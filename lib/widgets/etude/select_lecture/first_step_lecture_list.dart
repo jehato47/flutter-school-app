@@ -14,11 +14,11 @@ class _FirstStepLectureListState extends State<FirstStepLectureList> {
       // TODO : Burayı etude collection a göre düzenle
       stream: FirebaseFirestore.instance.collection("etudeTimes").snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData)
-          return Center(
+        if (!snapshot.hasData) {
+          return const Center(
             child: CircularProgressIndicator(),
           );
-
+        }
         QuerySnapshot querySnapshot = snapshot.data;
         dynamic liste =
             querySnapshot.docs.map((e) => e["lecture"]).toSet().toList();
@@ -30,7 +30,7 @@ class _FirstStepLectureListState extends State<FirstStepLectureList> {
               child: ListView.builder(
                 itemCount: liste.length,
                 itemBuilder: (ctx, i) => ListTile(
-                  contentPadding: EdgeInsets.all(0),
+                  contentPadding: const EdgeInsets.all(0),
                   onTap: () async {
                     Navigator.of(context).pushNamed(
                       EtudeFormScreen.url,
@@ -39,9 +39,9 @@ class _FirstStepLectureListState extends State<FirstStepLectureList> {
                   },
                   title: Text(
                     liste[i],
-                    style: TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 20),
                   ),
-                  leading: Icon(Icons.arrow_forward),
+                  leading: const Icon(Icons.arrow_forward),
                 ),
               ),
             )

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:school2/screens/homework/filter_screen.dart';
+import '../../screens/homework/filter_screen.dart';
 import '../../providers/homework.dart';
 import '../../screens/homework/homework_detail_screen.dart';
 import 'package:provider/provider.dart';
 
 class HomeworkItem extends StatelessWidget {
   final dynamic hw;
-  HomeworkItem(this.hw);
+  const HomeworkItem(this.hw);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class HomeworkItem extends StatelessWidget {
             ),
             title: Text(
               hw["teacher"],
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -72,7 +72,7 @@ class HomeworkItem extends StatelessWidget {
             ),
           ),
         ),
-        Divider(thickness: 1)
+        const Divider(thickness: 1)
       ],
     );
   }

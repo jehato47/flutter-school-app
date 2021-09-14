@@ -26,18 +26,18 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
     List<GridColumn> columns;
 
     columns = <GridColumn>[
-      GridTextColumn(
+      GridColumn(
         columnName: 'lecture',
         label: Container(
           padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
-          child: Text(
+          child: const Text(
             'Sınav',
             overflow: TextOverflow.ellipsis,
           ),
         ),
       ),
-      GridTextColumn(
+      GridColumn(
         columnName: '1',
         label: Container(
           padding: const EdgeInsets.all(8),
@@ -48,34 +48,34 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
           ),
         ),
       ),
-      GridTextColumn(
+      GridColumn(
         columnName: '2',
         label: Container(
           padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
-          child: Text(
+          child: const Text(
             '2. Sınav',
             overflow: TextOverflow.ellipsis,
           ),
         ),
       ),
-      GridTextColumn(
+      GridColumn(
         columnName: '3',
         label: Container(
           padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
-          child: Text(
+          child: const Text(
             '3. Sınav',
             overflow: TextOverflow.ellipsis,
           ),
         ),
       ),
-      GridTextColumn(
+      GridColumn(
         columnName: 'mean',
         label: Container(
           padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
-          child: Text(
+          child: const Text(
             'Ortalama',
             overflow: TextOverflow.ellipsis,
           ),
@@ -115,36 +115,36 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
         if (snapshot.data() == null) return;
 
         await showModalBottomSheet(
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
               top: Radius.circular(20),
             ),
           ),
           context: context,
           builder: (context) => Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               // color: Colors.white,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(25),
                 topRight: Radius.circular(25),
               ),
             ),
-            padding: EdgeInsets.symmetric(vertical: 20),
+            padding: const EdgeInsets.symmetric(vertical: 20),
             child: ListView(
               // mainAxisAlignment: MainAxisAlignment.start,
               // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.done,
                     color: Colors.green,
                   ),
-                  title: Text("Sınıf ort"),
+                  title: const Text("Sınıf ort"),
                   subtitle: Text(snapshot["branchMean"].toStringAsFixed(2)),
                   trailing: Text("Benim notum $examScore"),
                 ),
                 ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.done,
                     color: Colors.red,
                   ),
@@ -152,8 +152,8 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
                   subtitle: Text(snapshot["gradeMean"].toStringAsFixed(2)),
                   trailing: Text("Benim notum $examScore"),
                 ),
-                Divider(thickness: 1),
-                Center(
+                const Divider(thickness: 1),
+                const Center(
                   // padding: EdgeInsets.symmetric(horizontal: 30),
                   child: Text(
                     "En başarılı öğrenciler",
@@ -162,7 +162,7 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
                 ),
                 ...snapshot["mostSuccessful"]
                     .map((e) => ListTile(
-                          leading: Icon(
+                          leading: const Icon(
                             Icons.done,
                             color: Colors.blue,
                           ),
@@ -194,8 +194,9 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
               .doc("ECkPBIzt7xU0NDGuJa6T1KBRJTr1")
               .snapshots(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting)
-              return Center(child: CircularProgressIndicator());
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
             return _buildDataGrid(snapshot.data);
           }),
     );
@@ -236,10 +237,11 @@ class _SelectionDataGridSource extends DataGridSource {
       AlignmentGeometry alignment = Alignment.center,
       EdgeInsetsGeometry padding = const EdgeInsets.all(8.0),
       TextOverflow textOverflow = TextOverflow.ellipsis,
-      Object value,
+      // TODO : Object yerine dynamic yazdım
+      dynamic value,
     }) {
       return value == 100
-          ? Image(
+          ? const Image(
               // fit: BoxFit.cover,
               image: NetworkImage(
                 "https://media.giphy.com/media/TgGWZwWlsODxFPA21A/giphy.gif",

@@ -4,7 +4,7 @@ import 'package:timezone/timezone.dart' as tz;
 
 class PushNotification extends ChangeNotifier {
   Future<void> showNotification(
-    Function onSelectNotification,
+    dynamic onSelectNotification,
     String title,
     String body,
     String payload,
@@ -55,7 +55,7 @@ class PushNotification extends ChangeNotifier {
   }
 
   Future<void> showScheduledNotification(
-    Function onSelectNotification,
+    dynamic onSelectNotification,
     String title,
     String body,
     String payload,
@@ -107,7 +107,7 @@ class PushNotification extends ChangeNotifier {
   }
 
   Future<void> showWeeklyAppointment(
-    Function onSelectNotification,
+    dynamic onSelectNotification,
     String title,
     String body,
     String payload,

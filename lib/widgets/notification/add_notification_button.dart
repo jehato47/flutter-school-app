@@ -15,10 +15,10 @@ class AddNotificationButton extends StatefulWidget {
 
 class _AddNotificationButtonState extends State<AddNotificationButton> {
   dynamic classes;
-  String to;
-  String fileName;
+  late String to;
+  late String fileName;
   FirebaseAuth auth = FirebaseAuth.instance;
-  NotificationP notificationP;
+  late NotificationP notificationP;
   dynamic file;
   dynamic user;
   TextEditingController mesaj = TextEditingController();
@@ -42,7 +42,7 @@ class _AddNotificationButtonState extends State<AddNotificationButton> {
 
     classes = attendance.docs.map((e) => e.id).toList();
     classes.insert(0, "genel");
-    new Picker(
+    Picker(
         adapter: PickerDataAdapter<String>(pickerdata: classes),
         changeToFirst: true,
         hideHeader: false,
@@ -69,8 +69,8 @@ class _AddNotificationButtonState extends State<AddNotificationButton> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Duyuru"),
-            SizedBox(height: 20),
+            const Text("Duyuru"),
+            const SizedBox(height: 20),
             TextField(
               maxLength: 500,
               focusNode: focusNode,
@@ -81,7 +81,7 @@ class _AddNotificationButtonState extends State<AddNotificationButton> {
               minLines: 3,
               maxLines: 4,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -106,7 +106,7 @@ class _AddNotificationButtonState extends State<AddNotificationButton> {
                   if (to == null) {
                     // Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                      const SnackBar(
                         duration: Duration(milliseconds: 1000),
                         content: Text("Hedef kitleyi seçin"),
                         backgroundColor: Colors.red,
@@ -115,7 +115,7 @@ class _AddNotificationButtonState extends State<AddNotificationButton> {
                     return;
                   }
                   notificationP.addNotification(
-                    auth.currentUser.displayName,
+                    auth.currentUser!.displayName as String,
                     mesaj.text.trim(),
                     file,
                     fileName,
@@ -138,7 +138,7 @@ class _AddNotificationButtonState extends State<AddNotificationButton> {
 
   Future<void> pickFile() async {
     file = null;
-    FilePickerResult result = await FilePicker.platform.pickFiles();
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
 
     if (result == null) return;
     fileName = result.files.first.name;
@@ -149,7 +149,7 @@ class _AddNotificationButtonState extends State<AddNotificationButton> {
       });
     } else {
       setState(() {
-        file = File(result.files.single.path);
+        file = File(result.files.single.path as String);
       });
     }
   }

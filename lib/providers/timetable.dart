@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:school2/screens/timetable/teacher_timetable_screen.dart';
+import 'package:school2d5/screens/timetable/teacher_timetable_screen.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'dart:math';
 import '../helpers/envs.dart';
@@ -46,7 +46,7 @@ class Timetable extends ChangeNotifier {
   ];
 
   final Random random = Random();
-  List<Appointment> _appointments;
+  late List<Appointment> _appointments;
   dynamic teacherData;
   dynamic studentData;
   // dynamic tData;

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:intl/intl.dart';
-import 'package:school2/screens/timetable/teacher_timetable_screen.dart';
-import 'package:school2/widgets/attendance/attendance_list.dart';
-import 'package:school2/widgets/attendance/empty_info.dart';
+import 'package:school2d5/screens/timetable/teacher_timetable_screen.dart';
+import 'package:school2d5/widgets/attendance/attendance_list.dart';
+import 'package:school2d5/widgets/attendance/empty_info.dart';
 import '../../providers/attendance.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../widgets/attendance/no_lecture_info.dart';
@@ -19,7 +19,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
   dynamic args;
   bool isSent = false;
   String currentClass = "";
-  DateTime currentTime;
+  late DateTime currentTime;
   dynamic attendance;
   bool showCalendarButton = true;
 
@@ -98,7 +98,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
       // Navigator.of(context).pop();
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           // margin: args != null
           //     ? null
           //     : EdgeInsets.only(bottom: 70, left: 10, right: 10),
@@ -116,7 +116,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
     Size size = MediaQuery.of(context).size;
 
     // ! TODO : Tehlike
-    args = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     if (args != null) {
       // Program - Yoklama - Program döngüsüne girmemesi için
       // sadece yoklama sayfasında buton gözükecek
@@ -134,9 +134,11 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
           try {
             attendance = Provider.of<Attendance>(context).attendance;
             // Eğer seçilen günde hiç ders yoksa
-            if (attendance.length == 0)
+            if (attendance.length == 0) {
               return NoLectureInfo();
-            else if (attendance == null) throw Error();
+            } else if (attendance == null) {
+              throw Error();
+            }
           } catch (err) {
             attendance = {
               "arrivals": [],
@@ -147,16 +149,18 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
             };
           }
 
-          if (snapshot.connectionState == ConnectionState.waiting)
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return Scaffold(
               appBar: AppBar(
                 centerTitle: true,
-                title: Text("Alınıyor"),
+                title: const Text("Alınıyor"),
               ),
-              body: Center(
+              body: const Center(
                 child: CircularProgressIndicator(),
               ),
             );
+          }
+
           currentClass = Provider.of<Attendance>(context).currentClass;
           currentTime = Provider.of<Attendance>(context).currentTime;
 
@@ -167,7 +171,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
                 ? null
                 : FloatingActionButton(
                     child: IconButton(
-                      icon: Icon(Icons.calendar_today_outlined),
+                      icon: const Icon(Icons.calendar_today_outlined),
                       onPressed: () {
                         Navigator.of(context)
                             .pushNamed(TeacherTimetableScreen.url);
@@ -178,7 +182,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
             appBar: AppBar(
               // centerTitle: true,
               title: Text(
-                "${DateFormat("E HH:mm").format(currentTime)}" +
+                DateFormat("E HH:mm").format(currentTime) +
                     " ${currentClass.toUpperCase()}",
               ),
               actions: [
@@ -191,7 +195,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
                 //     },
                 //   ),
                 IconButton(
-                  icon: Icon(Icons.done),
+                  icon: const Icon(Icons.done),
                   onPressed: sendAttendance,
                 )
               ],

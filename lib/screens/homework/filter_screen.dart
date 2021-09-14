@@ -13,7 +13,7 @@ class HomeworkFilterScreen extends StatefulWidget {
 class _HomeworkFilterScreenState extends State<HomeworkFilterScreen> {
   @override
   Widget build(BuildContext context) {
-    final lecture = ModalRoute.of(context).settings.arguments;
+    final lecture = ModalRoute.of(context)!.settings.arguments;
     final userInfo = Provider.of<Auth>(context).userInfo;
 
     // TODO : PRODUCTION
@@ -22,10 +22,10 @@ class _HomeworkFilterScreenState extends State<HomeworkFilterScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Ödevler"),
+        title: const Text("Ödevler"),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection("homework")
@@ -34,8 +34,9 @@ class _HomeworkFilterScreenState extends State<HomeworkFilterScreen> {
                 .where("lecture", isEqualTo: lecture)
                 .snapshots(),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting)
-                return Center(child: CircularProgressIndicator());
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
               final data = snapshot.data.docs;
 

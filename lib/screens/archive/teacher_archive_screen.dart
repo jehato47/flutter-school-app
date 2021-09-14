@@ -21,9 +21,9 @@ class _TeacherArchiveScreenState extends State<TeacherArchiveScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final uid = ModalRoute.of(context).settings.arguments;
+    final uid = ModalRoute.of(context)!.settings.arguments.toString();
     final isTeacher = Provider.of<Auth>(context).userInfo["role"] == "teacher";
-    bool isMe = auth.currentUser.uid == uid;
+    bool isMe = auth.currentUser!.uid == uid;
 
     return Scaffold(
       floatingActionButton: !(isTeacher && isMe)
@@ -33,7 +33,7 @@ class _TeacherArchiveScreenState extends State<TeacherArchiveScreen> {
               onPressed: () {},
             ),
       appBar: AppBar(
-        actions: [
+        actions: const [
           // if (isTeacher && isMe) AddFolderButton(),
         ],
         title: Text("Arşiv"),

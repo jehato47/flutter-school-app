@@ -5,7 +5,7 @@ import '../../screens/archive/in_archive_folder_screen.dart';
 
 class FoldersList extends StatefulWidget {
   final String uid;
-  FoldersList(this.uid);
+  const FoldersList(this.uid);
   @override
   _FoldersListState createState() => _FoldersListState();
 }
@@ -32,7 +32,7 @@ class _FoldersListState extends State<FoldersList> {
 
           // print(folderNames);
           return GridView.builder(
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               childAspectRatio: 3 / 2,
               crossAxisSpacing: 10,
               mainAxisExtent: 150,

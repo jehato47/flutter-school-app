@@ -7,7 +7,7 @@ class FilesList extends StatefulWidget {
   final String uid;
   final String folderName;
 
-  FilesList(this.uid, this.folderName);
+  const FilesList(this.uid, this.folderName);
 
   @override
   _FilesListState createState() => _FilesListState();
@@ -26,18 +26,19 @@ class _FilesListState extends State<FilesList> {
             .where("folderName", isEqualTo: folderName)
             .snapshots(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData)
-            return Center(
+          if (!snapshot.hasData) {
+            return const Center(
               child: CircularProgressIndicator(),
             );
-
+          }
           List<QueryDocumentSnapshot> items = snapshot.data.docs;
           items =
               items.where((element) => element["fileName"] != null).toList();
-          if (items.isEmpty)
-            return Center(
+          if (items.isEmpty) {
+            return const Center(
               child: Text("boş klasör"),
             );
+          }
           return ListView.builder(
             itemCount: items.length,
             itemBuilder: (context, index) => ListTile(
@@ -50,7 +51,7 @@ class _FilesListState extends State<FilesList> {
                     .ref(items[index]["fileRef"])
                     .delete();
               },
-              leading: Icon(Icons.file_download),
+              leading: const Icon(Icons.file_download),
               onTap: () {
                 launch(items[index]["url"]);
               },

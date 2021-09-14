@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:school2/screens/exam/exams_list_screen.dart';
-import 'package:school2/widgets/home/side_drawer.dart';
+import '../../screens/exam/exams_list_screen.dart';
+import '../../widgets/home/side_drawer.dart';
 import '../../screens/home/home_screen.dart';
 import '../../screens/attendance/attendace_check_screen.dart';
 import '../../screens/timetable/teacher_timetable_screen.dart';
@@ -60,6 +60,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (auth.currentUser == null) return Container();
     return Scaffold(
       appBar: index != 0
           ? null
@@ -68,7 +69,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                 RingBell(),
                 HomeworkButton(),
               ],
-              title: Text(auth.currentUser.displayName),
+              title: Text(auth.currentUser!.displayName as String),
             ),
       drawer: index == 0 ? SideDrawer() : null,
       body: body,
@@ -80,7 +81,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
         type: BottomNavigationBarType.fixed,
 
         onTap: setIndex,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Ana Sayfa",

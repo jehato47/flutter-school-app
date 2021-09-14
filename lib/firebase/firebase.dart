@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:school2/providers/attendance.dart';
-import 'package:school2/widgets/homework/homework_form.dart';
+import 'package:school2d5/providers/attendance.dart';
+import 'package:school2d5/widgets/homework/homework_form.dart';
 import '../providers/auth.dart';
 import './item.dart';
 import 'dart:math';
@@ -38,10 +38,10 @@ class FireBaseTryScreen extends StatefulWidget {
 }
 
 class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
-  File file;
-  String classFirst;
-  String classLast;
-  CollectionReference attendance;
+  late File file;
+  late String classFirst;
+  late String classLast;
+  late CollectionReference attendance;
   List<String> days = [
     "monday",
     "tuesday",
@@ -52,11 +52,11 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
     "sunday"
   ];
   Future<void> pickFile() async {
-    FilePickerResult result = await FilePicker.platform.pickFiles();
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result == null) return;
 
     setState(() {
-      file = File(result.files.single.path);
+      file = File(result.files.single.path.toString());
     });
   }
 

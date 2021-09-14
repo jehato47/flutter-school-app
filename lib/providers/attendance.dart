@@ -7,11 +7,11 @@ import 'package:intl/intl.dart';
 class Attendance extends ChangeNotifier {
   FirebaseAuth auth = FirebaseAuth.instance;
   dynamic _classes;
-  Map _oldAttendance;
-  String _currentClass;
-  DateTime _currentTime;
+  late Map _oldAttendance;
+  late String? _currentClass;
+  late DateTime _currentTime;
 
-  Map attendance = {
+  Map? attendance = {
     "arrivals": [],
     "notExists": [],
     "lates": [],
@@ -52,8 +52,9 @@ class Attendance extends ChangeNotifier {
 
   // TODO: Eğer o gün ders yoksa ders yok yazdır
   Future<dynamic> getAttendance([
-    String classTimetable,
-    DateTime timeTimetable,
+    // "classTimetable : String ;;; timeTimetable: DateTime"
+    String? classTimetable,
+    DateTime? timeTimetable,
   ]) async {
     String classFirst;
     String classLast;
@@ -67,7 +68,7 @@ class Attendance extends ChangeNotifier {
           .collection('attendance/$currentClass/pieces');
       DocumentSnapshot old = await att.doc(_currentTime.toString()).get();
 
-      classFirst = classTimetable.split("-").first;
+      classFirst = classTimetable!.split("-").first;
       classLast = classTimetable.split("-").last;
       if (old.exists) attendance = old["info"];
     } else {
@@ -114,8 +115,8 @@ class Attendance extends ChangeNotifier {
       });
       liste.sort();
 
-      classFirst = map[liste.first].split("-").first;
-      classLast = map[liste.first].split("-").last;
+      classFirst = map[liste.first]!.split("-").first;
+      classLast = map[liste.first]!.split("-").last;
 
       _currentClass = map[liste.first];
       DateTime dateInSyllabus = syl[day][map[liste.first]].toDate();

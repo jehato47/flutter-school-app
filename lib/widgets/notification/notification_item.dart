@@ -22,7 +22,7 @@ class NotificationItem extends StatefulWidget {
 }
 
 class _NotificationItemState extends State<NotificationItem> {
-  NotificationP notificationP;
+  late NotificationP notificationP;
   void download() async {
     if (notification["fileName"] == null) return;
     final url = await notificationP.getDownloadUrl(notification);
@@ -31,7 +31,7 @@ class _NotificationItemState extends State<NotificationItem> {
     } else {
       _launchURL(url);
     }
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text("indiriliyor"),
       backgroundColor: Colors.green,
     ));
@@ -41,15 +41,15 @@ class _NotificationItemState extends State<NotificationItem> {
       ? await launch(_url)
       : throw 'Could not launch $_url';
   FirebaseAuth auth = FirebaseAuth.instance;
-  CollectionReference ref;
-  DocumentSnapshot notification;
+  late CollectionReference ref;
+  late DocumentSnapshot notification;
   dynamic user;
 
   void addToSeen(CollectionReference ref, DocumentSnapshot notification) {
     List peopleWhoSee = notification["isSeen"];
 
-    if (!peopleWhoSee.contains(auth.currentUser.uid)) {
-      peopleWhoSee.add(auth.currentUser.uid);
+    if (!peopleWhoSee.contains(auth.currentUser!.uid)) {
+      peopleWhoSee.add(auth.currentUser!.uid);
     }
     ref.doc(notification.id).update({"isSeen": peopleWhoSee});
   }
@@ -80,8 +80,8 @@ class _NotificationItemState extends State<NotificationItem> {
         //     notification,
         //   );
         // },
-        selected: !notification["isSeen"].contains(auth.currentUser.uid),
-        trailing: notification["isSeen"].contains(auth.currentUser.uid)
+        selected: !notification["isSeen"].contains(auth.currentUser!.uid),
+        trailing: notification["isSeen"].contains(auth.currentUser!.uid)
             ? Text(
                 notification["to"],
                 textAlign: TextAlign.center,
@@ -89,7 +89,7 @@ class _NotificationItemState extends State<NotificationItem> {
                   color: notification["to"] == "genel" ? Colors.teal : null,
                 ),
               )
-            : Icon(Icons.notification_important),
+            : const Icon(Icons.notification_important),
         title: Text(
           //* ?TODO : Eğer text
           //* ?TODO : çok uzun olursa truncate etmeye bak
@@ -100,7 +100,7 @@ class _NotificationItemState extends State<NotificationItem> {
           DateFormat("d MMMM yyyy HH-mm").format(
             notification["added"].toDate(),
           ),
-          style: TextStyle(fontFamily: "source-sans"),
+          style: const TextStyle(fontFamily: "source-sans"),
         ),
         onTap: () {
           // Görenlere ekliyor
@@ -109,7 +109,7 @@ class _NotificationItemState extends State<NotificationItem> {
         },
         leading: notification["fileName"] == null
             ? null
-            : Icon(
+            : const Icon(
                 Icons.file_present,
                 // size: 35,
               ),

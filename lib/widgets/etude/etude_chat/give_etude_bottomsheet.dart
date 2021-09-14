@@ -23,7 +23,7 @@ class _GiveEtudeBottomSheetState extends State<GiveEtudeBottomSheet> {
         ListTile(
           title: Text(
             'Etütler',
-            style: theme.textTheme.subtitle1
+            style: theme.textTheme.subtitle1!
                 .copyWith(color: theme.colorScheme.onPrimary),
           ),
           tileColor: theme.colorScheme.primary,

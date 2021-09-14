@@ -19,19 +19,19 @@ class _NotificationsListState extends State<NotificationsList> {
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             print(snapshot.error);
-            return Center(child: Text("Birşeyler Ters Gitti..."));
+            return const Center(child: Text("Birşeyler Ters Gitti..."));
           }
-          if (!snapshot.hasData)
-            return Center(
+          if (!snapshot.hasData) {
+            return const Center(
               child: CircularProgressIndicator(),
             );
-
+          }
           CollectionReference ref =
               FirebaseFirestore.instance.collection("notification");
 
           List _docs = snapshot.data.docs;
 
-          return _docs.length == 0
+          return _docs.isEmpty
               ? NotificationEmpty()
               : ListView.builder(
                   itemCount: _docs.length,
@@ -45,7 +45,7 @@ class _NotificationsListState extends State<NotificationsList> {
                           notification,
                           // user,
                         ),
-                        Divider(
+                        const Divider(
                           thickness: 1.2,
                         ),
                       ],

@@ -7,7 +7,7 @@ class AttendanceDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final attendance =
-        ModalRoute.of(context).settings.arguments as QueryDocumentSnapshot;
+        ModalRoute.of(context)!.settings.arguments as QueryDocumentSnapshot;
 
     bool isEmpty = attendance["info"]["notExists"].isEmpty;
     return Scaffold(
@@ -16,11 +16,11 @@ class AttendanceDetailScreen extends StatelessWidget {
         title: Text("Gelmeyenler Listesi"),
       ),
       body: isEmpty
-          ? Center(
+          ? const Center(
               child: Text("Gelmeyen öğrenci yokmuş"),
             )
           : Padding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Column(
                 children: [
                   Expanded(
@@ -30,14 +30,15 @@ class AttendanceDetailScreen extends StatelessWidget {
                         future: attendance["info"]["notExists"][i].get(),
                         builder: (context, snapshot2) {
                           if (snapshot2.connectionState ==
-                              ConnectionState.waiting)
-                            return Image(
+                              ConnectionState.waiting) {
+                            return const Image(
                               width: 100,
                               height: 100,
                               image: NetworkImage(
                                 "https://media.giphy.com/media/3ov9k0Ziq50EoOuWRi/giphy.gif",
                               ),
                             );
+                          }
                           // return ListTile(
                           //   title: Text(snapshot2.data["name"]),
                           // );

@@ -15,7 +15,7 @@ class StudentTimetableScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Ders Programı"),
+        title: const Text("Ders Programı"),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -29,8 +29,9 @@ class StudentTimetableScreen extends StatelessWidget {
             // .where("id", isEqualTo: "6mA6Bw7DIXrPwIaqGBS3")
             .snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting)
-            return Center(child: CircularProgressIndicator());
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
           Provider.of<Timetable>(context).studentData = snapshot.data.docs;
           return TimetableCalendar(isTeacher: false);

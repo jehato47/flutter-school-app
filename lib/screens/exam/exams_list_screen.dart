@@ -14,12 +14,12 @@ class ExamsListScreen extends StatefulWidget {
 
 class _ExamsListScreenState extends State<ExamsListScreen> {
   dynamic userInfo;
-  List classes;
-  bool isTeacher;
-  String clss;
+  late List classes;
+  late bool isTeacher;
+  late String clss;
 
   Future<void> showPickerModal(BuildContext context) async {
-    new Picker(
+    Picker(
         adapter: PickerDataAdapter<String>(pickerdata: classes),
         changeToFirst: true,
         hideHeader: false,
@@ -44,7 +44,8 @@ class _ExamsListScreenState extends State<ExamsListScreen> {
     isTeacher = userInfo["role"] == "teacher";
     classes = userInfo["classes"];
 
-    if (clss == null && classes.length != 0) clss = classes[0];
+    // TODO : classes.length != null un yerine classes.isNotEmpty yazdım
+    if (clss == null && classes.isNotEmpty) clss = classes[0];
 
     return Scaffold(
       floatingActionButton: !isTeacher
@@ -60,7 +61,7 @@ class _ExamsListScreenState extends State<ExamsListScreen> {
             ),
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        actions: [
+        actions: const [
           // if (isTeacher)
           //   IconButton(
           //     onPressed: () async {

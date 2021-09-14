@@ -46,9 +46,9 @@ class _MessagesState extends State<Messages> {
               docs[index].data()["note"],
               docs[index].data()["displayName"],
               // docs[index].data()["userImage"],
-              docs[index].data()["uid"] == auth.currentUser.uid,
+              docs[index].data()["uid"] == auth.currentUser!.uid,
               docs[index]["date"].toDate(),
-              key: ValueKey(docs[index].id),
+              ValueKey(docs[index].id),
             );
           },
         );

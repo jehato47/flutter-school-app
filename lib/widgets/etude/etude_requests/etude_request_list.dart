@@ -22,25 +22,27 @@ class _EtudeRequestListState extends State<EtudeRequestList> {
         if (!snapshot.hasData)
           return Center(child: CircularProgressIndicator());
         final requests = snapshot.data.docs;
-        if (requests.length == 0)
-          return Center(
+        if (requests.length == 0) {
+          return const Center(
             child: Text(
               "Etüt istekleri burada gözükür. Henüz istek bulunmamakta.",
             ),
           );
+        }
 
         return ListView.builder(
           itemCount: snapshot.data.docs.length,
           itemBuilder: (context, index) {
             Color color;
-            if (requests[index]["state"] == "rejected")
+            if (requests[index]["state"] == "rejected") {
               color = Colors.red;
-            else if (requests[index]["state"] == "done")
+            } else if (requests[index]["state"] == "done") {
               color = Colors.green;
-            else
+            } else {
               color = Colors.amber;
+            }
             return Container(
-              margin: EdgeInsets.all(5),
+              margin: const EdgeInsets.all(5),
               decoration: BoxDecoration(
                 border: Border.all(color: color, width: 2),
                 borderRadius: BorderRadius.circular(10),

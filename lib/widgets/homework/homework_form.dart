@@ -5,8 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:school2/providers/auth.dart';
-import 'package:school2/providers/studentCheckBox/student_checkbox.dart';
+import '../../providers/auth.dart';
+import '../../providers/studentCheckBox/student_checkbox.dart';
 import '../../providers/homework.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_picker/Picker.dart';
@@ -26,11 +26,11 @@ class _HomeworkFormState extends State<HomeworkForm> {
 
   final _form = GlobalKey<FormState>();
 
-  String token;
+  late String token;
 
   dynamic file;
 
-  DateTime date;
+  late DateTime? date;
 
   Map<String, dynamic> hw = {
     "lecture": null,
@@ -62,7 +62,7 @@ class _HomeworkFormState extends State<HomeworkForm> {
   }
 
   Future<void> pickFile() async {
-    FilePickerResult result = await FilePicker.platform.pickFiles();
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result == null) return;
     if (kIsWeb) {
       setState(() {
@@ -71,7 +71,7 @@ class _HomeworkFormState extends State<HomeworkForm> {
       });
     } else {
       setState(() {
-        file = File(result.files.single.path);
+        file = File(result.files.single.path as String);
         // TODO : Burayı 2 defa yazmaya gerek yok
         hw["fileName"] = result.files.first.name;
       });
@@ -143,11 +143,11 @@ class _HomeworkFormState extends State<HomeworkForm> {
     //   ),
     // );
     // return;
-    bool isValid = _form.currentState.validate();
+    bool isValid = _form.currentState!.validate();
     if (date == null) print(12212222);
 
     if (!isValid || date == null || hw["classFirst"] == null) return;
-    _form.currentState.save();
+    _form.currentState!.save();
 
     // await showDialog(
     //   context: context,
@@ -189,9 +189,9 @@ class _HomeworkFormState extends State<HomeworkForm> {
     // return;
     date = null;
 
-    hw["teacher"] = auth.currentUser.displayName;
-    hw["teacherImage"] = auth.currentUser.photoURL;
-    hw["uid"] = auth.currentUser.uid;
+    hw["teacher"] = auth.currentUser!.displayName;
+    hw["teacherImage"] = auth.currentUser!.photoURL;
+    hw["uid"] = auth.currentUser!.uid;
     hw["to"] = hw["classFirst"] + "-" + hw["classLast"];
     hw["lecture"] = userInfo["lecture"]; // TODO : 22
     // return;
@@ -202,7 +202,7 @@ class _HomeworkFormState extends State<HomeworkForm> {
     await Provider.of<HomeWork>(context, listen: false).addHomeWork(hw, file);
 
     setState(() {
-      _form.currentState.reset();
+      _form.currentState!.reset();
 
       isLoading = false;
       file = null;
@@ -213,17 +213,17 @@ class _HomeworkFormState extends State<HomeworkForm> {
   }
 
   showPickerModal(BuildContext context) async {
-    FocusScope.of(context).requestFocus(new FocusNode());
+    FocusScope.of(context).requestFocus(FocusNode());
 
     final allClasses = userInfo["classes"];
 
-    new Picker(
+    Picker(
         adapter: PickerDataAdapter<String>(pickerdata: allClasses),
         changeToFirst: true,
         hideHeader: false,
         confirmText: "Seç",
         cancelText: "Iptal",
-        title: Text("Sınıf seç"),
+        title: const Text("Sınıf seç"),
         magnification: 1.2,
         onConfirm: (Picker picker, List value) {
           setState(() {
@@ -246,16 +246,18 @@ class _HomeworkFormState extends State<HomeworkForm> {
             ),
           ),
         ),
-        SizedBox(width: 5),
+        const SizedBox(width: 5),
         Expanded(
           child: OutlinedButton(
             onPressed: showDatePickerFunc,
             child: Text(
-              date != null ? DateFormat('d MMMM').format(date) : "Tarih Seç",
+              date != null
+                  ? DateFormat('d MMMM').format(date as DateTime)
+                  : "Tarih Seç",
             ),
           ),
         ),
-        SizedBox(width: 5),
+        const SizedBox(width: 5),
         Expanded(
           child: OutlinedButton(
             onPressed: () {
@@ -278,10 +280,10 @@ class _HomeworkFormState extends State<HomeworkForm> {
     return SizedBox(
       width: double.infinity,
       child: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : OutlinedButton(
               onPressed: sendHomework,
-              child: Text("Gönder"),
+              child: const Text("Gönder"),
             ),
     );
   }
@@ -300,13 +302,13 @@ class _HomeworkFormState extends State<HomeworkForm> {
             TextFormField(
               // controller: hwController,
               validator: (value) {
-                if (value.isEmpty) return "Ödev girmediniz";
+                if (value!.isEmpty) return "Ödev girmediniz";
                 return null;
               },
               onSaved: (newValue) {
                 hw["homework"] = newValue;
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Ödev",
                 // border: OutlineInputBorder(),
               ),
@@ -315,23 +317,23 @@ class _HomeworkFormState extends State<HomeworkForm> {
               minLines: 2,
               maxLines: 5,
               validator: (value) {
-                if (value.isEmpty) return "Açıklama girmediniz";
+                if (value!.isEmpty) return "Açıklama girmediniz";
                 return null;
               },
               onSaved: (newValue) {
                 hw["explanation"] = newValue;
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Açıklama",
                 alignLabelWithHint: true,
                 // border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             buildWrap(),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             helperButtons(context),
-            if (kIsWeb) SizedBox(height: 20),
+            if (kIsWeb) const SizedBox(height: 20),
             sendButton(),
           ],
         ),
@@ -343,7 +345,7 @@ class _HomeworkFormState extends State<HomeworkForm> {
   AnimatedContainer buildWrap() {
     return AnimatedContainer(
       // height: !isOpen ? 10 : 100,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       child: !isOpen
           ? Container()
           : Wrap(
@@ -364,11 +366,12 @@ class _HomeworkFormState extends State<HomeworkForm> {
                             checkbox.change();
 
                             if (!selecteds.contains(e.key) &&
-                                checkbox.isChecked)
+                                checkbox.isChecked) {
                               selecteds.add(e.key);
-                            else
+                            } else {
                               selecteds
                                   .removeWhere((element) => element == e.key);
+                            }
                             print(selecteds);
                           },
                           label: Text(e.key),

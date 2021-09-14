@@ -4,7 +4,7 @@ import '../../screens/exam/add_exam_result_screen.dart';
 
 class ExamsList extends StatefulWidget {
   final String clss;
-  ExamsList(this.clss);
+  const ExamsList(this.clss);
 
   @override
   _ExamsListState createState() => _ExamsListState();
@@ -14,11 +14,11 @@ class _ExamsListState extends State<ExamsList> {
   dynamic data;
   @override
   Widget build(BuildContext context) {
-    if (widget.clss == null)
-      return Center(
+    if (widget.clss == null) {
+      return const Center(
         child: Text("Henüz sınıf seçmediniz veya sınav bulunmamakta"),
       );
-
+    }
     String classFirst = widget.clss.split("-").first;
     String classLast = widget.clss.split("-").last;
     return StreamBuilder(
@@ -28,12 +28,12 @@ class _ExamsListState extends State<ExamsList> {
           .where("classLast", isEqualTo: classLast)
           .snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData)
-          return Center(child: CircularProgressIndicator());
-
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
         data = snapshot.data.docs;
         return Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: ListView.builder(
               itemBuilder: (context, index) => Card(
                 child: ListTile(

@@ -1,8 +1,8 @@
-name: school2
+name: school2d5
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
-# pub.dev using `pub publish`. This is preferred for private packages.
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
@@ -18,8 +18,14 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
     sdk: flutter
@@ -30,18 +36,18 @@ dependencies:
   file_picker: ^3.0.2+2
   intl: ^0.17.0
   url_launcher: ^6.0.3
-  image_downloader: ^0.20.1
+  # image_downloader: ^0.20.1
   flutter_downloader: ^1.5.2
   path_provider: ^2.0.1
   permission_handler: ^6.1.1
   syncfusion_flutter_calendar: ^19.1.55
   syncfusion_localizations: ^19.1.55
-  syncfusion_flutter_datagrid: ^19.1.55-beta
+  syncfusion_flutter_datagrid: ^19.2.60-beta
   flutter_picker: ^2.0.0
   syncfusion_flutter_charts: ^19.1.55+1
   syncfusion_flutter_datepicker: ^19.1.55-beta
   firebase_core: ^1.0.2
-  cupertino_icons: ^1.0.2
+  # cupertino_icons: ^1.0.2
   flutter_slidable: ^0.5.7
   cloud_firestore: ^1.0.3
   firebase_storage: ^8.0.1
@@ -51,14 +57,25 @@ dependencies:
   flutter_login: ^2.1.0
   google_nav_bar: ^5.0.5
   flutter_card_swipper: ^0.4.0
-  
+  cupertino_icons: ^1.0.2
+
   flutter_local_notifications: ^5.0.0+3
   
-  
+
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+
 dev_dependencies:
-  logger: ^1.0.0
   flutter_test:
     sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^1.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -70,8 +87,7 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-  assets:
-  - images/
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
@@ -88,34 +104,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  fonts:
-    - family: source-sans
-      fonts:
-        - asset: fonts/SourceSansPro-Regular.ttf
-        - asset: fonts/SourceSansPro-BoldItalic.ttf
-
-    - family: quicksand
-      fonts:
-        - asset: fonts/Quicksand-Regular.ttf
-          weight: 700
-    - family: saira
-      fonts:
-        - asset: fonts/SairaCondensed-Regular.ttf
-        - asset: fonts/SairaCondensed-Bold.ttf
-          weight: 700
-    - family: lora
-      fonts:
-        - asset: fonts/Lora-Regular.ttf
-      
-    - family: ruda
-      fonts:
-        - asset: fonts/Ruda-Regular.ttf
-        - asset: fonts/Ruda-Medium.ttf
-        - asset: fonts/Ruda-Black.ttf
-        - asset: fonts/Ruda-Regular.ttf
-        - asset: fonts/Ruda-Bold.ttf
-          weight: 700
-      
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

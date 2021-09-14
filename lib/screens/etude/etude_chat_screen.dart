@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:school2/screens/etude/in_etude_chat_screen.dart';
-import 'package:school2/widgets/etude/etude_chat/message_input.dart';
+import '../../screens/etude/in_etude_chat_screen.dart';
+import '../../widgets/etude/etude_chat/message_input.dart';
 import 'package:intl/intl.dart';
 import '../../widgets/etude/etude_chat/give_etude_bottomsheet.dart';
 import '../../widgets/etude/etude_chat/messages.dart';

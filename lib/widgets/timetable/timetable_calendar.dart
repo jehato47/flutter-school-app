@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:school2/screens/etude/etude_chat_screen.dart';
-import 'package:school2/screens/etude/in_etude_chat_screen.dart';
-import 'package:school2/screens/homework/homework_detail_screen.dart';
+import '../../screens/etude/etude_chat_screen.dart';
+import '../../screens/etude/in_etude_chat_screen.dart';
+import '../../screens/homework/homework_detail_screen.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../providers/timetable.dart';
 import '../../helpers/timetable/timetable_helpers.dart';
@@ -41,18 +41,18 @@ class _TimetableCalendarState extends State<TimetableCalendar> {
       onTap: (calendarTapDetails) async {
         if (calendarTapDetails.appointments == null) return;
 
-        for (var element in calendarTapDetails.appointments) {
+        for (var element in calendarTapDetails.appointments!) {
           // print(element.startTime);
           // print(DateTime.now());
           // print(calendarTapDetails.targetElement);
           // Eğer tıkladığımız appointment sınıfı gösteriyorsa
           // yoklamasına git diyoruz
-          DateTime date = calendarTapDetails.date;
+          DateTime date = calendarTapDetails.date as DateTime;
 
           if (widget.isTeacher &&
               calendarTapDetails.targetElement == CalendarElement.appointment &&
               element.notes == "teachertimetable") {
-            Appointment apt = calendarTapDetails.appointments[0];
+            Appointment apt = calendarTapDetails.appointments![0];
             // return;
             Navigator.of(context).pushNamed(
               AttendanceCheckScreen.url,
@@ -91,13 +91,13 @@ class _TimetableCalendarState extends State<TimetableCalendar> {
       showNavigationArrow: true,
       showDatePickerButton: true,
       view: widget.isTeacher ? CalendarView.week : CalendarView.month,
-      scheduleViewSettings: ScheduleViewSettings(
+      scheduleViewSettings: const ScheduleViewSettings(
         // dayHeaderSettings: DayHeaderSettings(
         //   dayTextStyle: TextStyle(),
         // ),
         hideEmptyScheduleWeek: true,
       ),
-      timeSlotViewSettings: TimeSlotViewSettings(
+      timeSlotViewSettings: const TimeSlotViewSettings(
         startHour: 7,
         endHour: 24,
         // nonWorkingDays: <int>[DateTime.friday, DateTime.saturday],
@@ -107,7 +107,7 @@ class _TimetableCalendarState extends State<TimetableCalendar> {
             .createAppointments(widget.isTeacher),
       ),
       appointmentTimeTextFormat: "HH:mm",
-      monthViewSettings: MonthViewSettings(
+      monthViewSettings: const MonthViewSettings(
         // showTrailingAndLeadingDates: false,
         // appointmentDisplayMode: MonthAppointmentDisplayMode.indicator,
         // navigationDirection: MonthNavigationDirection.horizontal,

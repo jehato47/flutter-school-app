@@ -12,7 +12,7 @@ class MyFriendsScreen extends StatelessWidget {
     final userInfo = Provider.of<Auth>(context).userInfo;
     FirebaseAuth auth = FirebaseAuth.instance;
     final String myClass = userInfo["classFirst"] + "-" + userInfo["classLast"];
-    bool isMe = userInfo == auth.currentUser.uid;
+    bool isMe = userInfo == auth.currentUser!.uid;
 
     return Scaffold(
       appBar: AppBar(
@@ -26,10 +26,11 @@ class MyFriendsScreen extends StatelessWidget {
             .where("classLast", isEqualTo: userInfo["classLast"])
             .snapshots(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData)
-            return Center(
+          if (!snapshot.hasData) {
+            return const Center(
               child: CircularProgressIndicator(),
             );
+          }
 
           List<QueryDocumentSnapshot> students = snapshot.data.docs;
 
@@ -37,18 +38,18 @@ class MyFriendsScreen extends StatelessWidget {
             itemCount: students.length,
             itemBuilder: (context, index) => ListTile(
               onTap: () {},
-              tileColor: students[index].id == auth.currentUser.uid
+              tileColor: students[index].id == auth.currentUser!.uid
                   ? Colors.indigo[100]
                   : null,
               trailing: index == 0
-                  ? Icon(
+                  ? const Icon(
                       Icons.star,
                       color: Colors.amber,
                     )
                   : null,
               leading: Text(
                 "${index + 1}",
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20,
                 ),
               ),

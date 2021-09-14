@@ -4,7 +4,7 @@ class PageGridItem extends StatelessWidget {
   final page;
   final title;
   final subtitle;
-  PageGridItem(this.page, this.title, this.subtitle);
+  const PageGridItem(this.page, this.title, this.subtitle);
 
   @override
   Widget build(BuildContext context) {

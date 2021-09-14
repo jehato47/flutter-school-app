@@ -40,7 +40,7 @@ class _InEtudeChatScreenState extends State<InEtudeChatScreen> {
                     child: CircularProgressIndicator(),
                   );
 
-                WidgetsBinding.instance.addPostFrameCallback((_) {
+                WidgetsBinding.instance!.addPostFrameCallback((_) {
                   if (_scrollController.hasClients) {
                     _scrollController
                         .jumpTo(_scrollController.position.maxScrollExtent);
@@ -53,7 +53,7 @@ class _InEtudeChatScreenState extends State<InEtudeChatScreen> {
                 return ListView.builder(
                   controller: _scrollController,
                   itemBuilder: (context, index) {
-                    bool isMe = data[index]["uid"] == auth.currentUser.uid;
+                    bool isMe = data[index]["uid"] == auth.currentUser!.uid;
                     return MessageBubble(
                       data[index]["message"],
                       data[index]["displayName"],

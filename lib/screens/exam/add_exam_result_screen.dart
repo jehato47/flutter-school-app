@@ -17,7 +17,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
   dynamic generalData = {};
   final _formKey = GlobalKey<FormState>();
   int index = 0;
-  List<QueryDocumentSnapshot> ids;
+  late List<QueryDocumentSnapshot> ids;
   bool isInit = true;
   dynamic args;
   dynamic examData;
@@ -26,9 +26,9 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
     final students = ids.map((e) => e["displayName"]).toList();
     FocusScope.of(context).unfocus();
 
-    await Future.delayed(Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: 10));
 
-    new Picker(
+    Picker(
         adapter: PickerDataAdapter<String>(pickerdata: students),
         changeToFirst: true,
         hideHeader: false,
@@ -39,7 +39,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
         selecteds: [index],
         height: 250,
         // columnFlex: [10],
-        title: Text(""),
+        title: const Text(""),
         onConfirm: (Picker picker, List value) {
           setState(() {
             index = value.first;
@@ -87,7 +87,8 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
               validator: (value) {
                 try {
                   if (value != "" &&
-                      (double.parse(value) < 0 || double.parse(value) > 100)) {
+                      (double.parse(value as String) < 0 ||
+                          double.parse(value) > 100)) {
                     controller.text = controller.text.substring(0, 2);
                   }
                 } catch (err) {
@@ -96,7 +97,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
                 return null;
               },
               maxLength: 4,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 counterText: "",
                 border: OutlineInputBorder(),
               ),
@@ -110,7 +111,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
   }
 
   Widget build(BuildContext context) {
-    args = ModalRoute.of(context).settings.arguments;
+    args = ModalRoute.of(context)!.settings.arguments;
     if (isInit) {
       ids = args[0];
       index = args[1];
@@ -122,7 +123,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: Icon(Icons.save),
+            icon: const Icon(Icons.save),
             onPressed: () async {
               CollectionReference reference =
                   FirebaseFirestore.instance.collection("exam");
@@ -138,25 +139,25 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
             },
           ),
         ],
-        title: Text("Sınav Sonucu"),
+        title: const Text("Sınav Sonucu"),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Form(
           key: _formKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             children: [
               ListTile(
-                trailing: Icon(Icons.autorenew_sharp),
+                trailing: const Icon(Icons.autorenew_sharp),
                 onTap: () async {
                   FocusScope.of(context).unfocus();
-                  await Future.delayed(Duration(milliseconds: 10));
+                  await Future.delayed(const Duration(milliseconds: 10));
                   await showPickerModal(context);
                 },
                 leading: Text(
                   "${index + 1}/${ids.length}",
-                  style: TextStyle(fontSize: 25),
+                  style: const TextStyle(fontSize: 25),
                 ),
                 title: Text(
                   ids[index]["displayName"],
@@ -166,7 +167,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
                   textAlign: TextAlign.left,
                 ),
               ),
-              Divider(thickness: 1),
+              const Divider(thickness: 1),
               Expanded(
                 child: ListView.builder(
                   itemBuilder: (context, i) {
@@ -180,7 +181,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
                   if (index != 0)
                     Expanded(
                       child: ElevatedButton(
-                        child: Text("önceki"),
+                        child: const Text("önceki"),
                         onPressed: () async {
                           setState(() {
                             index -= 1;
@@ -188,17 +189,17 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
                         },
                       ),
                     ),
-                  if (index != 0) SizedBox(width: 20),
+                  if (index != 0) const SizedBox(width: 20),
                   Expanded(
                     child: ElevatedButton(
                       child:
                           Text(index == ids.length - 1 ? "Bitti" : "sonraki"),
                       onPressed: () async {
-                        if (index < ids.length - 1)
+                        if (index < ids.length - 1) {
                           setState(() {
                             index += 1;
                           });
-                        else {
+                        } else {
                           Navigator.of(context).pop();
                         }
                       },

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/rendering.dart';
-import 'package:school2/screens/etude/teacher_etude_screen.dart';
+import '../../screens/etude/teacher_etude_screen.dart';
 import '../../widgets/home/pages_grid.dart';
 import '../../widgets/home/side_drawer.dart';
 import '../../widgets/home/homework_button.dart';
@@ -37,20 +37,20 @@ class _HomeScreenState extends State<HomeScreen> {
     const Color(0xFF0A8043),
   ];
 
-  Function setIndex;
+  late Function setIndex;
   // dynamic body = PagesGrid();
   dynamic body = Placeholder();
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-  Widget buildCard(String title, String subtitle, String fText, Function fFunc,
-      String sText, Function sFunc) {
+  Widget buildCard(String title, String subtitle, String fText,
+      Function()? fFunc, String sText, Function()? sFunc) {
     return Center(
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.album,
                 // color: Colors.teal,
               ),

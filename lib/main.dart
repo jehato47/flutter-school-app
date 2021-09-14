@@ -50,10 +50,11 @@ import 'screens/myclass/my_friends_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (!kIsWeb)
+  if (!kIsWeb) {
     await FlutterDownloader.initialize(
         debug: true // optional: set false to disable printing logs to console
         );
+  }
   Intl.defaultLocale = 'tr_TR';
 
   runApp(MyApp());
@@ -101,7 +102,7 @@ class MyApp extends StatelessWidget {
             // buttonColor: Colors.indigo,
             ),
         themeMode: ThemeMode.dark,
-        localizationsDelegates: [
+        localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           // ... app-specific localization delegate[s] here
           SfGlobalLocalizations.delegate
@@ -119,7 +120,7 @@ class MyApp extends StatelessWidget {
           // fontFamily: "ruda",
           // primaryColor: Colors.indigo,
           primaryTextTheme: ThemeData.light().textTheme.copyWith(
-                headline6: TextStyle(
+                headline6: const TextStyle(
                   color: Colors.white,
                 ),
               ),
@@ -133,37 +134,58 @@ class MyApp extends StatelessWidget {
             future: Firebase.initializeApp(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               }
-              return StreamBuilder(
-                stream: FirebaseAuth.instance.authStateChanges(),
-                builder: (ctx, snapshot) {
-                  // * TODO : Login Form da setState hatası veriyor bak
-                  if (snapshot.connectionState == ConnectionState.waiting)
-                    return Center(child: CircularProgressIndicator());
-                  if (snapshot.hasData) {
-                    User user = snapshot.data;
-                    return FutureBuilder(
-                        future: FirebaseFirestore.instance
-                            .collection("user")
-                            .doc(user.uid)
-                            .get(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting)
-                            return Center(child: CircularProgressIndicator());
-                          DocumentSnapshot documentSnapshot = snapshot.data;
-                          Provider.of<Auth>(context, listen: false).userInfo =
-                              documentSnapshot.data();
-                          if (documentSnapshot["role"] == "teacher") {
-                            return TeacherHomeScreen();
-                          }
-                          return StudentHomeScreen();
-                        });
-                  }
-                  return LoginScreen();
-                },
-              );
+
+              if (FirebaseAuth.instance.currentUser != null) {
+                User? user = FirebaseAuth.instance.currentUser;
+                return FutureBuilder(
+                    future: FirebaseFirestore.instance
+                        .collection("user")
+                        .doc(user!.uid)
+                        .get(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting)
+                        return Center(child: CircularProgressIndicator());
+                      Object? documentSnapshot = snapshot.data;
+                      Provider.of<Auth>(context, listen: false).userInfo =
+                          documentSnapshot.data();
+                      if (documentSnapshot["role"] == "teacher") {
+                        return TeacherHomeScreen();
+                      }
+                      return StudentHomeScreen();
+                    });
+              }
+              return LoginScreen2();
+              // return StreamBuilder(
+              //   stream: FirebaseAuth.instance.authStateChanges(),
+              //   builder: (ctx, snapshot) {
+              //     // * TODO : Login Form da setState hatası veriyor bak
+              //     if (snapshot.connectionState == ConnectionState.waiting)
+              //       return Center(child: CircularProgressIndicator());
+              //     if (snapshot.hasData) {
+              //       User user = snapshot.data;
+              //       return FutureBuilder(
+              //           future: FirebaseFirestore.instance
+              //               .collection("user")
+              //               .doc(user.uid)
+              //               .get(),
+              //           builder: (context, snapshot) {
+              //             if (snapshot.connectionState ==
+              //                 ConnectionState.waiting)
+              //               return Center(child: CircularProgressIndicator());
+              //             DocumentSnapshot documentSnapshot = snapshot.data;
+              //             Provider.of<Auth>(context, listen: false).userInfo =
+              //                 documentSnapshot.data();
+              //             if (documentSnapshot["role"] == "teacher") {
+              //               return TeacherHomeScreen();
+              //             }
+              //             return StudentHomeScreen();
+              //           });
+              //     }
+              //     return LoginScreen();
+              //   },
+              // );
             },
           ),
         ),

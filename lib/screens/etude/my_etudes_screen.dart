@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school2/screens/etude/select_lecture_screen.dart';
+import '../../screens/etude/select_lecture_screen.dart';
 import '../../widgets/etude/my_etudes/my_etudes_list.dart';
 
 class MyEtudesScreen extends StatefulWidget {

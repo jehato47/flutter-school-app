@@ -30,7 +30,7 @@ class _HomeworksListState extends State<HomeworksList> {
           return Center(child: Text("Birşeyler Ters Gitti..."));
         }
         if (!snapshot.hasData)
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
 
@@ -38,8 +38,8 @@ class _HomeworksListState extends State<HomeworksList> {
         docs = List.from(docs.reversed);
 
         return Padding(
-          padding: EdgeInsets.all(10),
-          child: docs.length == 0
+          padding: const EdgeInsets.all(10),
+          child: docs.isEmpty
               ? NotificationEmpty()
               : ListView.builder(
                   itemCount: docs.length,

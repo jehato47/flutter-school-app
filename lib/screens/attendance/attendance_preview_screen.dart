@@ -16,11 +16,11 @@ class AttendancePreviewScreen extends StatefulWidget {
 }
 
 class _AttendancePreviewScreenState extends State<AttendancePreviewScreen> {
-  DateTime startDate;
-  DateTime endDate;
+  late DateTime? startDate;
+  late DateTime? endDate;
   List<dynamic> filteredDocs = [];
   List<String> classes = [];
-  String token;
+  late String token;
   String currentClass = "11-c";
 
   showPickerModal(BuildContext context) async {
@@ -28,7 +28,7 @@ class _AttendancePreviewScreenState extends State<AttendancePreviewScreen> {
 
     QuerySnapshot attendance = await att.get();
     classes = attendance.docs.map((e) => e.id).toList();
-    new Picker(
+    Picker(
         adapter: PickerDataAdapter<String>(pickerdata: classes),
         changeToFirst: true,
         hideHeader: false,
@@ -53,12 +53,12 @@ class _AttendancePreviewScreenState extends State<AttendancePreviewScreen> {
       appBar: AppBar(
         actions: [
           IconButton(
-              icon: Icon(Icons.place),
+              icon: const Icon(Icons.place),
               onPressed: () async {
                 await showPickerModal(context);
               }),
           IconButton(
-            icon: Icon(Icons.filter_list),
+            icon: const Icon(Icons.filter_list),
             onPressed: () async {
               // setState(() {
               //   currentClass = "11-d";
@@ -103,14 +103,16 @@ class _AttendancePreviewScreenState extends State<AttendancePreviewScreen> {
                     .orderBy("date", descending: true)
                     .snapshots(),
                 builder: (context, attendance) {
-                  if (!attendance.hasData)
-                    return Center(child: CircularProgressIndicator());
+                  if (!attendance.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
                   List<dynamic> data;
-                  if (filteredDocs.length == 0)
+                  if (filteredDocs.length == 0) {
                     data = attendance.data.docs;
-                  else
+                  } else {
                     data = filteredDocs;
+                  }
                   // print(data);
                   return ListView.builder(
                     itemBuilder: (context, index) {

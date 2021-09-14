@@ -87,11 +87,11 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
   }
 
   // TODO : Öğrenciye uzun basıldığında bazı detayları göstermeye bak
-  Map<String, dynamic> attendance;
+  late Map<String, dynamic> attendance;
   dynamic student;
-  Function changeValues;
+  late Function changeValues;
   Color color = Colors.green;
-  StudentCheckBox checkbox;
+  late StudentCheckBox checkbox;
   bool isInit = true;
 
   @override

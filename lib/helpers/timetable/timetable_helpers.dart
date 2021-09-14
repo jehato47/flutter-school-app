@@ -63,26 +63,26 @@ class TimetableDataSource extends CalendarDataSource {
 
   @override
   DateTime getStartTime(int index) {
-    return appointments[index].from;
+    return appointments![index].from;
   }
 
   @override
   DateTime getEndTime(int index) {
-    return appointments[index].to;
+    return appointments![index].to;
   }
 
   @override
   String getSubject(int index) {
-    return appointments[index].subject;
+    return appointments![index].subject;
   }
 
   @override
   Color getColor(int index) {
-    return appointments[index].background;
+    return appointments![index].background;
   }
 
   @override
   bool isAllDay(int index) {
-    return appointments[index].isAllDay;
+    return appointments![index].isAllDay;
   }
 }

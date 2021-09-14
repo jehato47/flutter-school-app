@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:school2/screens/etude/my_etudes_screen.dart';
-import 'package:school2/screens/homework/homework_preview_screen.dart';
-import 'package:school2/screens/timetable/student_timetable_screen.dart';
-import 'package:school2/widgets/home/side_drawer.dart';
+import '../../screens/etude/my_etudes_screen.dart';
+import '../../screens/homework/homework_preview_screen.dart';
+import '../../screens/timetable/student_timetable_screen.dart';
+import '../../widgets/home/side_drawer.dart';
 import '../../screens/home/home_screen.dart';
 import '../../screens/timetable/teacher_timetable_screen.dart';
 import '../../screens/exam/student_exam_screen.dart';
@@ -70,7 +70,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                 ArchiveButton(),
                 RingBell(),
               ],
-              title: Text(auth.currentUser.displayName),
+              title: Text(auth.currentUser!.displayName as String),
             ),
       drawer: index == 0 ? SideDrawer() : null,
       body: body,
@@ -81,7 +81,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
         currentIndex: index,
         type: BottomNavigationBarType.fixed,
         onTap: setIndex,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Ana Sayfa",

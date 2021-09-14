@@ -13,11 +13,11 @@ class _ArchiveListByTeachersState extends State<ArchiveListByTeachers> {
     return StreamBuilder(
         stream: FirebaseFirestore.instance.collection("archive").snapshots(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData)
-            return Center(
+          if (!snapshot.hasData) {
+            return const Center(
               child: CircularProgressIndicator(),
             );
-
+          }
           List<QueryDocumentSnapshot> items = snapshot.data.docs;
 
           Map teachers = {};
@@ -27,10 +27,11 @@ class _ArchiveListByTeachersState extends State<ArchiveListByTeachers> {
             teachers[uid] = displayName;
           });
 
-          if (teachers.isEmpty)
-            return Center(
+          if (teachers.isEmpty) {
+            return const Center(
               child: Text("Henüz kaynak yok"),
             );
+          }
           return ListView.builder(
             itemCount: teachers.length,
             itemBuilder: (context, index) {
@@ -44,7 +45,7 @@ class _ArchiveListByTeachersState extends State<ArchiveListByTeachers> {
                   );
                 },
                 title: Text(teachers[uid]),
-                trailing: Icon(Icons.source_outlined),
+                trailing: const Icon(Icons.source_outlined),
               );
             },
           );
