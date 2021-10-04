@@ -69,7 +69,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                 RingBell(),
                 HomeworkButton(),
               ],
-              title: Text(auth.currentUser!.displayName as String),
+              title: Text(auth.currentUser.displayName),
             ),
       drawer: index == 0 ? SideDrawer() : null,
       body: body,
@@ -81,7 +81,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
         type: BottomNavigationBarType.fixed,
 
         onTap: setIndex,
-        items: const [
+        items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Ana Sayfa",

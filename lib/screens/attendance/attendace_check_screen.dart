@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_picker/Picker.dart';
+// import 'package:flutter_picker/Picker.dart';
 import 'package:intl/intl.dart';
-import 'package:school2d5/screens/timetable/teacher_timetable_screen.dart';
-import 'package:school2d5/widgets/attendance/attendance_list.dart';
-import 'package:school2d5/widgets/attendance/empty_info.dart';
+import '../../screens/timetable/teacher_timetable_screen.dart';
+import '../../widgets/attendance/attendance_list.dart';
+import '../../widgets/attendance/empty_info.dart';
 import '../../providers/attendance.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../widgets/attendance/no_lecture_info.dart';
@@ -19,7 +19,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
   dynamic args;
   bool isSent = false;
   String currentClass = "";
-  late DateTime currentTime;
+  DateTime currentTime;
   dynamic attendance;
   bool showCalendarButton = true;
 
@@ -38,39 +38,39 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
     });
   }
 
-  showPickerModal(BuildContext context) async {
-    Map<String, dynamic> classes =
-        await Provider.of<Attendance>(context).classes;
+  // showPickerModal(BuildContext context) async {
+  //   Map<String, dynamic> classes =
+  //       await Provider.of<Attendance>(context).classes;
 
-    new Picker(
-        adapter: PickerDataAdapter<String>(pickerdata: [classes]),
-        changeToFirst: true,
-        hideHeader: false,
-        confirmText: "Seç",
-        cancelText: "Iptal",
-        title: Text(
-          DateFormat('d MMMM EEEE').format(DateTime.now()).toString(),
-        ),
-        magnification: 1.2,
-        onConfirm: (Picker picker, List value) {
-          setState(() {
-            currentClass = picker.getSelectedValues().first;
-            currentTime = picker.getSelectedValues().last;
-          });
-        }).showModal(this.context);
-  }
+  //   Picker(
+  //       adapter: PickerDataAdapter<String>(pickerdata: [classes]),
+  //       changeToFirst: true,
+  //       hideHeader: false,
+  //       confirmText: "Seç",
+  //       cancelText: "Iptal",
+  //       title: Text(
+  //         DateFormat('d MMMM EEEE').format(DateTime.now()).toString(),
+  //       ),
+  //       magnification: 1.2,
+  //       onConfirm: (Picker picker, List value) {
+  //         setState(() {
+  //           currentClass = picker.getSelectedValues().first;
+  //           currentTime = picker.getSelectedValues().last;
+  //         });
+  //       }).showModal(this.context);
+  // }
 
-  Widget buildElevatedButton() {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        child: Text("Sınıf seç"),
-        onPressed: () {
-          showPickerModal(context);
-        },
-      ),
-    );
-  }
+  // Widget buildElevatedButton() {
+  //   return SizedBox(
+  //     width: double.infinity,
+  //     child: ElevatedButton(
+  //       child: Text("Sınıf seç"),
+  //       onPressed: () {
+  //         showPickerModal(context);
+  //       },
+  //     ),
+  //   );
+  // }
 
   Future<void> sendAttendance() async {
     if (true) {
@@ -116,7 +116,7 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
     Size size = MediaQuery.of(context).size;
 
     // ! TODO : Tehlike
-    args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    args = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     if (args != null) {
       // Program - Yoklama - Program döngüsüne girmemesi için
       // sadece yoklama sayfasında buton gözükecek
@@ -134,11 +134,9 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
           try {
             attendance = Provider.of<Attendance>(context).attendance;
             // Eğer seçilen günde hiç ders yoksa
-            if (attendance.length == 0) {
+            if (attendance.length == 0)
               return NoLectureInfo();
-            } else if (attendance == null) {
-              throw Error();
-            }
+            else if (attendance == null) throw Error();
           } catch (err) {
             attendance = {
               "arrivals": [],
@@ -153,32 +151,31 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
             return Scaffold(
               appBar: AppBar(
                 centerTitle: true,
-                title: const Text("Alınıyor"),
+                title: Text("Alınıyor"),
               ),
               body: const Center(
                 child: CircularProgressIndicator(),
               ),
             );
           }
-
           currentClass = Provider.of<Attendance>(context).currentClass;
           currentTime = Provider.of<Attendance>(context).currentTime;
 
           return Scaffold(
             // floatingActionButtonLocation:
             //     FloatingActionButtonLocation.miniEndFloat,
-            floatingActionButton: !showCalendarButton
-                ? null
-                : FloatingActionButton(
-                    child: IconButton(
-                      icon: const Icon(Icons.calendar_today_outlined),
-                      onPressed: () {
-                        Navigator.of(context)
-                            .pushNamed(TeacherTimetableScreen.url);
-                      },
-                    ),
-                    onPressed: () {},
-                  ),
+            // floatingActionButton: !showCalendarButton
+            //     ? null
+            //     : FloatingActionButton(
+            //         child: IconButton(
+            //           icon: const Icon(Icons.calendar_today_outlined),
+            //           onPressed: () {
+            //             Navigator.of(context)
+            //                 .pushNamed(TeacherTimetableScreen.url);
+            //           },
+            //         ),
+            //         onPressed: () {},
+            //       ),
             appBar: AppBar(
               // centerTitle: true,
               title: Text(
@@ -186,6 +183,16 @@ class _AttendanceCheckScreenState extends State<AttendanceCheckScreen> {
                     " ${currentClass.toUpperCase()}",
               ),
               actions: [
+                !showCalendarButton
+                    ? Container()
+                    : IconButton(
+                        icon: const Icon(Icons.calendar_today_outlined),
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(TeacherTimetableScreen.url);
+                        },
+                      ),
+
                 // if (showCalendarButton)
                 //   IconButton(
                 //     icon: Icon(Icons.calendar_today_outlined),

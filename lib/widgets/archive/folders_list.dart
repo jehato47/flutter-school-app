@@ -5,7 +5,7 @@ import '../../screens/archive/in_archive_folder_screen.dart';
 
 class FoldersList extends StatefulWidget {
   final String uid;
-  const FoldersList(this.uid);
+  FoldersList(this.uid);
   @override
   _FoldersListState createState() => _FoldersListState();
 }
@@ -21,7 +21,7 @@ class _FoldersListState extends State<FoldersList> {
             .where("uid", isEqualTo: uid)
             .orderBy("date", descending: true)
             .snapshots(),
-        builder: (context, AsyncSnapshot snapshot) {
+        builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting)
             return Center(child: CircularProgressIndicator());
 
@@ -32,7 +32,7 @@ class _FoldersListState extends State<FoldersList> {
 
           // print(folderNames);
           return GridView.builder(
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
               childAspectRatio: 3 / 2,
               crossAxisSpacing: 10,
               mainAxisExtent: 150,

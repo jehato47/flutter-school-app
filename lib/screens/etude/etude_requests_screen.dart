@@ -12,10 +12,10 @@ class _EtudeRequestsScreenState extends State<EtudeRequestsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Etüt"),
+        title: const Text("Etüt"),
       ),
       body: Padding(
-        padding: EdgeInsets.all(0),
+        padding: const EdgeInsets.all(0),
         child: EtudeRequestList(),
       ),
     );

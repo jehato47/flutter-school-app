@@ -8,7 +8,7 @@ class ArchiveButton extends StatelessWidget {
       onPressed: () {
         Navigator.of(context).pushNamed(ArchivePreviewScreen.url);
       },
-      icon: const Icon(Icons.file_present),
+      icon: Icon(Icons.file_present),
     );
   }
 }

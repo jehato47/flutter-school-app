@@ -32,9 +32,8 @@ class _MessagesState extends State<Messages> {
           _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
         }
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
+        if (snapshot.connectionState == ConnectionState.waiting)
+          return Center(child: CircularProgressIndicator());
         List<QueryDocumentSnapshot> docs = snapshot.data.docs;
 
         return ListView.builder(
@@ -44,12 +43,12 @@ class _MessagesState extends State<Messages> {
           itemCount: docs.length,
           itemBuilder: (context, index) {
             return MessageBubble(
-              docs[index].data()["note"],
-              docs[index].data()["displayName"],
+              docs[index]["note"],
+              docs[index]["displayName"],
               // docs[index].data()["userImage"],
-              docs[index].data()["uid"] == auth.currentUser!.uid,
+              docs[index]["uid"] == auth.currentUser.uid,
               docs[index]["date"].toDate(),
-              ValueKey(docs[index].id),
+              key: ValueKey(docs[index].id),
             );
           },
         );

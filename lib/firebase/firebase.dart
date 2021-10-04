@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:school2d5/providers/attendance.dart';
-import 'package:school2d5/widgets/homework/homework_form.dart';
+import '../../providers/attendance.dart';
+import '../../widgets/homework/homework_form.dart';
 import '../providers/auth.dart';
 import './item.dart';
 import 'dart:math';
@@ -15,6 +15,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:flutter_card_swipper/flutter_card_swiper.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class Item {
   final DateTime startTime;
@@ -38,10 +39,10 @@ class FireBaseTryScreen extends StatefulWidget {
 }
 
 class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
-  late File file;
-  late String classFirst;
-  late String classLast;
-  late CollectionReference attendance;
+  File file;
+  String classFirst;
+  String classLast;
+  CollectionReference attendance;
   List<String> days = [
     "monday",
     "tuesday",
@@ -52,11 +53,11 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
     "sunday"
   ];
   Future<void> pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    FilePickerResult result = await FilePicker.platform.pickFiles();
     if (result == null) return;
 
     setState(() {
-      file = File(result.files.single.path.toString());
+      file = File(result.files.single.path);
     });
   }
 
@@ -74,10 +75,54 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: HomeworkForm(),
+          Slidable(
+            actionPane: const SlidableDrawerActionPane(),
+            actionExtentRatio: 0.25,
+            child: Container(
+              color: Colors.white,
+              child: const ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: Colors.indigoAccent,
+                  child: Text('3'),
+                  foregroundColor: Colors.white,
+                ),
+                title: Text('Tile n°3'),
+                subtitle: Text('SlidableDrawerDelegate'),
+              ),
+            ),
+            actions: <Widget>[
+              IconSlideAction(
+                caption: 'Archive',
+                color: Colors.blue,
+                icon: Icons.archive,
+                onTap: () => () {},
+              ),
+              IconSlideAction(
+                caption: 'Share',
+                color: Colors.indigo,
+                icon: Icons.share,
+                onTap: () => () {},
+              ),
+            ],
+            secondaryActions: <Widget>[
+              IconSlideAction(
+                caption: 'More',
+                color: Colors.black45,
+                icon: Icons.more_horiz,
+                onTap: () => () {},
+              ),
+              IconSlideAction(
+                caption: 'Delete',
+                color: Colors.red,
+                icon: Icons.delete,
+                onTap: () => () {},
+              ),
+            ],
           ),
+          // Padding(
+          //   padding: const EdgeInsets.all(15.0),
+          //   child: centerButton(),
+          // ),
           // Expanded(
           //   child: StreamBuilder(
           //     stream: FirebaseFirestore.instance
@@ -179,8 +224,9 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
             "saturday": DateTime(2020, 1, 11),
             "sunday": DateTime(2020, 1, 12),
           };
-          final response =
-              await FirebaseFirestore.instance.collection("syllabus").get();
+          final response = await FirebaseFirestore.instance
+              .collection("studentsyllabus")
+              .get();
 
           List<QueryDocumentSnapshot> docs = response.docs;
 
@@ -191,22 +237,36 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
             await teacherData.forEach((day, value) async {
               await value.forEach((clss, timestamp) async {
                 DateTime date = timestamp.toDate();
-                print(clss);
+                // print(clss);
                 // print(date.hour);
                 // return;
+                // final doccs = await FirebaseFirestore.instance
+                //     .collection("timetable")
+                //     .where(
+                //       "date",
+                //       isEqualTo: days[day].add(
+                //           Duration(hours: date.hour, minutes: date.minute)),
+                //     )
+                //     .where("uids", arrayContains: e.id)
+                //     .where("note", isEqualTo: "teachertimetable")
+                //     .get();
+                // print(doccs.docs.length);
+                // // print(doccs.docs[0].data());
+                // if (doccs.docs.length == 0) {
                 await FirebaseFirestore.instance.collection("timetable").add({
                   "uids": [e.id],
                   "subject": clss,
                   "date": days[day]
                       .add(Duration(hours: date.hour, minutes: date.minute)),
                   "isRecursive": true,
-                  "note": "teachertimetable",
+                  "note": "studenttimetable",
                 });
+                // }
               });
             });
           }
 
-          return;
+          // return;
 
           // print(122);
 
@@ -225,9 +285,8 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
           // }
           // return;
           // List<String> liste = [];
-          // QuerySnapshot snapshot = await FirebaseFirestore.instance
-          //     .collection("syllabus")
-          //     .get();
+          // QuerySnapshot snapshot =
+          //     await FirebaseFirestore.instance.collection("syllabus").get();
 
           // for (var element in snapshot.docs) {
           //   dynamic data = element.data();
@@ -276,7 +335,7 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
           // return;
           // QuerySnapshot snapshot = await FirebaseFirestore.instance
           //     .collection("etudeTimes")
-          //     .where("lecture", isEqualTo: "matematik")
+          //     .where("lecture", isEqualTo: "fizik")
           //     .get();
 
           // List<QueryDocumentSnapshot> docs = snapshot.docs;
@@ -288,8 +347,9 @@ class _FireBaseTryScreenState extends State<FireBaseTryScreen> {
           //   Intl.defaultLocale = "tr_TR";
 
           //   docs.forEach((doc) async {
-          //     dynamic etudesofday = doc.data()[day];
-          //     if (!doc.data().containsKey(day)) return;
+          //     dynamic etudesofday = doc[day];
+          //     final data2 = doc.data() as dynamic;
+          //     if (!data2.containsKey(day)) return;
 
           //     await etudesofday.forEach((e) async {
           //       DateTime oldDate = e.toDate();

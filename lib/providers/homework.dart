@@ -12,8 +12,7 @@ class HomeWork extends ChangeNotifier {
     // print(homework);
     homework["startDate"] = DateTime.now();
     homework["isSeen"] = [];
-    // TODO : BAK
-    late String ref;
+    String ref;
 
     CollectionReference homeworks =
         FirebaseFirestore.instance.collection('homework');

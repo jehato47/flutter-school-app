@@ -41,18 +41,18 @@ class _TimetableCalendarState extends State<TimetableCalendar> {
       onTap: (calendarTapDetails) async {
         if (calendarTapDetails.appointments == null) return;
 
-        for (var element in calendarTapDetails.appointments!) {
+        for (var element in calendarTapDetails.appointments) {
           // print(element.startTime);
           // print(DateTime.now());
           // print(calendarTapDetails.targetElement);
           // Eğer tıkladığımız appointment sınıfı gösteriyorsa
           // yoklamasına git diyoruz
-          DateTime date = calendarTapDetails.date as DateTime;
+          DateTime date = calendarTapDetails.date;
 
           if (widget.isTeacher &&
               calendarTapDetails.targetElement == CalendarElement.appointment &&
               element.notes == "teachertimetable") {
-            Appointment apt = calendarTapDetails.appointments![0];
+            Appointment apt = calendarTapDetails.appointments[0];
             // return;
             Navigator.of(context).pushNamed(
               AttendanceCheckScreen.url,
@@ -71,6 +71,7 @@ class _TimetableCalendarState extends State<TimetableCalendar> {
                   CalendarElement.appointment &&
               element.notes.startsWith("homework")) {
             // print(122);
+            print(element.notes);
             final doc =
                 await FirebaseFirestore.instance.doc(element.notes).get();
             // print(doc.data());

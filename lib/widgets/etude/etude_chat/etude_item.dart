@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 class EtudeItem extends StatefulWidget {
   final dynamic etude;
   final dynamic etudeRequest;
-  const EtudeItem(this.etude, this.etudeRequest);
+  EtudeItem(this.etude, this.etudeRequest);
   @override
   _EtudeItemState createState() => _EtudeItemState();
 }
@@ -29,14 +29,13 @@ class _EtudeItemState extends State<EtudeItem> {
     await FirebaseFirestore.instance.collection("etudeChat").add({
       "created": true,
       "date": DateTime.now(),
-      "displayName": auth.currentUser!.displayName,
+      "displayName": auth.currentUser.displayName,
       "eRequestid": etudeRequest.id,
       "note": note,
-      "uid": auth.currentUser!.uid,
+      "uid": auth.currentUser.uid,
     });
     // TODO : Bak
-    // TODO : length != 0
-    bool onSaved = registered.isNotEmpty;
+    bool onSaved = registered.length != 0;
     await FirebaseFirestore.instance.collection("etude").doc(etude.id).update({
       "registered": registered,
       "requests": requests,
@@ -55,7 +54,7 @@ class _EtudeItemState extends State<EtudeItem> {
         .get();
     QueryDocumentSnapshot doc;
     // doc.reference.path
-    if (!e.exists) {
+    if (!e.exists)
       await FirebaseFirestore.instance
           .collection("timetable")
           .doc(etude.id)
@@ -66,14 +65,14 @@ class _EtudeItemState extends State<EtudeItem> {
         "uids": [etude["uid"], ...registered],
         "note": etude.reference.path,
       });
-    } else {
+    else
       await FirebaseFirestore.instance
           .collection("timetable")
           .doc(etude.id)
           .update({
         "uids": [etude["uid"], ...registered]
       });
-    }
+
     Navigator.of(context).pop(true);
   }
 
@@ -84,7 +83,7 @@ class _EtudeItemState extends State<EtudeItem> {
     registered.removeWhere((element) => element == etudeRequest["uid"]);
     requests.removeWhere((element) => element == etudeRequest.id);
 
-    bool onSaved = registered.isNotEmpty;
+    bool onSaved = registered.length != 0;
     await FirebaseFirestore.instance.collection("etude").doc(etude.id).update({
       "registered": registered,
       "requests": requests,
@@ -113,20 +112,20 @@ class _EtudeItemState extends State<EtudeItem> {
     //     .collection("etudeChat")
     //     .doc(x.docs[0].id)
     //     .delete();
-    if (registered.isEmpty) {
+    if (registered.length == 0) {
       await FirebaseFirestore.instance
           .collection("timetable")
           .doc(etude.id)
           .delete();
-      // print(123123);
-    } else {
+      print(123123);
+    } else
       await FirebaseFirestore.instance
           .collection("timetable")
           .doc(etude.id)
           .update({
         "uids": [etude["uid"], ...registered]
       });
-    }
+
     Navigator.of(context).pop(false);
   }
 
@@ -136,11 +135,11 @@ class _EtudeItemState extends State<EtudeItem> {
     List requests = etude["requests"];
 
     if (!registered.contains(etudeRequest["uid"]) ||
-        !requests.contains(etudeRequest.id)) {
+        !requests.contains(etudeRequest.id))
       await notRegisteredCase();
-    } else {
+    else
       await stillRegisteredCase();
-    }
+
     // DocumentSnapshot snapshot = await FirebaseFirestore.instance
     //     .collection("etudeRequest")
     //     .doc(etudeRequest.id)
@@ -160,7 +159,7 @@ class _EtudeItemState extends State<EtudeItem> {
 
     return Container(
         width: 150,
-        margin: const EdgeInsets.only(right: 5),
+        margin: EdgeInsets.only(right: 5),
         color: Colors.black12,
         // padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         child: ListTile(
@@ -170,21 +169,20 @@ class _EtudeItemState extends State<EtudeItem> {
             child: Text(etude["registered"].length.toString()),
           ),
           title: Text(etude["teacherName"]),
-          subtitle:
-              Text(DateFormat("dd MMMM HH:mm").format(etude["date"].toDate())),
+          subtitle: Text(
+              DateFormat("dd MMMM EEE HH:mm").format(etude["date"].toDate())),
           trailing: StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection("etudeRequest")
                   .doc(etudeRequest.id)
                   .snapshots(),
-              builder: (context, AsyncSnapshot snapshot) {
+              builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return ElevatedButton(
                     child: const Text(""),
                     onPressed: () {},
                   );
                 }
-
                 // bool isSaved2 = snapshot.data["ref"] == etude.reference;
                 bool isDone = snapshot.data["state"] == "done";
                 bool isThis = snapshot.data["ref"] == etude.reference;

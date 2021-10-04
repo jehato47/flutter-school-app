@@ -41,7 +41,7 @@ class Etude extends ChangeNotifier {
   List<TimeRegion> _specialTimeRegions = [];
   List<CalendarResource> _calendarResources = [];
   List<Appointment> _appointments = [];
-  late List<dynamic> _etudes;
+  List<dynamic> _etudes;
   Random random = Random();
 
   get calendarResources {
@@ -63,7 +63,7 @@ class Etude extends ChangeNotifier {
 
     final normalResponse = utf8.decode(response.bodyBytes);
     final normalJson = json.decode(normalResponse) as List<dynamic>;
-    print(normalJson);
+    // print(normalJson);
     _etudes = normalJson;
   }
 
@@ -108,7 +108,7 @@ class Etude extends ChangeNotifier {
           var startTime = DateTime(
             today.year,
             today.month,
-            today.day + days[day] - 1 as int,
+            today.day + days[day] - 1,
             int.parse(key),
           );
 

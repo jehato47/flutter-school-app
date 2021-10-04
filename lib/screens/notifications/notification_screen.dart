@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:school2d5/widgets/notification/notification_form.dart';
 import '../../widgets/notification/add_notification_button.dart';
 import '../../widgets/notification/notifications_list.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -33,14 +34,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
       floatingActionButton: !isTeacher
           ? null
           : FloatingActionButton(
-              child: AddNotificationButton(),
-              onPressed: () {},
+              child: const Icon(Icons.add),
+              onPressed: () async {
+                await showDialog(
+                  context: context,
+                  builder: (context) => const AlertDialog(
+                    content: NotificationForm(),
+                  ),
+                );
+              },
             ),
       appBar: AppBar(
-        actions: [
-          // if (isTeacher) AddNotificationButton(),
-        ],
-        title: Text("Bildirimler"),
+        // actions: [
+        //   // if (isTeacher) AddNotificationButton(),
+        // ],
+        title: const Text("Bildirimler"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

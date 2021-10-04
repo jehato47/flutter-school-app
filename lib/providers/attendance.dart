@@ -7,11 +7,11 @@ import 'package:intl/intl.dart';
 class Attendance extends ChangeNotifier {
   FirebaseAuth auth = FirebaseAuth.instance;
   dynamic _classes;
-  late Map _oldAttendance;
-  late String? _currentClass;
-  late DateTime _currentTime;
+  Map _oldAttendance;
+  String _currentClass;
+  DateTime _currentTime;
 
-  Map? attendance = {
+  Map attendance = {
     "arrivals": [],
     "notExists": [],
     "lates": [],
@@ -52,9 +52,8 @@ class Attendance extends ChangeNotifier {
 
   // TODO: Eğer o gün ders yoksa ders yok yazdır
   Future<dynamic> getAttendance([
-    // "classTimetable : String ;;; timeTimetable: DateTime"
-    String? classTimetable,
-    DateTime? timeTimetable,
+    String classTimetable,
+    DateTime timeTimetable,
   ]) async {
     String classFirst;
     String classLast;
@@ -68,7 +67,7 @@ class Attendance extends ChangeNotifier {
           .collection('attendance/$currentClass/pieces');
       DocumentSnapshot old = await att.doc(_currentTime.toString()).get();
 
-      classFirst = classTimetable!.split("-").first;
+      classFirst = classTimetable.split("-").first;
       classLast = classTimetable.split("-").last;
       if (old.exists) attendance = old["info"];
     } else {
@@ -115,8 +114,8 @@ class Attendance extends ChangeNotifier {
       });
       liste.sort();
 
-      classFirst = map[liste.first]!.split("-").first;
-      classLast = map[liste.first]!.split("-").last;
+      classFirst = map[liste.first].split("-").first;
+      classLast = map[liste.first].split("-").last;
 
       _currentClass = map[liste.first];
       DateTime dateInSyllabus = syl[day][map[liste.first]].toDate();
@@ -135,9 +134,9 @@ class Attendance extends ChangeNotifier {
       CollectionReference att = FirebaseFirestore.instance
           .collection('attendance/$currentClass/pieces');
       final att2 = await att.doc(_currentTime.toString()).get();
-      if (att2.exists)
+      if (att2.exists) {
         attendance = att2["info"];
-      else {
+      } else {
         attendance = null;
       }
     }
@@ -180,7 +179,8 @@ class Attendance extends ChangeNotifier {
     if (att2.exists) {
       _oldAttendance = att2["info"];
       return true;
-    } else
+    } else {
       return false;
+    }
   }
 }

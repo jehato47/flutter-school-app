@@ -9,7 +9,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 class AddFilesButton extends StatefulWidget {
   final String folderName;
 
-  const AddFilesButton(this.folderName);
+  AddFilesButton(this.folderName);
   @override
   _AddFilesButtonState createState() => _AddFilesButtonState();
 }
@@ -22,9 +22,9 @@ class _AddFilesButtonState extends State<AddFilesButton> {
     String folderName = widget.folderName;
 
     return IconButton(
-      icon: const Icon(Icons.upload_file_outlined),
+      icon: Icon(Icons.upload_file_outlined),
       onPressed: () async {
-        FilePickerResult? result =
+        FilePickerResult result =
             await FilePicker.platform.pickFiles(allowMultiple: true);
 
         if (result != null && kIsWeb) {
@@ -33,7 +33,7 @@ class _AddFilesButtonState extends State<AddFilesButton> {
 
             if (size / 1000000 > 10) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
+                SnackBar(
                   content: Text(
                     "10 mb üstünde dosya yükleyemezsiniz",
                   ),
@@ -45,14 +45,14 @@ class _AddFilesButtonState extends State<AddFilesButton> {
             String fileName = file.name;
 
             await FirebaseStorage.instance
-                .ref('${auth.currentUser!.uid}/$folderName/$fileName')
+                .ref('${auth.currentUser.uid}/$folderName/$fileName')
                 .putData(fileBytes)
                 .then((snapshot) async {
               final url = await snapshot.ref.getDownloadURL();
               await FirebaseFirestore.instance.collection("archive").add({
                 "fileName": fileName,
-                "uid": auth.currentUser!.uid,
-                "displayName": auth.currentUser!.displayName,
+                "uid": auth.currentUser.uid,
+                "displayName": auth.currentUser.displayName,
                 "folderName": folderName,
                 "fileRef": snapshot.ref.fullPath,
                 "url": url,
@@ -60,14 +60,13 @@ class _AddFilesButtonState extends State<AddFilesButton> {
             });
           }
         } else if (result != null && !kIsWeb) {
-          List<File> files =
-              result.paths.map((path) => File(path as String)).toList();
+          List<File> files = result.paths.map((path) => File(path)).toList();
           for (var file in files) {
             dynamic size = await file.length();
 
             if (size / 1000000 > 10) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
+                SnackBar(
                   content: Text(
                     "10 mb üstünde dosya yükleyemezsiniz",
                   ),
@@ -78,15 +77,15 @@ class _AddFilesButtonState extends State<AddFilesButton> {
 
             String fileName = file.path.split("/").last;
             await FirebaseStorage.instance
-                .ref('${auth.currentUser!.uid}/$folderName/$fileName')
+                .ref('${auth.currentUser.uid}/$folderName/$fileName')
                 .putFile(file)
                 .then((snapshot) async {
               final url = await snapshot.ref.getDownloadURL();
               await FirebaseFirestore.instance.collection("archive").add({
                 "date": DateTime.now(),
                 "fileName": fileName,
-                "uid": auth.currentUser!.uid,
-                "displayName": auth.currentUser!.displayName,
+                "uid": auth.currentUser.uid,
+                "displayName": auth.currentUser.displayName,
                 "folderName": folderName,
                 "fileRef": snapshot.ref.fullPath,
                 "url": url,

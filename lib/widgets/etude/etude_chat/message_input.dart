@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class MessageInput extends StatefulWidget {
   final dynamic doc;
   final ScrollController scrollController;
-  const MessageInput(this.doc, this.scrollController);
+  MessageInput(this.doc, this.scrollController);
 
   @override
   _MessageInputState createState() => _MessageInputState();
@@ -13,7 +13,7 @@ class MessageInput extends StatefulWidget {
 
 class _MessageInputState extends State<MessageInput> {
   FirebaseAuth auth = FirebaseAuth.instance;
-  final TextEditingController _controller = TextEditingController();
+  TextEditingController _controller = TextEditingController();
   FocusNode node = FocusNode();
 
   Future<void> _send() async {
@@ -28,10 +28,10 @@ class _MessageInputState extends State<MessageInput> {
     );
     await FirebaseFirestore.instance.collection("etudeChat").add({
       "created": false,
-      "uid": auth.currentUser!.uid,
+      "uid": auth.currentUser.uid,
       "eRequestid": doc.id,
       "note": text,
-      "displayName": auth.currentUser!.displayName,
+      "displayName": auth.currentUser.displayName,
       "date": DateTime.now(),
     });
     _scrollController.jumpTo(
@@ -66,14 +66,14 @@ class _MessageInputState extends State<MessageInput> {
                 //   _enteredMessage = value;
                 // });
               },
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "Cevap Yazın",
               ),
             ),
           ),
           IconButton(
             color: Theme.of(context).primaryColor,
-            icon: const Icon(Icons.send),
+            icon: Icon(Icons.send),
             onPressed: _send,
           )
         ],

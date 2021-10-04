@@ -15,7 +15,7 @@ class StudentTimetableScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Ders Programı"),
+        title: Text("Ders Programı"),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -28,7 +28,7 @@ class StudentTimetableScreen extends StatelessWidget {
             // TODO : Production
             // .where("id", isEqualTo: "6mA6Bw7DIXrPwIaqGBS3")
             .snapshots(),
-        builder: (context, AsyncSnapshot snapshot) {
+        builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }

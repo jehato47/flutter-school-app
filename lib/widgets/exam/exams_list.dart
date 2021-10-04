@@ -19,6 +19,7 @@ class _ExamsListState extends State<ExamsList> {
         child: Text("Henüz sınıf seçmediniz veya sınav bulunmamakta"),
       );
     }
+
     String classFirst = widget.clss.split("-").first;
     String classLast = widget.clss.split("-").last;
     return StreamBuilder(
@@ -27,7 +28,7 @@ class _ExamsListState extends State<ExamsList> {
           .where("classFirst", isEqualTo: classFirst)
           .where("classLast", isEqualTo: classLast)
           .snapshots(),
-      builder: (context, AsyncSnapshot snapshot) {
+      builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
         }

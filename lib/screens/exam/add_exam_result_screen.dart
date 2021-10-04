@@ -17,7 +17,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
   dynamic generalData = {};
   final _formKey = GlobalKey<FormState>();
   int index = 0;
-  late List<QueryDocumentSnapshot> ids;
+  List<QueryDocumentSnapshot> ids;
   bool isInit = true;
   dynamic args;
   dynamic examData;
@@ -64,7 +64,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
       children: [
         ListTile(
           title: Text("$number. sınav"),
-          trailing: Container(
+          trailing: SizedBox(
             width: 70,
             height: 50,
             child: TextFormField(
@@ -87,8 +87,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
               validator: (value) {
                 try {
                   if (value != "" &&
-                      (double.parse(value as String) < 0 ||
-                          double.parse(value) > 100)) {
+                      (double.parse(value) < 0 || double.parse(value) > 100)) {
                     controller.text = controller.text.substring(0, 2);
                   }
                 } catch (err) {
@@ -101,17 +100,18 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
                 counterText: "",
                 border: OutlineInputBorder(),
               ),
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
             ),
           ),
         ),
-        Divider()
+        const Divider()
       ],
     );
   }
 
   Widget build(BuildContext context) {
-    args = ModalRoute.of(context)!.settings.arguments;
+    args = ModalRoute.of(context).settings.arguments;
     if (isInit) {
       ids = args[0];
       index = args[1];
@@ -157,7 +157,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
                 },
                 leading: Text(
                   "${index + 1}/${ids.length}",
-                  style: const TextStyle(fontSize: 25),
+                  style: TextStyle(fontSize: 25),
                 ),
                 title: Text(
                   ids[index]["displayName"],
@@ -167,7 +167,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
                   textAlign: TextAlign.left,
                 ),
               ),
-              const Divider(thickness: 1),
+              Divider(thickness: 1),
               Expanded(
                 child: ListView.builder(
                   itemBuilder: (context, i) {
@@ -181,7 +181,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
                   if (index != 0)
                     Expanded(
                       child: ElevatedButton(
-                        child: const Text("önceki"),
+                        child: Text("önceki"),
                         onPressed: () async {
                           setState(() {
                             index -= 1;
@@ -189,17 +189,17 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
                         },
                       ),
                     ),
-                  if (index != 0) const SizedBox(width: 20),
+                  if (index != 0) SizedBox(width: 20),
                   Expanded(
                     child: ElevatedButton(
                       child:
                           Text(index == ids.length - 1 ? "Bitti" : "sonraki"),
                       onPressed: () async {
-                        if (index < ids.length - 1) {
+                        if (index < ids.length - 1)
                           setState(() {
                             index += 1;
                           });
-                        } else {
+                        else {
                           Navigator.of(context).pop();
                         }
                       },

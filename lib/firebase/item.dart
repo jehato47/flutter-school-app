@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Item extends StatefulWidget {
   final DocumentReference ref;
-  Item(this.ref);
+  const Item(this.ref);
   @override
   _ItemState createState() => _ItemState();
 }
@@ -13,7 +13,7 @@ class _ItemState extends State<Item> {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: widget.ref.get(),
-      builder: (context, AsyncSnapshot snapshot) {
+      builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container();
         }

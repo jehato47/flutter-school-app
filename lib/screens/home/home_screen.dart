@@ -15,7 +15,7 @@ import 'dart:math';
 class HomeScreen extends StatefulWidget {
   static const url = "home";
   final Function setIndex;
-  const HomeScreen(this.setIndex);
+  HomeScreen(this.setIndex);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -37,20 +37,20 @@ class _HomeScreenState extends State<HomeScreen> {
     const Color(0xFF0A8043),
   ];
 
-  late Function setIndex;
+  Function setIndex;
   // dynamic body = PagesGrid();
-  dynamic body = const Placeholder();
+  dynamic body = Placeholder();
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-  Widget buildCard(String title, String subtitle, String fText,
-      Function()? fFunc, String sText, Function()? sFunc) {
+  Widget buildCard(String title, String subtitle, String fText, Function fFunc,
+      String sText, Function sFunc) {
     return Center(
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              leading: const Icon(
+              leading: Icon(
                 Icons.album,
                 // color: Colors.teal,
               ),
@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         Container(
           alignment: Alignment.topCenter,
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          padding: EdgeInsets.symmetric(vertical: 10),
           height: 200,
           width: double.infinity,
           child: FutureBuilder(
@@ -95,10 +95,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   .where("to", isEqualTo: "genel")
                   .orderBy("added", descending: true)
                   .get(),
-              builder: (context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting)
+                  return Center(child: CircularProgressIndicator());
 
                 List<QueryDocumentSnapshot> data = snapshot.data.docs;
 
@@ -113,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: EdgeInsets.all(10),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         // gradient: LinearGradient(
@@ -131,8 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Text(
                         data[index]["text"],
                         textAlign: TextAlign.center,
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 20),
+                        style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
                     );
                   },
@@ -141,13 +139,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   viewportFraction: 0.8,
                   scale: 0.9,
                   // itemCount: 3,
-                  pagination: const SwiperPagination(),
-                  control: const SwiperControl(),
+                  pagination: new SwiperPagination(),
+                  control: new SwiperControl(),
                 );
               }),
         ),
-        const Divider(),
-        const SizedBox(
+        Divider(),
+        SizedBox(
           height: 20,
           child: Text(
             "Genel Duyurular",
@@ -161,10 +159,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     .where("to", isEqualTo: "genel")
                     .orderBy("added", descending: true)
                     .snapshots(),
-                builder: (context, AsyncSnapshot snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData)
+                    return Center(child: CircularProgressIndicator());
                   List<QueryDocumentSnapshot> data = snapshot.data.docs;
                   return ListView.builder(
                     itemCount: data.length,

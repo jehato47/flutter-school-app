@@ -23,7 +23,7 @@ class _GiveEtudeBottomSheetState extends State<GiveEtudeBottomSheet> {
         ListTile(
           title: Text(
             'Etütler',
-            style: theme.textTheme.subtitle1!
+            style: theme.textTheme.subtitle1
                 .copyWith(color: theme.colorScheme.onPrimary),
           ),
           tileColor: theme.colorScheme.primary,
@@ -37,12 +37,11 @@ class _GiveEtudeBottomSheetState extends State<GiveEtudeBottomSheet> {
                 .orderBy("date")
                 .snapshots(),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
+              if (snapshot.connectionState == ConnectionState.waiting)
+                return Center(
                   child: CircularProgressIndicator(),
                 );
-              }
-              QuerySnapshot snap = snapshot.data as QuerySnapshot;
+              QuerySnapshot snap = snapshot.data;
               List<QueryDocumentSnapshot> docs = snap.docs;
 
               return ListView.builder(

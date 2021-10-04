@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../providers/attendance.dart';
 import '../../screens/attendance/attendance_detail_screen.dart';
-import 'package:flutter_picker/Picker.dart';
+// import 'package:flutter_picker/Picker.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -16,11 +16,11 @@ class AttendancePreviewScreen extends StatefulWidget {
 }
 
 class _AttendancePreviewScreenState extends State<AttendancePreviewScreen> {
-  late DateTime? startDate;
-  late DateTime? endDate;
+  DateTime startDate;
+  DateTime endDate;
   List<dynamic> filteredDocs = [];
   List<String> classes = [];
-  late String token;
+  String token;
   String currentClass = "11-c";
 
   showPickerModal(BuildContext context) async {
@@ -28,23 +28,47 @@ class _AttendancePreviewScreenState extends State<AttendancePreviewScreen> {
 
     QuerySnapshot attendance = await att.get();
     classes = attendance.docs.map((e) => e.id).toList();
-    Picker(
-        adapter: PickerDataAdapter<String>(pickerdata: classes),
-        changeToFirst: true,
-        hideHeader: false,
-        confirmText: "Seç",
-        cancelText: "Iptal",
-        diameterRatio: 1.5,
-        magnification: 1.2,
-        title: Text(DateFormat('d MMMM').format(DateTime.now()).toString()),
-        onConfirm: (Picker picker, List value) {
-          setState(() {
-            currentClass = picker.getSelectedValues().first;
-            filteredDocs = [];
-            print(currentClass);
-          });
-          // print(picker.getSelectedValues().last);
-        }).showModal(this.context);
+
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: SizedBox(
+          width: 50,
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemBuilder: (context, index) => ListTile(
+              onTap: () {
+                setState(() {
+                  currentClass = classes[index];
+                  filteredDocs = [];
+                });
+                Navigator.of(context).pop();
+              },
+              title: Text(classes[index]),
+            ),
+            itemCount: classes.length,
+          ),
+        ),
+      ),
+    );
+    return;
+    // Picker(
+    //     adapter: PickerDataAdapter<String>(pickerdata: classes),
+    //     changeToFirst: true,
+    //     hideHeader: false,
+    //     confirmText: "Seç",
+    //     cancelText: "Iptal",
+    //     diameterRatio: 1.5,
+    //     magnification: 1.2,
+    //     title: Text(DateFormat('d MMMM').format(DateTime.now()).toString()),
+    //     onConfirm: (Picker picker, List value) {
+    //       setState(() {
+    //         currentClass = picker.getSelectedValues().first;
+    //         filteredDocs = [];
+    //         print(currentClass);
+    //       });
+    //       // print(picker.getSelectedValues().last);
+    //     }).showModal(this.context);
   }
 
   @override
@@ -85,7 +109,7 @@ class _AttendancePreviewScreenState extends State<AttendancePreviewScreen> {
           ),
         ],
         centerTitle: true,
-        title: Text("Yoklama listesi"),
+        title: const Text("Yoklama listesi"),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -102,7 +126,7 @@ class _AttendancePreviewScreenState extends State<AttendancePreviewScreen> {
                     )
                     .orderBy("date", descending: true)
                     .snapshots(),
-                builder: (context, AsyncSnapshot attendance) {
+                builder: (context, attendance) {
                   if (!attendance.hasData) {
                     return const Center(child: CircularProgressIndicator());
                   }

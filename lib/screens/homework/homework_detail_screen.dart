@@ -20,12 +20,12 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final hw = ModalRoute.of(context)!.settings.arguments as dynamic;
+    final hw = ModalRoute.of(context).settings.arguments as dynamic;
     return Scaffold(
       appBar: AppBar(
         title: Text(
             '${hw["teacher"]} ${hw["classFirst"]} - ${hw["classLast"].toUpperCase()}'),
-        actions: const [
+        actions: [
           // IconButton(
           //   icon: Icon(Icons.assignment),
           //   onPressed: () {},
@@ -34,39 +34,39 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 "Ödev",
                 style: TextStyle(fontSize: 25),
               ),
-              const Divider(
+              Divider(
                 thickness: 2,
               ),
               Text(
                 hw["homework"],
-                style: const TextStyle(fontSize: 15),
+                style: TextStyle(fontSize: 15),
               ),
-              const SizedBox(height: 40),
-              const Text(
+              SizedBox(height: 40),
+              Text(
                 "Açıklama",
                 style: TextStyle(fontSize: 25),
               ),
-              const Divider(
+              Divider(
                 thickness: 2,
               ),
               Text(
                 hw["explanation"],
-                style: const TextStyle(fontSize: 15),
+                style: TextStyle(fontSize: 15),
               ),
-              const SizedBox(height: 40),
-              const Text(
+              SizedBox(height: 40),
+              Text(
                 "Dosya",
                 style: TextStyle(fontSize: 25),
               ),
-              const Divider(
+              Divider(
                 thickness: 2,
               ),
               InkWell(
@@ -88,7 +88,6 @@ class _HomeWorkDetailScreenState extends State<HomeWorkDetailScreen> {
                         // );
                       },
                 child: Text(
-                  // TODO : BAK
                   hw["fileName"] != null
                       ? hw["fileName"]
                       : "İliştirilmiş dosya yok",

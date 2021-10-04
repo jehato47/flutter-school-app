@@ -13,10 +13,10 @@ class _SelectLectureScreenState extends State<SelectLectureScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("Dersler"),
+        title: const Text("Dersler"),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: FirstStepLectureList(),
       ),
     );

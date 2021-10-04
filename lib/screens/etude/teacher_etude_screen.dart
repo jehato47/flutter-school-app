@@ -11,7 +11,7 @@ class TeacherEtudeScreen extends StatefulWidget {
 }
 
 class _TeacherEtudeScreenState extends State<TeacherEtudeScreen> {
-  ScrollController _scrollController = new ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   FirebaseAuth auth = FirebaseAuth.instance;
   @override
@@ -21,11 +21,11 @@ class _TeacherEtudeScreenState extends State<TeacherEtudeScreen> {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("etude")
-            .where("uid", isEqualTo: auth.currentUser!.uid)
+            .where("uid", isEqualTo: auth.currentUser.uid)
             .where("onSaved", isEqualTo: true)
             .orderBy("date")
             .snapshots(),
-        builder: (context, AsyncSnapshot snapshot) {
+        builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -35,9 +35,11 @@ class _TeacherEtudeScreenState extends State<TeacherEtudeScreen> {
               controller: _scrollController,
               itemCount: data.length,
               itemBuilder: (context, index) {
-                var subject = data[index]["subject"] == null
-                    ? "Henüz konu belirlenmedi"
-                    : data[index]["subject"];
+                // var subject =  data[index]["subject"] == null
+                //     ? "Henüz konu belirlenmedi"
+                //     : data[index]["subject"];
+                var subject =
+                    data[index]["subject"] ?? "Henüz konu belirlenmedi";
 
                 return Container(
                   margin: const EdgeInsets.all(5),

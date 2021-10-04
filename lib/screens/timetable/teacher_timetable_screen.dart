@@ -15,24 +15,23 @@ class TeacherTimetableScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Ders Programı"),
+        title: Text("Ders Programı"),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection("timetable")
             // TODO : Production
             // .doc("mF1uyNyCqLaXDf88zB47ZZqSuWh2")
-            .where("uids", arrayContainsAny: [auth.currentUser!.uid])
+            .where("uids", arrayContainsAny: [auth.currentUser.uid])
             // .doc(auth.currentUser.uid)
             .snapshots(),
-        builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting)
+            return Center(
               child: CircularProgressIndicator(),
             );
-          }
           // print(snapshot.data.docs);
-          if (snapshot.data.docs.length == 0) {
-            return const Center(
+          if (snapshot.data.docs.length == 0)
+            return Center(
               child: Text(
                 "Ders programınız bulunmamaktadır\nyöneticinizden eklemesini isteyin.",
                 style: TextStyle(
@@ -42,7 +41,6 @@ class TeacherTimetableScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             );
-          }
 
           // Provider.of<Timetable>(context).teacherData = snapshot.data.docs;
           Provider.of<Timetable>(context).teacherData = snapshot.data.docs;

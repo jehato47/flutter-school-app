@@ -18,11 +18,11 @@ class _HomeworkButtonState extends State<HomeworkButton> {
           borderRadius: BorderRadius.circular(5),
           color: Colors.amber,
         ),
-        margin: const EdgeInsets.all(8),
+        margin: EdgeInsets.all(8),
         child: IconButton(
           tooltip: "Ödev Ver",
           color: Colors.indigo,
-          icon: const Icon(Icons.add),
+          icon: Icon(Icons.add),
           onPressed: () {
             Navigator.of(context).pushNamed(GiveHomeworkScreen.url);
           },

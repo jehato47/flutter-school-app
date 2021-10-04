@@ -9,7 +9,7 @@ import '../../providers/auth.dart';
 import '../../providers/studentCheckBox/student_checkbox.dart';
 import '../../providers/homework.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_picker/Picker.dart';
+// import 'package:flutter_picker/Picker.dart';
 
 class HomeworkForm extends StatefulWidget {
   @override
@@ -26,11 +26,11 @@ class _HomeworkFormState extends State<HomeworkForm> {
 
   final _form = GlobalKey<FormState>();
 
-  late String token;
+  String token;
 
   dynamic file;
 
-  late DateTime? date;
+  DateTime date;
 
   Map<String, dynamic> hw = {
     "lecture": null,
@@ -48,7 +48,7 @@ class _HomeworkFormState extends State<HomeworkForm> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(Duration(days: 30)),
+      lastDate: DateTime.now().add(const Duration(days: 30)),
     ).then(
       (value) {
         if (value == null) return;
@@ -62,7 +62,7 @@ class _HomeworkFormState extends State<HomeworkForm> {
   }
 
   Future<void> pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    FilePickerResult result = await FilePicker.platform.pickFiles();
     if (result == null) return;
     if (kIsWeb) {
       setState(() {
@@ -71,7 +71,7 @@ class _HomeworkFormState extends State<HomeworkForm> {
       });
     } else {
       setState(() {
-        file = File(result.files.single.path as String);
+        file = File(result.files.single.path);
         // TODO : Burayı 2 defa yazmaya gerek yok
         hw["fileName"] = result.files.first.name;
       });
@@ -86,112 +86,17 @@ class _HomeworkFormState extends State<HomeworkForm> {
     "Kesin Bitsin": Colors.red,
   };
   Future<void> sendHomework() async {
-    // List<String> tags = [
-    //   // "Türkçe",
-    //   "Önemli",
-    //   "Yapmasanız da Olur",
-    //   "Kontrol Edilecek",
-    //   "Kesin Bitsin"
-    // ];
-
-    // await showModalBottomSheet(
-    //   shape: RoundedRectangleBorder(
-    //     borderRadius: BorderRadius.vertical(
-    //       top: Radius.circular(20),
-    //     ),
-    //   ),
-    //   context: context,
-    //   builder: (context) => Container(
-    //     // color: Colors.indigo,
-    //     height: 300,
-    //     padding: EdgeInsets.all(30),
-    //     child: Wrap(
-    //       spacing: 10,
-    //       // runSpacing: 10,
-    //       children: [
-    //         ...tags2.entries.map((e) => ChangeNotifierProvider.value(
-    //             value: StudentCheckBox(),
-    //             child: Consumer<StudentCheckBox>(
-    //               builder: (context, checkbox, child) {
-    //                 // print(checkbox.isChecked);
-    //                 // checkbox.isChecked;
-    //                 return Chip(
-    //                   deleteIcon: !checkbox.isChecked ? Icon(Icons.done) : null,
-    //                   backgroundColor: checkbox.isChecked ? e.value : null,
-    //                   onDeleted: () {
-    //                     checkbox.change();
-
-    //                     if (!selecteds.contains(e.key) && checkbox.isChecked)
-    //                       selecteds.add(e.key);
-    //                     else
-    //                       selecteds.removeWhere((element) => element == e.key);
-    //                     print(selecteds);
-    //                   },
-    //                   label: Text(e.key),
-    //                 );
-    //               },
-    //             )))
-    //         // ...tags2.entries.map(
-    //         //   (entry) {
-    //         //     return Chip(
-    //         //       label: Text(entry.key),
-    //         //     );
-    //         //   },
-    //         // ).toList()
-    //       ],
-    //     ),
-    //   ),
-    // );
-    // return;
-    bool isValid = _form.currentState!.validate();
+    bool isValid = _form.currentState.validate();
     if (date == null) print(12212222);
 
     if (!isValid || date == null || hw["classFirst"] == null) return;
-    _form.currentState!.save();
+    _form.currentState.save();
 
-    // await showDialog(
-    //   context: context,
-    //   builder: (context) => AlertDialog(
-    //     content: Column(
-    //       mainAxisSize: MainAxisSize.min,
-    //       children: [
-    //         Wrap(
-    //           children: [
-    //             Chip(
-    //               label: Text("Önemli"),
-    //             ),
-    //             Chip(
-    //               label: Text("Önemli"),
-    //             ),
-    //             Chip(
-    //               label: Text("Önemli"),
-    //             ),
-    //           ],
-    //         ),
-    //         Divider(),
-    //         Wrap(
-    //           children: [
-    //             Chip(
-    //               label: Text("Önemli"),
-    //             ),
-    //             Chip(
-    //               label: Text("Önemli"),
-    //             ),
-    //             Chip(
-    //               label: Text("Önemli"),
-    //             ),
-    //           ],
-    //         )
-    //       ],
-    //     ),
-    //   ),
-    // );
-    // return;
     date = null;
 
-    hw["teacher"] = auth.currentUser!.displayName;
-    hw["teacherImage"] = auth.currentUser!.photoURL;
-    hw["uid"] = auth.currentUser!.uid;
+    hw["teacher"] = auth.currentUser.displayName;
+    hw["teacherImage"] = auth.currentUser.photoURL;
+    hw["uid"] = auth.currentUser.uid;
     hw["to"] = hw["classFirst"] + "-" + hw["classLast"];
     hw["lecture"] = userInfo["lecture"]; // TODO : 22
     // return;
@@ -202,7 +107,7 @@ class _HomeworkFormState extends State<HomeworkForm> {
     await Provider.of<HomeWork>(context, listen: false).addHomeWork(hw, file);
 
     setState(() {
-      _form.currentState!.reset();
+      _form.currentState.reset();
 
       isLoading = false;
       file = null;
@@ -213,25 +118,32 @@ class _HomeworkFormState extends State<HomeworkForm> {
   }
 
   showPickerModal(BuildContext context) async {
-    FocusScope.of(context).requestFocus(FocusNode());
+    FocusScope.of(context).requestFocus(new FocusNode());
 
-    final allClasses = userInfo["classes"];
-
-    Picker(
-        adapter: PickerDataAdapter<String>(pickerdata: allClasses),
-        changeToFirst: true,
-        hideHeader: false,
-        confirmText: "Seç",
-        cancelText: "Iptal",
-        title: const Text("Sınıf seç"),
-        magnification: 1.2,
-        onConfirm: (Picker picker, List value) {
-          setState(() {
-            hw["classFirst"] =
-                picker.getSelectedValues().first.split("-").first;
-            hw["classLast"] = picker.getSelectedValues().first.split("-").last;
-          });
-        }).showModal(this.context);
+    final allClasses = userInfo["classes"] as List;
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: SizedBox(
+          width: 50,
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemBuilder: (context, index) => ListTile(
+              onTap: () {
+                setState(() {
+                  hw["classFirst"] = allClasses[index].split("-").first;
+                  hw["classLast"] = allClasses[index].split("-").last;
+                });
+                Navigator.of(context).pop();
+              },
+              title: Text(allClasses[index]),
+            ),
+            itemCount: allClasses.length,
+          ),
+        ),
+      ),
+    );
+    return;
   }
 
   Row helperButtons(BuildContext context) {
@@ -251,9 +163,7 @@ class _HomeworkFormState extends State<HomeworkForm> {
           child: OutlinedButton(
             onPressed: showDatePickerFunc,
             child: Text(
-              date != null
-                  ? DateFormat('d MMMM').format(date as DateTime)
-                  : "Tarih Seç",
+              date != null ? DateFormat('d MMMM').format(date) : "Tarih Seç",
             ),
           ),
         ),
@@ -302,7 +212,7 @@ class _HomeworkFormState extends State<HomeworkForm> {
             TextFormField(
               // controller: hwController,
               validator: (value) {
-                if (value!.isEmpty) return "Ödev girmediniz";
+                if (value.isEmpty) return "Ödev girmediniz";
                 return null;
               },
               onSaved: (newValue) {
@@ -317,7 +227,7 @@ class _HomeworkFormState extends State<HomeworkForm> {
               minLines: 2,
               maxLines: 5,
               validator: (value) {
-                if (value!.isEmpty) return "Açıklama girmediniz";
+                if (value.isEmpty) return "Açıklama girmediniz";
                 return null;
               },
               onSaved: (newValue) {
@@ -330,7 +240,7 @@ class _HomeworkFormState extends State<HomeworkForm> {
               ),
             ),
             const SizedBox(height: 40),
-            buildWrap(),
+            // buildWrap(),
             const SizedBox(height: 20),
             helperButtons(context),
             if (kIsWeb) const SizedBox(height: 20),
@@ -359,8 +269,9 @@ class _HomeworkFormState extends State<HomeworkForm> {
                         // print(checkbox.isChecked);
                         // checkbox.isChecked;
                         return Chip(
-                          deleteIcon:
-                              !checkbox.isChecked ? Icon(Icons.done) : null,
+                          deleteIcon: !checkbox.isChecked
+                              ? const Icon(Icons.done)
+                              : null,
                           backgroundColor: checkbox.isChecked ? e.value : null,
                           onDeleted: () {
                             checkbox.change();

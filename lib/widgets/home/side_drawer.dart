@@ -47,17 +47,17 @@ class _SideDrawerState extends State<SideDrawer> {
                 child: Image(
                   fit: BoxFit.cover,
                   // TODO : bazen url tam olarak gelmiyor
-                  image: NetworkImage(auth.currentUser!.photoURL as String),
+                  image: NetworkImage(auth.currentUser.photoURL),
                 ),
               ),
               accountEmail: Text(
-                auth.currentUser!.email as String,
+                auth.currentUser.email,
                 style: const TextStyle(
                   color: Colors.white,
                 ),
               ),
               accountName: Text(
-                auth.currentUser!.displayName as String,
+                auth.currentUser.displayName,
                 style: const TextStyle(
                   color: Colors.white,
                 ),
@@ -67,13 +67,13 @@ class _SideDrawerState extends State<SideDrawer> {
               ListTile(
                 leading: const Icon(
                   Icons.archive,
-                  color: Colors.white,
+                  color: Colors.blue,
                 ),
                 title: const Text("arşiv"),
                 onTap: () {
                   Navigator.of(context).pushNamed(
                     TeacherArchiveScreen.url,
-                    arguments: auth.currentUser!.uid,
+                    arguments: auth.currentUser.uid,
                   );
                 },
               ),
@@ -81,7 +81,7 @@ class _SideDrawerState extends State<SideDrawer> {
               ListTile(
                 leading: const Icon(
                   Icons.source,
-                  color: Colors.white,
+                  color: Colors.blue,
                 ),
                 title: const Text("kaynaklar"),
                 onTap: () {
@@ -90,29 +90,29 @@ class _SideDrawerState extends State<SideDrawer> {
                   );
                 },
               ),
-            if (isTeacher) const Divider(),
-            ListTile(
-              leading: const Icon(
-                Icons.person,
-                color: Colors.white,
-              ),
-              title: const Text("öğretmen"),
-              onTap: () {
-                // body = BottomNavbar();
+            // if (isTeacher) const Divider(),
+            // ListTile(
+            //   leading: const Icon(
+            //     Icons.person,
+            //     color: Colors.blue,
+            //   ),
+            //   title: const Text("öğretmen"),
+            //   onTap: () {
+            //     // body = BottomNavbar();
 
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => TeacherHomeScreen(),
-                  ),
-                );
+            //     Navigator.of(context).pushReplacement(
+            //       MaterialPageRoute(
+            //         builder: (BuildContext context) => TeacherHomeScreen(),
+            //       ),
+            //     );
 
-                // Navigator.of(context).pop();
-              },
-            ),
+            //     // Navigator.of(context).pop();
+            //   },
+            // ),
             // ListTile(
             //   leading: Icon(
             //     Icons.person,
-            //     color: Colors.white,
+            //     color: Colors.blue,
             //   ),
             //   title: Text("öğrenci"),
             //   onTap: () {
@@ -133,7 +133,7 @@ class _SideDrawerState extends State<SideDrawer> {
               ListTile(
                 leading: const Icon(
                   Icons.groups,
-                  color: Colors.white,
+                  color: Colors.blue,
                 ),
                 title: const Text("sınıfım"),
                 onTap: () {
@@ -143,9 +143,9 @@ class _SideDrawerState extends State<SideDrawer> {
             ListTile(
               leading: const Icon(
                 Icons.grid_view,
-                color: Colors.white,
+                color: Colors.blue,
               ),
-              title: const Text("Etütlerim"),
+              title: Text("Etütlerim"),
               onTap: () {
                 // body = BottomNavbar();
 
@@ -161,9 +161,9 @@ class _SideDrawerState extends State<SideDrawer> {
             ListTile(
               leading: const Icon(
                 Icons.reorder,
-                color: Colors.white,
+                color: Colors.blue,
               ),
-              title: const Text("Yoklamalar"),
+              title: Text("Yoklamalar"),
               onTap: () {
                 // body = BottomNavbar();
 
@@ -175,7 +175,7 @@ class _SideDrawerState extends State<SideDrawer> {
             ListTile(
               leading: const Icon(
                 Icons.grid_view,
-                color: Colors.white,
+                color: Colors.blue,
               ),
               title: const Text("firebasetryscreen"),
               onTap: () {
@@ -195,14 +195,14 @@ class _SideDrawerState extends State<SideDrawer> {
             ListTile(
               leading: const Icon(
                 Icons.logout,
-                // color: Colors.white,
+                // color: Colors.blue,
               ),
               title: const Text("Çıkış Yap"),
               onTap: () async {
                 Navigator.of(context).pop();
                 await auth.signOut();
-                await Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => LoginScreen2()));
+                //   await Navigator.of(context).push(
+                //       MaterialPageRoute(builder: (context) => LoginScreen()));
               },
             ),
           ],

@@ -16,22 +16,23 @@ class _NotificationsListState extends State<NotificationsList> {
             .collection("notification")
             .orderBy('added', descending: true)
             .snapshots(),
-        builder: (context, AsyncSnapshot snapshot) {
+        builder: (context, snapshot) {
           if (snapshot.hasError) {
             print(snapshot.error);
-            return const Center(child: Text("Birşeyler Ters Gitti..."));
+            return Center(child: Text("Birşeyler Ters Gitti..."));
           }
           if (!snapshot.hasData) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
+
           CollectionReference ref =
               FirebaseFirestore.instance.collection("notification");
 
           List _docs = snapshot.data.docs;
 
-          return _docs.isEmpty
+          return _docs.length == 0
               ? NotificationEmpty()
               : ListView.builder(
                   itemCount: _docs.length,
@@ -45,7 +46,7 @@ class _NotificationsListState extends State<NotificationsList> {
                           notification,
                           // user,
                         ),
-                        const Divider(
+                        Divider(
                           thickness: 1.2,
                         ),
                       ],

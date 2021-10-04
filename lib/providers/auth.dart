@@ -11,7 +11,7 @@ class Auth extends ChangeNotifier {
   // getInfoByToken
   // getStudentByNumber
   FirebaseAuth auth = FirebaseAuth.instance;
-  String? _userToken;
+  String _userToken;
   dynamic userInfo;
 
   get isAuth {
@@ -29,6 +29,11 @@ class Auth extends ChangeNotifier {
   //   }
   //   return null;
   // }
+
+  void setUserInfo(info) {
+    userInfo = info;
+    notifyListeners();
+  }
 
   Future<void> signStudentUp(
     String email,
@@ -57,16 +62,16 @@ class Auth extends ChangeNotifier {
       await FirebaseStorage.instance
           .ref()
           .child("profil_images")
-          .child(userCredential.user!.uid)
+          .child(userCredential.user.uid)
           .putFile(file)
           .then((response) async {
         photoUrl = await response.ref.getDownloadURL();
       });
     }
 
-    await students.doc(userCredential.user!.uid).set({
+    await students.doc(userCredential.user.uid).set({
       "role": "student",
-      "email": userCredential.user!.email,
+      "email": userCredential.user.email,
       "photoUrl": photoUrl,
       "username": username,
       "name": name,
@@ -78,11 +83,14 @@ class Auth extends ChangeNotifier {
       "parentNumber": parentNumber,
     });
 
-    await userCredential.user!.updateProfile(
-      displayName: name + " " + surname,
-      photoURL: photoUrl,
+    await userCredential.user.updatePhotoURL(
+      photoUrl,
     );
-    // print(userCredential.user!.displayName);
+    await userCredential.user.updateDisplayName(
+      name + " " + surname,
+    );
+
+    // print(userCredential.user.displayName);
   }
 
   Future<void> signTeacherUp(
@@ -107,16 +115,16 @@ class Auth extends ChangeNotifier {
       await FirebaseStorage.instance
           .ref()
           .child("profil_images")
-          .child(userCredential.user!.uid)
+          .child(userCredential.user.uid)
           .putFile(file)
           .then((response) async {
         photoUrl = await response.ref.getDownloadURL();
       });
     }
 
-    await teachers.doc(userCredential.user!.uid).set({
+    await teachers.doc(userCredential.user.uid).set({
       "role": "teacher",
-      "email": userCredential.user!.email,
+      "email": userCredential.user.email,
       "displayName": name + " " + surname,
       "lecture": lecture,
       "phoneNumber": phoneNumber,
@@ -124,15 +132,18 @@ class Auth extends ChangeNotifier {
       "photoUrl": photoUrl,
     });
 
-    await userCredential.user!.updateProfile(
-      displayName: name + " " + surname,
-      photoURL: photoUrl,
+    await userCredential.user.updatePhotoURL(
+      photoUrl,
     );
 
-    // print(userCredential.user!.displayName);
+    await userCredential.user.updateDisplayName(
+      name + " " + surname,
+    );
+
+    // print(userCredential.user.displayName);
   }
 
-  Future<String?> login(String username, String password) async {
+  Future<String> login(String username, String password) async {
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
         email: username,
@@ -141,21 +152,22 @@ class Auth extends ChangeNotifier {
 
       userInfo = await FirebaseFirestore.instance
           .collection("user")
-          .doc(userCredential.user!.uid)
+          .doc(userCredential.user.uid)
           .get();
 
       // print(122);
-
       return null;
     } catch (err) {
-      // if (err.code == "invalid-email")
-      //   throw "Hatalı mail formatı girdiniz.";
-      // else if (err.code == "wrong-password")
-      //   return "Hatalı parola girdiniz.";
-      // else if (err.code == "user-not-found") return "Kullanıcı bulunamadı.";
+      if (err.code == "invalid-email") {
+        throw "Hatalı mail formatı girdiniz.";
+      } else if (err.code == "wrong-password") {
+        return "Hatalı parola girdiniz.";
+      } else if (err.code == "user-not-found") {
+        return "Kullanıcı bulunamadı.";
+      }
 
       // print(err.code);
-      // return err.code.toString();
+      return err.code.toString();
     }
   }
 

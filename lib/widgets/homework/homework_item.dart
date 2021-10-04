@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 class HomeworkItem extends StatelessWidget {
   final dynamic hw;
-  const HomeworkItem(this.hw);
+  HomeworkItem(this.hw);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class HomeworkItem extends StatelessWidget {
             ),
             title: Text(
               hw["teacher"],
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -72,7 +72,7 @@ class HomeworkItem extends StatelessWidget {
             ),
           ),
         ),
-        const Divider(thickness: 1)
+        Divider(thickness: 1)
       ],
     );
   }

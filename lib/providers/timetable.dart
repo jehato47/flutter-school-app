@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:school2d5/screens/timetable/teacher_timetable_screen.dart';
+import '../../screens/timetable/teacher_timetable_screen.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'dart:math';
 import '../helpers/envs.dart';
@@ -46,7 +46,7 @@ class Timetable extends ChangeNotifier {
   ];
 
   final Random random = Random();
-  late List<Appointment> _appointments;
+  List<Appointment> _appointments;
   dynamic teacherData;
   dynamic studentData;
   // dynamic tData;
@@ -69,9 +69,16 @@ class Timetable extends ChangeNotifier {
 
   void createStudentTimeTable() {
     studentData.forEach((element) {
+      if (element["date"] == null) {
+        print(element["note"]);
+        print(element["subject"]);
+
+        return;
+      }
+      ;
       addAppointment(
         element["date"].toDate(),
-        element["date"].toDate().add(Duration(minutes: 40)),
+        element["date"].toDate().add(const Duration(minutes: 40)),
         element["subject"],
         element["isRecursive"],
         element["note"],

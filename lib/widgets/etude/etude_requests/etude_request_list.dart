@@ -18,7 +18,7 @@ class _EtudeRequestListState extends State<EtudeRequestList> {
           .collection("etudeRequest")
           .orderBy("date", descending: true)
           .snapshots(),
-      builder: (context, AsyncSnapshot snapshot) {
+      builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
         }
@@ -59,7 +59,7 @@ class _EtudeRequestListState extends State<EtudeRequestList> {
                 leading: Text(
                   kIsWeb
                       ? requests[index]["lecture"]
-                      : truncateString(requests[index]["lecture"], 5),
+                      : truncateString(requests[index]["lecture"], 3),
                 ),
                 title: Text(requests[index]["displayName"]),
                 subtitle: Text(requests[index]["note"]),

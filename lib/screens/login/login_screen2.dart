@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:school2d5/screens/home/student_home_screen.dart';
 // import 'package:school2/screens/home_screen.dart';
 import '../../screens/home/teacher_home_screen.dart';
 // import 'dashboard_screen.dart';
@@ -44,7 +45,7 @@ class LoginScreen2 extends StatelessWidget {
   //   });
   // }
 
-  Future<String?> _recoverPassword(String name) {
+  Future<String> _recoverPassword(String name) {
     print('Name: $name');
     return Future.delayed(loginTime).then((_) {
       if (!users.containsKey(name)) {
@@ -56,8 +57,10 @@ class LoginScreen2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userInfo = Provider.of<Auth>(context).userInfo;
+
     return FlutterLogin(
-      theme: LoginTheme(textFieldStyle: TextStyle(color: Colors.white)),
+      // theme: LoginTheme(textFieldStyle: const TextStyle(color: Colors.white)),
       messages: LoginMessages(
         userHint: "Kullanıcı Adı",
         passwordHint: "Şifre",
@@ -79,7 +82,13 @@ class LoginScreen2 extends StatelessWidget {
       },
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => TeacherHomeScreen(),
+          builder: (context) {
+            if (userInfo["role"] == "teacher") {
+              return TeacherHomeScreen();
+            } else {
+              return StudentHomeScreen();
+            }
+          },
         ));
       },
       onRecoverPassword: _recoverPassword,

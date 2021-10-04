@@ -9,8 +9,7 @@ class MessageBubble extends StatelessWidget {
   final DateTime date;
   // final String userImage;
 
-  const MessageBubble(
-      this.message, this.username, this.isMe, this.date, this.key);
+  MessageBubble(this.message, this.username, this.isMe, this.date, {this.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,22 +23,18 @@ class MessageBubble extends StatelessWidget {
               decoration: BoxDecoration(
                 color: isMe ? Colors.grey[300] : Theme.of(context).accentColor,
                 borderRadius: BorderRadius.only(
-                  topLeft: const Radius.circular(12),
-                  topRight: const Radius.circular(12),
-                  bottomLeft: !isMe
-                      ? const Radius.circular(0)
-                      : const Radius.circular(12),
-                  bottomRight: !isMe
-                      ? const Radius.circular(12)
-                      : const Radius.circular(0),
+                  topLeft: Radius.circular(12),
+                  topRight: Radius.circular(12),
+                  bottomLeft: !isMe ? Radius.circular(0) : Radius.circular(12),
+                  bottomRight: !isMe ? Radius.circular(12) : Radius.circular(0),
                 ),
               ),
               width: 150,
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: 16,
                 vertical: 10,
               ),
-              margin: const EdgeInsets.symmetric(
+              margin: EdgeInsets.symmetric(
                 vertical: 4,
                 horizontal: 8,
               ),
@@ -53,7 +48,7 @@ class MessageBubble extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: isMe
                           ? Colors.black
-                          : Theme.of(context).accentTextTheme.headline1!.color,
+                          : Theme.of(context).accentTextTheme.headline1.color,
                     ),
                   ),
                   Text(
@@ -61,7 +56,7 @@ class MessageBubble extends StatelessWidget {
                     style: TextStyle(
                       color: isMe
                           ? Colors.black
-                          : Theme.of(context).accentTextTheme.headline1!.color,
+                          : Theme.of(context).accentTextTheme.headline1.color,
                     ),
                     textAlign: isMe ? TextAlign.right : TextAlign.left,
                   ),
@@ -70,7 +65,7 @@ class MessageBubble extends StatelessWidget {
                     style: TextStyle(
                       color: isMe
                           ? Colors.black
-                          : Theme.of(context).accentTextTheme.headline1!.color,
+                          : Theme.of(context).accentTextTheme.headline1.color,
                     ),
                     textAlign: isMe ? TextAlign.right : TextAlign.left,
                   ),

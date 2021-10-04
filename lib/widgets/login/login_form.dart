@@ -10,18 +10,18 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final _form = GlobalKey<FormState>();
 
-  late String email;
-  late String password;
+  String email;
+  String password;
   bool isLoading = false;
 
   void tryLogin(BuildContext context) async {
-    bool isValid = _form.currentState!.validate();
+    bool isValid = _form.currentState.validate();
 
     if (!isValid) return;
     setState(() {
       isLoading = true;
     });
-    _form.currentState!.save();
+    _form.currentState.save();
     final result =
         await Provider.of<Auth>(context, listen: false).login(email, password);
     if (result != null) {
@@ -39,12 +39,12 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: SizedBox(
+      child: Container(
         width: 500,
         child: Form(
           key: _form,
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,15 +54,15 @@ class _LoginFormState extends State<LoginForm> {
                 //   style: TextStyle(fontSize: 30),
                 // ),
 
-                const Text(
+                Text(
                   "Tekrar Hoşgeldin",
                   style: TextStyle(fontSize: 30),
                 ),
-                const SizedBox(height: 25),
+                SizedBox(height: 25),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
-                    if (value!.isEmpty) {
+                    if (value.isEmpty) {
                       return "Kullanıcı adınızı girin";
                     }
 
@@ -79,7 +79,7 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                   onSaved: (newValue) {
                     print(newValue);
-                    email = newValue!.trim();
+                    email = newValue.trim();
                   },
                 ),
                 SizedBox(height: 20),
@@ -90,7 +90,7 @@ class _LoginFormState extends State<LoginForm> {
                 TextFormField(
                   obscureText: true,
                   validator: (value) {
-                    if (value!.isEmpty) {
+                    if (value.isEmpty) {
                       return "Şifrenizi girin";
                     }
 
@@ -101,19 +101,19 @@ class _LoginFormState extends State<LoginForm> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    hintStyle: const TextStyle(fontSize: 15),
+                    hintStyle: TextStyle(fontSize: 15),
                     hintText: "şifrenizi girin",
                   ),
                   onFieldSubmitted: (v) {
                     tryLogin(context);
                   },
                   onSaved: (newValue) {
-                    password = newValue as String;
+                    password = newValue;
                   },
                 ),
-                const SizedBox(height: 30),
+                SizedBox(height: 30),
                 isLoading
-                    ? const Center(child: CircularProgressIndicator())
+                    ? Center(child: CircularProgressIndicator())
                     : Center(
                         child: SizedBox(
                           width: double.infinity,
@@ -121,7 +121,7 @@ class _LoginFormState extends State<LoginForm> {
                             onPressed: () {
                               tryLogin(context);
                             },
-                            child: const Text("Giriş"),
+                            child: Text("Giriş"),
                           ),
                         ),
                       )

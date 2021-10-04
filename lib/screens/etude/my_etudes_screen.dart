@@ -13,7 +13,7 @@ class _MyEtudesScreenState extends State<MyEtudesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () async {
           await showModalBottomSheet(
             context: context,
@@ -23,7 +23,7 @@ class _MyEtudesScreenState extends State<MyEtudesScreen> {
         },
       ),
       appBar: AppBar(
-        actions: [
+        actions: const [
           // IconButton(
           //   icon: Icon(Icons.add),
           //   onPressed: () {

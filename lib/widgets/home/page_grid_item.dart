@@ -4,7 +4,7 @@ class PageGridItem extends StatelessWidget {
   final page;
   final title;
   final subtitle;
-  const PageGridItem(this.page, this.title, this.subtitle);
+  PageGridItem(this.page, this.title, this.subtitle);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class PageGridItem extends StatelessWidget {
           Navigator.of(context).pushNamed(page);
         },
         child: Container(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
           ),
@@ -27,17 +27,17 @@ class PageGridItem extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(Icons.leaderboard),
-              const SizedBox(height: 30),
+              Icon(Icons.leaderboard),
+              SizedBox(height: 30),
               Text(
                 title,
-                style: const TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 20),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: 10),
               Expanded(
                 child: Text(
                   subtitle,
-                  style: const TextStyle(fontSize: 15),
+                  style: TextStyle(fontSize: 15),
                 ),
               ),
             ],

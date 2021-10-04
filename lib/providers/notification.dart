@@ -12,7 +12,7 @@ class NotificationP extends ChangeNotifier {
     String creator,
     String content,
     dynamic file,
-    String fileName,
+    dynamic fileName,
     String to,
   ) async {
     CollectionReference notifications =

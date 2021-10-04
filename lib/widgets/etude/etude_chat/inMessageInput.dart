@@ -32,8 +32,8 @@ class _InMessageInputState extends State<InMessageInput> {
     await FirebaseFirestore.instance.collection("inEtudeChat").add({
       "id": etudeId,
       "message": text,
-      "uid": auth.currentUser!.uid,
-      "displayName": auth.currentUser!.displayName,
+      "uid": auth.currentUser.uid,
+      "displayName": auth.currentUser.displayName,
       "date": DateTime.now(),
     });
     _scrollController.jumpTo(

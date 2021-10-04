@@ -15,7 +15,7 @@ class _GiveHomeworkScreenState extends State<GiveHomeworkScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () async {
           await showDialog(
             context: context,

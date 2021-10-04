@@ -18,20 +18,19 @@ class _HomeworkHistoryState extends State<HomeworkHistory> {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("homework")
-            .where("uid", isEqualTo: auth.currentUser!.uid)
+            .where("uid", isEqualTo: auth.currentUser.uid)
             .orderBy("startDate", descending: true)
             .snapshots(),
-        builder: (context, AsyncSnapshot snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
+        builder: (context, snapshot) {
+          if (!snapshot.hasData)
+            return Center(child: CircularProgressIndicator());
           final hws = snapshot.data.docs;
           return ListView.builder(
             itemCount: hws.length,
             shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
+            physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) => Slidable(
-              actionPane: const SlidableDrawerActionPane(),
+              actionPane: SlidableDrawerActionPane(),
               actionExtentRatio: 0.4,
               secondaryActions: [
                 IconSlideAction(
