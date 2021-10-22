@@ -101,7 +101,7 @@ class MyApp extends StatelessWidget {
             // accentColor: Colors.amber,
             // buttonColor: Colors.indigo,
             ),
-        themeMode: ThemeMode.light,
+        themeMode: ThemeMode.dark,
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           // ... app-specific localization delegate[s] here

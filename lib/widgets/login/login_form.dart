@@ -39,12 +39,12 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
+      child: SizedBox(
         width: 500,
         child: Form(
           key: _form,
           child: Padding(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,11 +54,11 @@ class _LoginFormState extends State<LoginForm> {
                 //   style: TextStyle(fontSize: 30),
                 // ),
 
-                Text(
+                const Text(
                   "Tekrar Hoşgeldin",
                   style: TextStyle(fontSize: 30),
                 ),
-                SizedBox(height: 25),
+                const SizedBox(height: 25),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
@@ -75,14 +75,14 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                     labelText: "kullanıcı adı",
                     hintText: "kullanıcı adınızı girin",
-                    hintStyle: TextStyle(fontSize: 15),
+                    hintStyle: const TextStyle(fontSize: 15),
                   ),
                   onSaved: (newValue) {
                     print(newValue);
                     email = newValue.trim();
                   },
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Text(
                 //   "Şifre",
                 //   style: TextStyle(fontSize: 30),
@@ -101,7 +101,7 @@ class _LoginFormState extends State<LoginForm> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    hintStyle: TextStyle(fontSize: 15),
+                    hintStyle: const TextStyle(fontSize: 15),
                     hintText: "şifrenizi girin",
                   ),
                   onFieldSubmitted: (v) {
@@ -111,9 +111,9 @@ class _LoginFormState extends State<LoginForm> {
                     password = newValue;
                   },
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 isLoading
-                    ? Center(child: CircularProgressIndicator())
+                    ? const Center(child: CircularProgressIndicator())
                     : Center(
                         child: SizedBox(
                           width: double.infinity,
@@ -121,7 +121,7 @@ class _LoginFormState extends State<LoginForm> {
                             onPressed: () {
                               tryLogin(context);
                             },
-                            child: Text("Giriş"),
+                            child: const Text("Giriş"),
                           ),
                         ),
                       )
