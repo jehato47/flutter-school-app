@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Item extends StatefulWidget {
   final DocumentReference ref;
-  Item(this.ref);
+  const Item(this.ref);
   @override
   _ItemState createState() => _ItemState();
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../widgets/homework/homework_preview_list.dart';
+import '../../widgets/homework/homeworks_list.dart';
 
 class HomeworkPreviewScreen extends StatelessWidget {
   static const url = "/hw-preview";
@@ -10,7 +10,7 @@ class HomeworkPreviewScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Ödevler"),
       ),
-      body: HomeworkPreviewList(),
+      body: HomeworksList(),
     );
   }
 }

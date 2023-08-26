@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class Messages extends StatefulWidget {
   final dynamic doc;
-  ScrollController scrollController;
+  final ScrollController scrollController;
   Messages(this.doc, this.scrollController);
 
   @override
@@ -27,7 +27,7 @@ class _MessagesState extends State<Messages> {
           )
           .orderBy("date")
           .snapshots(),
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot snapshot) {
         if (_scrollController.hasClients) {
           _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
         }
@@ -43,10 +43,10 @@ class _MessagesState extends State<Messages> {
           itemCount: docs.length,
           itemBuilder: (context, index) {
             return MessageBubble(
-              docs[index].data()["note"],
-              docs[index].data()["displayName"],
+              docs[index]["note"],
+              docs[index]["displayName"],
               // docs[index].data()["userImage"],
-              docs[index].data()["uid"] == auth.currentUser.uid,
+              docs[index]["uid"] == auth.currentUser.uid,
               docs[index]["date"].toDate(),
               key: ValueKey(docs[index].id),
             );

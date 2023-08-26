@@ -21,16 +21,14 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
   bool isInit = true;
   dynamic args;
   dynamic examData;
-  showPickerModal(BuildContext context) async {
-    // final att = FirebaseFirestore.instance.collection('attendance');
 
-    // QuerySnapshot attendance = await att.get();
-    // final classes = attendance.docs.map((e) => e.id).toList();
+  showPickerModal(BuildContext context) async {
     final students = ids.map((e) => e["displayName"]).toList();
-    // return;
     FocusScope.of(context).unfocus();
-    await Future.delayed(Duration(milliseconds: 10));
-    new Picker(
+
+    await Future.delayed(const Duration(milliseconds: 10));
+
+    Picker(
         adapter: PickerDataAdapter<String>(pickerdata: students),
         changeToFirst: true,
         hideHeader: false,
@@ -41,7 +39,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
         selecteds: [index],
         height: 250,
         // columnFlex: [10],
-        title: Text(""),
+        title: const Text(""),
         onConfirm: (Picker picker, List value) {
           setState(() {
             index = value.first;
@@ -66,7 +64,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
       children: [
         ListTile(
           title: Text("$number. sınav"),
-          trailing: Container(
+          trailing: SizedBox(
             width: 70,
             height: 50,
             child: TextFormField(
@@ -98,15 +96,16 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
                 return null;
               },
               maxLength: 4,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 counterText: "",
                 border: OutlineInputBorder(),
               ),
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
             ),
           ),
         ),
-        Divider()
+        const Divider()
       ],
     );
   }
@@ -124,7 +123,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: Icon(Icons.save),
+            icon: const Icon(Icons.save),
             onPressed: () async {
               CollectionReference reference =
                   FirebaseFirestore.instance.collection("exam");
@@ -132,26 +131,28 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
               generalData.forEach((key, value) async {
                 await reference.doc(key).update(value);
               });
-              await Provider.of<Exam>(context).setDetails(lecture);
+              await Provider.of<Exam>(context, listen: false)
+                  .setDetails(lecture);
+
               Navigator.of(context).pop();
-              Navigator.of(context).pop();
+              // Navigator.of(context).pop();
             },
           ),
         ],
-        title: Text("Sınav Sonucu"),
+        title: const Text("Sınav Sonucu"),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Form(
           key: _formKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             children: [
               ListTile(
-                trailing: Icon(Icons.autorenew_sharp),
+                trailing: const Icon(Icons.autorenew_sharp),
                 onTap: () async {
                   FocusScope.of(context).unfocus();
-                  await Future.delayed(Duration(milliseconds: 10));
+                  await Future.delayed(const Duration(milliseconds: 10));
                   await showPickerModal(context);
                 },
                 leading: Text(

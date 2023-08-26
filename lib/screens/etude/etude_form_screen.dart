@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/etude/etude_form/second_step_etude_form.dart';
+import '../../helpers/help.dart';
 
 class EtudeFormScreen extends StatefulWidget {
   static const url = "etude-form";
@@ -15,7 +16,7 @@ class _EtudeFormScreenState extends State<EtudeFormScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: [],
-        title: Text("Matematik Etüt"),
+        title: Text("$lecture Etüt Formu".capitalizeFirstofEach),
       ),
       body: Padding(
         padding: EdgeInsets.all(20),

@@ -11,9 +11,10 @@ class _FirstStepLectureListState extends State<FirstStepLectureList> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
+      // TODO : Burayı etude collection a göre düzenle
       stream: FirebaseFirestore.instance.collection("etudeTimes").snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting)
+        if (!snapshot.hasData)
           return Center(
             child: CircularProgressIndicator(),
           );

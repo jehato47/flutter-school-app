@@ -108,31 +108,30 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
             showStudentDetailDialog(context);
           },
           child: Slidable(
+            // actionPane: ,
             // fastThreshold: 0.1,
 
             // showAllActionsThreshold: 0.1,
             actionPane: SlidableDrawerActionPane(),
-            closeOnScroll: false,
+            // closeOnScroll: false,
             // actionExtentRatio: 0.1,
             // actions: [],
             secondaryActions: [
               IconSlideAction(
-                caption: "İzinli",
-                icon: Icons.how_to_reg,
-                color: Colors.blue,
+                caption: "Gelmedi",
+                icon: Icons.alarm,
+                color: Colors.red,
                 onTap: () {
                   setState(() {
-                    color = Colors.blue;
+                    color = Colors.red;
                   });
                   changeValues(
                     student.reference,
                     attendance,
-                    attendance["permitted"],
+                    attendance["notExists"],
                   );
 
-                  if (!checkbox.isChecked) {
-                    checkbox.change();
-                  }
+                  if (!checkbox.isChecked) checkbox.change();
                 },
               ),
               IconSlideAction(
@@ -153,20 +152,22 @@ class _StudentCheckItemState extends State<StudentCheckItem> {
                 },
               ),
               IconSlideAction(
-                caption: "Gelmedi",
-                icon: Icons.alarm,
-                color: Colors.red,
+                caption: "İzinli",
+                icon: Icons.how_to_reg,
+                color: Colors.blue,
                 onTap: () {
                   setState(() {
-                    color = Colors.red;
+                    color = Colors.blue;
                   });
                   changeValues(
                     student.reference,
                     attendance,
-                    attendance["notExists"],
+                    attendance["permitted"],
                   );
 
-                  if (!checkbox.isChecked) checkbox.change();
+                  if (!checkbox.isChecked) {
+                    checkbox.change();
+                  }
                 },
               ),
             ],

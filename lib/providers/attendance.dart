@@ -134,9 +134,9 @@ class Attendance extends ChangeNotifier {
       CollectionReference att = FirebaseFirestore.instance
           .collection('attendance/$currentClass/pieces');
       final att2 = await att.doc(_currentTime.toString()).get();
-      if (att2.exists)
+      if (att2.exists) {
         attendance = att2["info"];
-      else {
+      } else {
         attendance = null;
       }
     }
@@ -179,7 +179,8 @@ class Attendance extends ChangeNotifier {
     if (att2.exists) {
       _oldAttendance = att2["info"];
       return true;
-    } else
+    } else {
       return false;
+    }
   }
 }

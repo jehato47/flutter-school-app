@@ -27,6 +27,7 @@ class _MessageInputState extends State<MessageInput> {
       _scrollController.position.maxScrollExtent,
     );
     await FirebaseFirestore.instance.collection("etudeChat").add({
+      "created": false,
       "uid": auth.currentUser.uid,
       "eRequestid": doc.id,
       "note": text,

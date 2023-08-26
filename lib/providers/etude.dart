@@ -63,7 +63,7 @@ class Etude extends ChangeNotifier {
 
     final normalResponse = utf8.decode(response.bodyBytes);
     final normalJson = json.decode(normalResponse) as List<dynamic>;
-    print(normalJson);
+    // print(normalJson);
     _etudes = normalJson;
   }
 
@@ -75,7 +75,7 @@ class Etude extends ChangeNotifier {
 
   void setCalendarResources() {
     _etudes.forEach((element) {
-      if (element["etüt_saatleri"].length != 0)
+      if (element["etüt_saatleri"].length != 0) {
         _calendarResources.add(
           CalendarResource(
             id: element["user"].toString(),
@@ -86,6 +86,7 @@ class Etude extends ChangeNotifier {
             ),
           ),
         );
+      }
       print(calendarResources);
     });
   }
@@ -119,7 +120,7 @@ class Etude extends ChangeNotifier {
               resourceIds: [teacher["user"].toString()],
               subject: "Elektroliz",
               startTime: startTime,
-              endTime: startTime.add(Duration(minutes: 40)),
+              endTime: startTime.add(const Duration(minutes: 40)),
               notes: json.encode(value),
             ),
           );

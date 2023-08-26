@@ -19,10 +19,10 @@ class _HomeworkHistoryState extends State<HomeworkHistory> {
         stream: FirebaseFirestore.instance
             .collection("homework")
             .where("uid", isEqualTo: auth.currentUser.uid)
-            .orderBy("startDate")
+            .orderBy("startDate", descending: true)
             .snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting)
+          if (!snapshot.hasData)
             return Center(child: CircularProgressIndicator());
           final hws = snapshot.data.docs;
           return ListView.builder(
@@ -45,7 +45,7 @@ class _HomeworkHistoryState extends State<HomeworkHistory> {
               ],
               child: InkWell(
                 onLongPress: () async {
-                  await Provider.of<HomeWork>(context)
+                  await Provider.of<HomeWork>(context, listen: false)
                       .deleteHomework(hws[index]);
                 },
                 borderRadius: BorderRadius.circular(4),

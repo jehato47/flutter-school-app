@@ -6,7 +6,7 @@ import '../../screens/homework/give_homework_screen.dart';
 import '../../screens/homework/homework_preview_screen.dart';
 import '../../screens/timetable/teacher_timetable_screen.dart';
 import '../../screens/timetable/student_timetable_screen.dart';
-import '../../screens/exam/students_exam_list.dart';
+import '../../screens/exam/exams_list_screen.dart';
 import '../../screens/etude/etude_requests_screen.dart';
 import '../../screens/etude/etude_chat_screen.dart';
 import '../../screens/etude/my_etudes_screen.dart';
@@ -59,7 +59,7 @@ class PagesGrid extends StatelessWidget {
             "subtitle",
           ),
           PageGridItem(
-            StudentsExamList.url,
+            ExamsListScreen.url,
             "Sınav S.",
             "subtitle",
           ),

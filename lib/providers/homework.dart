@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:io';
+// import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
@@ -9,14 +9,28 @@ class HomeWork extends ChangeNotifier {
     dynamic homework,
     dynamic file,
   ) async {
-    print(homework);
+    // print(homework);
     homework["startDate"] = DateTime.now();
     homework["isSeen"] = [];
+    String ref;
 
     CollectionReference homeworks =
         FirebaseFirestore.instance.collection('homework');
+
+    DocumentReference docRef =
+        await FirebaseFirestore.instance.collection("timetable").add({
+      // "subject": "Ödev",
+      "date": homework["dueDate"],
+      "uids": [homework["to"]],
+      "isRecursive": false,
+      "subject": "${homework["lecture"]} ödev - ${homework["homework"]}",
+      "note": "",
+    });
+    homework["timetableRef"] = docRef.path;
+
     if (kIsWeb) {
       await homeworks.add(homework).then((value) async {
+        ref = value.path;
         if (file != null) {
           await FirebaseStorage.instance
               .ref()
@@ -31,6 +45,7 @@ class HomeWork extends ChangeNotifier {
       });
     } else {
       await homeworks.add(homework).then((value) async {
+        ref = value.path;
         if (file != null) {
           await FirebaseStorage.instance
               .ref()
@@ -44,6 +59,7 @@ class HomeWork extends ChangeNotifier {
         }
       });
     }
+    await docRef.update({"note": ref});
   }
 
   Future<String> getDownloadUrl(
@@ -71,5 +87,6 @@ class HomeWork extends ChangeNotifier {
         }
       }
     });
+    await FirebaseFirestore.instance.doc(homework["timetableRef"]).delete();
   }
 }

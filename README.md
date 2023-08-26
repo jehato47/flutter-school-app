@@ -1,17 +1,15 @@
-<div align="center" id="top"> 
-  <!-- <img src="https://flutter.dev/assets/dash/early-dash-sketches2-a38190f3c27f9309101e711143e4a67af04757d7b9f29b00e9ae8cb2cb841d1a.jpg" alt="School2" /> -->
+# school2d5
 
-  &#xa0;
+A new Flutter project.
 
-  <!-- <a href="https://school2.netlify.app">Demo</a> -->
-</div>
+## Getting Started
 
-<h1 align="center">School2</h1>
+This project is a starting point for a Flutter application.
 
-<p align="center">
-  <img alt="Github top language" src="https://img.shields.io/github/languages/top/jehato47/school2?color=56BEB8">
+A few resources to get you started if this is your first Flutter project:
 
-  <img alt="Github language count" src="https://img.shields.io/github/languages/count/jehato47/school2?color=56BEB8">
+- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
   <img alt="Repository size" src="https://img.shields.io/github/repo-size/jehato47/school2?color=56BEB8">
 

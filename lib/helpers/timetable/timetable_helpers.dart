@@ -46,7 +46,7 @@ Widget scheduleViewBuilder(
         bottom: 0,
         child: Text(
           monthName + ' ' + details.date.year.toString(),
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 18,
             color: Colors.black45,
           ),

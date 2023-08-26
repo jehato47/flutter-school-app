@@ -6,7 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:school2/firebase/firebase.dart';
+import 'firebase/firebase.dart';
+import 'screens/home/student_home_screen.dart';
+import 'screens/home/teacher_home_screen.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 import 'package:provider/provider.dart';
 import 'providers/notification.dart';
@@ -21,9 +23,10 @@ import 'screens/notifications/notification_screen.dart';
 import 'screens/exam/student_exam_screen.dart';
 import 'screens/homework/homework_detail_screen.dart';
 import 'screens/homework/homework_preview_screen.dart';
+import 'screens/homework/filter_screen.dart';
 import 'screens/timetable/teacher_timetable_screen.dart';
-import 'screens/home_screen.dart';
-import 'screens/login_screen.dart';
+import 'screens/home/home_screen.dart';
+import 'screens/login/login_screen.dart';
 import 'screens/attendance/attendance_detail_screen.dart';
 import 'screens/attendance/attendance_preview_screen.dart';
 import 'screens/attendance/attendace_check_screen.dart';
@@ -34,20 +37,24 @@ import 'screens/etude/etude_requests_screen.dart';
 import 'screens/etude/select_lecture_screen.dart';
 import 'screens/etude/etude_form_screen.dart';
 import 'screens/etude/my_etudes_screen.dart';
+import 'screens/etude/teacher_etude_screen.dart';
 import 'screens/etude/etude_chat_screen.dart';
 import 'helpers/download/download_helper_provider.dart';
-import 'screens/exam/students_exam_list.dart';
+import 'screens/exam/exams_list_screen.dart';
 import 'screens/archive/teacher_archive_screen.dart';
 import 'widgets/home/bottom_navbar.dart';
-import 'screens/login_screen2.dart';
+import 'screens/login/login_screen2.dart';
 import 'screens/archive/archive_preview_screen.dart';
+import 'screens/myclass/my_friends_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (!kIsWeb)
+
+  if (!kIsWeb) {
     await FlutterDownloader.initialize(
         debug: true // optional: set false to disable printing logs to console
         );
+  }
   Intl.defaultLocale = 'tr_TR';
 
   runApp(MyApp());
@@ -94,8 +101,8 @@ class MyApp extends StatelessWidget {
             // accentColor: Colors.amber,
             // buttonColor: Colors.indigo,
             ),
-        themeMode: ThemeMode.light,
-        localizationsDelegates: [
+        themeMode: ThemeMode.dark,
+        localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           // ... app-specific localization delegate[s] here
           SfGlobalLocalizations.delegate
@@ -113,7 +120,7 @@ class MyApp extends StatelessWidget {
           // fontFamily: "ruda",
           // primaryColor: Colors.indigo,
           primaryTextTheme: ThemeData.light().textTheme.copyWith(
-                headline6: TextStyle(
+                headline6: const TextStyle(
                   color: Colors.white,
                 ),
               ),
@@ -126,39 +133,75 @@ class MyApp extends StatelessWidget {
           body: FutureBuilder(
             future: Firebase.initializeApp(),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              }
-              return StreamBuilder(
-                // TODO: login, logout, signup yapıldıgında bu stream değişecek
-                // TODO: onAuthstateChanged -> authStateChanges
-                stream: FirebaseAuth.instance.authStateChanges(),
-                builder: (ctx, snapshot) {
-                  // FirebaseAuth.instance.signOut();
-                  // * TODO : Login Form da setState hatası veriyor bak
-                  if (snapshot.connectionState == ConnectionState.waiting)
-                    return Center(child: CircularProgressIndicator());
-                  if (snapshot.hasData) {
-                    User user = snapshot.data;
-                    // ? todo : Sınav cevap kağıdını göstermeyi hallet
+              // if (snapshot.connectionState == ConnectionState.waiting) {
+              //   return Center(child: CircularProgressIndicator());
+              // }
 
-                    return FutureBuilder(
-                        future: FirebaseFirestore.instance
-                            .collection("user")
-                            .doc(user.uid)
-                            .get(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting)
-                            return Center(child: CircularProgressIndicator());
-                          DocumentSnapshot documentSnapshot = snapshot.data;
-                          Provider.of<Auth>(context, listen: false).userInfo =
-                              documentSnapshot.data();
+              // if (FirebaseAuth.instance.currentUser != null) {
+              //   User user = FirebaseAuth.instance.currentUser;
+              //   return FutureBuilder(
+              //       future: FirebaseFirestore.instance
+              //           .collection("user")
+              //           .doc(user.uid)
+              //           .get(),
+              //       builder: (context, snapshot) {
+              //         if (snapshot.connectionState == ConnectionState.waiting)
+              //           return Center(child: CircularProgressIndicator());
+              //         DocumentSnapshot documentSnapshot = snapshot.data;
+              //         Provider.of<Auth>(context, listen: false).userInfo =
+              //             documentSnapshot.data();
+              //         if (documentSnapshot["role"] == "teacher") {
+              //           return TeacherHomeScreen();
+              //         }
+              //         return StudentHomeScreen();
+              //       });
+              // }
+              // return LoginScreen2();
 
-                          return HomeScreen();
-                        });
+              return FutureBuilder(
+                future: Firebase.initializeApp(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return StreamBuilder(
+                      stream: FirebaseAuth.instance.authStateChanges(),
+                      builder: (ctx, snapshot) {
+                        // * TODO : Login Form da setState hatası veriyor bak
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                        if (snapshot.hasData) {
+                          User user = snapshot.data;
+                          return FutureBuilder(
+                              future: FirebaseFirestore.instance
+                                  .collection("user")
+                                  .doc(user.uid)
+                                  .get(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+                                DocumentSnapshot documentSnapshot =
+                                    snapshot.data;
+                                Provider.of<Auth>(context, listen: false)
+                                    .userInfo = documentSnapshot.data();
+                                if (documentSnapshot["role"] == "teacher") {
+                                  return TeacherHomeScreen();
+                                }
+                                return StudentHomeScreen();
+                              });
+                        }
+                        return LoginScreen();
+                      },
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
                   }
-                  return LoginScreen();
                 },
               );
             },
@@ -166,6 +209,7 @@ class MyApp extends StatelessWidget {
         ),
         routes: {
           LoginScreen.url: (ctx) => LoginScreen(),
+          TeacherHomeScreen.url: (ctx) => TeacherHomeScreen(),
           AttendanceCheckScreen.url: (ctx) => AttendanceCheckScreen(),
           AttendancePreviewScreen.url: (ctx) => AttendancePreviewScreen(),
           AttendanceDetailScreen.url: (ctx) => AttendanceDetailScreen(),
@@ -178,13 +222,16 @@ class MyApp extends StatelessWidget {
           StudentExamScreen.url: (ctx) => StudentExamScreen(),
           EtudeRequestsScreen.url: (ctx) => EtudeRequestsScreen(),
           NotificationScreen.url: (ctx) => NotificationScreen(),
-          StudentsExamList.url: (ctx) => StudentsExamList(),
+          ExamsListScreen.url: (ctx) => ExamsListScreen(),
           SelectLectureScreen.url: (ctx) => SelectLectureScreen(),
           MyEtudesScreen.url: (ctx) => MyEtudesScreen(),
           EtudeChatScreen.url: (ctx) => EtudeChatScreen(),
           EtudeFormScreen.url: (ctx) => EtudeFormScreen(),
+          TeacherEtudeScreen.url: (ctx) => TeacherEtudeScreen(),
           TeacherArchiveScreen.url: (ctx) => TeacherArchiveScreen(),
           ArchivePreviewScreen.url: (ctx) => ArchivePreviewScreen(),
+          MyFriendsScreen.url: (ctx) => MyFriendsScreen(),
+          HomeworkFilterScreen.url: (ctx) => HomeworkFilterScreen(),
         },
       ),
     );

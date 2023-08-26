@@ -17,7 +17,7 @@ class Upload extends ChangeNotifier {
       for (var file in result.files) {
         dynamic fileBytes = file.bytes;
         String fileName = file.name;
-        print(fileName);
+        // print(fileName);
 
         await FirebaseStorage.instance
             .ref('${auth.currentUser.uid}/$folderName/$fileName')
@@ -32,7 +32,7 @@ class Upload extends ChangeNotifier {
             "fileRef": snapshot.ref.fullPath,
             "url": url,
           });
-          print(snapshot.ref);
+          // print(snapshot.ref);
         });
       }
     } else if (result != null && !kIsWeb) {

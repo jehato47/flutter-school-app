@@ -18,11 +18,13 @@ class NotificationEmpty extends StatelessWidget {
           ),
         ),
         SizedBox(height: 50),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Image(
-            image: NetworkImage(
-              "https://media.giphy.com/media/YOqgY2wQazNKleTJ5D/giphy.gif",
+        Center(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image(
+              image: NetworkImage(
+                "https://media.giphy.com/media/YOqgY2wQazNKleTJ5D/giphy.gif",
+              ),
             ),
           ),
         ),

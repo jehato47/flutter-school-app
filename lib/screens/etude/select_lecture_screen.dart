@@ -12,10 +12,11 @@ class _SelectLectureScreenState extends State<SelectLectureScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Dersler"),
+        automaticallyImplyLeading: false,
+        title: const Text("Dersler"),
       ),
       body: Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(10),
         child: FirstStepLectureList(),
       ),
     );

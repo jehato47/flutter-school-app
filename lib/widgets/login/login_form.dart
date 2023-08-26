@@ -22,7 +22,15 @@ class _LoginFormState extends State<LoginForm> {
       isLoading = true;
     });
     _form.currentState.save();
-    await Provider.of<Auth>(context).login(email, password);
+    final result =
+        await Provider.of<Auth>(context, listen: false).login(email, password);
+    if (result != null) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(result),
+        backgroundColor: Colors.red,
+      ));
+    }
     setState(() {
       isLoading = false;
     });
@@ -30,88 +38,96 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _form,
-      child: Padding(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Text(
-            //   "Kullanıcı Adı",
-            //   style: TextStyle(fontSize: 30),
-            // ),
+    return Center(
+      child: SizedBox(
+        width: 500,
+        child: Form(
+          key: _form,
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Text(
+                //   "Kullanıcı Adı",
+                //   style: TextStyle(fontSize: 30),
+                // ),
 
-            Text(
-              "Tekrar Hoşgeldin",
-              style: TextStyle(fontSize: 30),
-            ),
-            SizedBox(height: 25),
-            TextFormField(
-              keyboardType: TextInputType.emailAddress,
-              validator: (value) {
-                if (value.isEmpty) {
-                  return "Kullanıcı adınızı girin";
-                }
-
-                return null;
-              },
-              decoration: InputDecoration(
-                filled: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                const Text(
+                  "Tekrar Hoşgeldin",
+                  style: TextStyle(fontSize: 30),
                 ),
-                labelText: "kullanıcı adı",
-                hintText: "kullanıcı adınızı girin",
-                hintStyle: TextStyle(fontSize: 15),
-              ),
-              onSaved: (newValue) {
-                print(newValue);
-                email = newValue.trim();
-              },
-            ),
-            SizedBox(height: 20),
-            // Text(
-            //   "Şifre",
-            //   style: TextStyle(fontSize: 30),
-            // ),
-            TextFormField(
-              obscureText: true,
-              validator: (value) {
-                if (value.isEmpty) {
-                  return "Şifrenizi girin";
-                }
+                const SizedBox(height: 25),
+                TextFormField(
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return "Kullanıcı adınızı girin";
+                    }
 
-                return null;
-              },
-              decoration: InputDecoration(
-                labelText: "şifre",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                hintStyle: TextStyle(fontSize: 15),
-                hintText: "şifrenizi girin",
-              ),
-              onSaved: (newValue) {
-                password = newValue;
-              },
-            ),
-            SizedBox(height: 30),
-            isLoading
-                ? Center(child: CircularProgressIndicator())
-                : Center(
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          tryLogin(context);
-                        },
-                        child: Text("Giriş"),
-                      ),
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  )
-          ],
+                    labelText: "kullanıcı adı",
+                    hintText: "kullanıcı adınızı girin",
+                    hintStyle: const TextStyle(fontSize: 15),
+                  ),
+                  onSaved: (newValue) {
+                    print(newValue);
+                    email = newValue.trim();
+                  },
+                ),
+                const SizedBox(height: 20),
+                // Text(
+                //   "Şifre",
+                //   style: TextStyle(fontSize: 30),
+                // ),
+                TextFormField(
+                  obscureText: true,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return "Şifrenizi girin";
+                    }
+
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    labelText: "şifre",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    hintStyle: const TextStyle(fontSize: 15),
+                    hintText: "şifrenizi girin",
+                  ),
+                  onFieldSubmitted: (v) {
+                    tryLogin(context);
+                  },
+                  onSaved: (newValue) {
+                    password = newValue;
+                  },
+                ),
+                const SizedBox(height: 30),
+                isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : Center(
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              tryLogin(context);
+                            },
+                            child: const Text("Giriş"),
+                          ),
+                        ),
+                      )
+              ],
+            ),
+          ),
         ),
       ),
     );
