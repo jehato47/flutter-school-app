@@ -50,11 +50,11 @@ Describe your project
 
 ## :sparkles: Features ##
 
-:heavy_check_mark: Feature 1;\ Student Management
+:heavy_check_mark: Student Management
 
-:heavy_check_mark: Feature 2;\ Teacher Management
+:heavy_check_mark: Teacher Management
 
-:heavy_check_mark: Feature 3;\ And many other features
+:heavy_check_mark: And many other features
 
 ## :rocket: Technologies ##
 
